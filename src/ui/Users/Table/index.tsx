@@ -46,7 +46,7 @@ const UsersTable: React.FC<UsersTableProperties> = ({
     } else {
       const column = sorter.column as ColumnTableProperties;
       const order = (sorter.order === 'ascend') ? 'ASC' : 'DESC';
-      fetchMore(pagination.page, pagination.limit, column.orderBy, order);
+      fetchMore(1, pagination.limit, column.orderBy, order);
     }
   };
 
