@@ -1,0 +1,10 @@
+node_modules
+dist
+
+# generated scss module types
+*.module.scss.d.ts
+
+# untouched files of CRA
+src/serviceWorker.ts
+react-app-env.d.ts
+src/graphql/generated.ts
