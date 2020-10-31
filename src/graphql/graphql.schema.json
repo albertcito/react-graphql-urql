@@ -1111,6 +1111,36 @@
             "description": null,
             "args": [
               {
+                "name": "order",
+                "description": "ASC or DESC",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": "\"DESC\""
+              },
+              {
+                "name": "orderBy",
+                "description": "Column order by",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": "\"user_id\""
+              },
+              {
+                "name": "name",
+                "description": "Search by name",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
                 "name": "limit",
                 "description": null,
                 "type": {

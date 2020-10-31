@@ -20,10 +20,12 @@ export default class StringColumn<T> implements TableColumnAbstract {
   public readonly column: ColumnTableProperties;
 
   constructor(private readonly properties: StringColumnProperties<T>) {
-    const { indexID, onSelect, getLink, ...props } = properties;
+    const { indexID, onSelect, getLink, orderBy, ...props } = properties;
     this.column = {
       ...props,
       render: this.getRender(),
+      sorter: !!orderBy,
+      orderBy,
     };
   }
 

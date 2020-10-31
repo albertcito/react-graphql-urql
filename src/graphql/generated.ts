@@ -134,6 +134,9 @@ export type QueryUserArgs = {
 
 
 export type QueryUsersArgs = {
+  order?: Maybe<Scalars['String']>;
+  orderBy?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
   limit?: Maybe<Scalars['Int']>;
   page?: Maybe<Scalars['Int']>;
 };
@@ -289,6 +292,8 @@ export type UserQuery = (
 export type UsersQueryVariables = Exact<{
   limit?: Maybe<Scalars['Int']>;
   page?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Scalars['String']>;
+  order?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -531,8 +536,8 @@ export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
 export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
 export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
 export const UsersDocument = gql`
-    query users($limit: Int, $page: Int) {
-  users(limit: $limit, page: $page) {
+    query users($limit: Int, $page: Int, $orderBy: String, $order: String) {
+  users(limit: $limit, page: $page, orderBy: $orderBy, order: $order) {
     pagination {
       from
       to
@@ -569,6 +574,8 @@ export const UsersDocument = gql`
  *   variables: {
  *      limit: // value for 'limit'
  *      page: // value for 'page'
+ *      orderBy: // value for 'orderBy'
+ *      order: // value for 'order'
  *   },
  * });
  */

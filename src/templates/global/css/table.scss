@@ -34,11 +34,14 @@
 }
 
 .table-view {
- .pagination:first-child {
+  .ant-input-search {
+    margin-bottom: 20px;
+  }
+ .pagination:first-of-type {
   margin-bottom: 20px;
   text-align: right;
  }
- .pagination:last-child {
+ .pagination:last-of-type {
   margin-top: 20px;
   text-align: center;
  }
