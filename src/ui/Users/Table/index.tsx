@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Spin, Table, Input } from 'antd';
 import { TablePaginationConfig } from 'antd/lib/table';
 import { Key, SorterResult } from 'antd/lib/table/interface';
@@ -14,12 +14,26 @@ interface User {
   email: string;
   fullName: string;
 }
+
+interface PaginationArguments {
+  page: number;
+  limit: number;
+}
+interface OrderByArguments {
+  orderBy: string;
+  order: 'ASC' | 'DESC';
+}
+
+interface UserFetchMore extends Partial<OrderByArguments>, Partial<PaginationArguments> {
+  search?: string;
+}
+
 interface UsersTableProperties {
   users: User[];
   loading?: boolean;
   pagination: Pagination;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  fetchMore: (page: number, pageSize: number, orderBy?: string, order?: 'ASC' | 'DESC') => void;
+  fetchMore: (parameters: UserFetchMore) => void;
 }
 const UsersTable: React.FC<UsersTableProperties> = ({
   users,
@@ -27,6 +41,9 @@ const UsersTable: React.FC<UsersTableProperties> = ({
   pagination,
   fetchMore,
 }) => {
+
+  const [search, setSearch] = useState('');
+
   const tableColumns = new TableColumns([
     new IDColumn<User>({ indexID: 'userID', orderBy: 'user_id' }),
     new StringColumn<User>({ indexID: 'fullName', title: 'Name', orderBy: 'first_name' }),
@@ -42,25 +59,45 @@ const UsersTable: React.FC<UsersTableProperties> = ({
   ) => {
     if (Array.isArray(sorter)) { return; }
     if (!sorter.column) {
-      fetchMore(pagination.page, pagination.limit);
+      fetchMore({
+        page: pagination.page,
+        limit: pagination.limit,
+        search,
+      });
     } else {
       const column = sorter.column as ColumnTableProperties;
       const order = (sorter.order === 'ascend') ? 'ASC' : 'DESC';
-      fetchMore(1, pagination.limit, column.orderBy, order);
+      fetchMore({
+        page: 1,
+        limit: pagination.limit,
+        orderBy: column.orderBy,
+        order,
+        search,
+      });
     }
+  };
+
+  const onSearch = (value: string) => {
+    fetchMore({
+      page: 1,
+      limit: pagination.limit,
+      search: value,
+    });
   };
 
   return (
     <div className='table-view'>
       <Spin spinning={loading}>
         <Input.Search
-          placeholder='Input name, email or phone'
-          onSearch={console.log}
+          placeholder='Input name, email or ID'
+          onSearch={onSearch}
           enterButton
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
         />
         <PaginationUI
           pagination={pagination}
-          onChange={fetchMore}
+          onChange={(page, limit) => fetchMore({ page, limit })}
           small
         />
         <Table
@@ -69,7 +106,10 @@ const UsersTable: React.FC<UsersTableProperties> = ({
           pagination={false}
           onChange={onChangeTable}
         />
-        <PaginationUI pagination={pagination} onChange={fetchMore} />
+        <PaginationUI
+          pagination={pagination}
+          onChange={(page, limit) => fetchMore({ page, limit, search })}
+        />
       </Spin>
     </div>
   );

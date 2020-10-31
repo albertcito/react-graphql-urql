@@ -23,8 +23,8 @@ const Users: React.FC = () => {
           loading={loading}
           users={data.users.data}
           pagination={data.users.pagination}
-          fetchMore={(page, limit, orderBy, order) => fetchMore({
-            variables: { page, limit, orderBy, order },
+          fetchMore={(variables) => fetchMore({
+            variables,
             updateQuery: (previous, { fetchMoreResult }) => {
               if (!fetchMoreResult) return previous;
               return fetchMoreResult;

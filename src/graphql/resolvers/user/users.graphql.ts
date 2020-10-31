@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
-const usersQuery = gql`query users($limit: Int, $page: Int, $orderBy: String, $order: String) {
-  users(limit: $limit, page: $page, orderBy: $orderBy, order: $order) {
+const usersQuery = gql`query users($limit: Int, $page: Int, $orderBy: String, $order: String, $search: String) {
+  users(limit: $limit, page: $page, orderBy: $orderBy, order: $order, search: $search) {
     pagination {
       from
       to

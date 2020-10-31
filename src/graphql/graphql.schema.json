@@ -1131,8 +1131,8 @@
                 "defaultValue": "\"user_id\""
               },
               {
-                "name": "name",
-                "description": "Search by name",
+                "name": "search",
+                "description": "Search by name or email",
                 "type": {
                   "kind": "SCALAR",
                   "name": "String",
