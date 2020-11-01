@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { LockOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Spin, notification } from 'antd';
-import { ApolloError } from '@apollo/client';
 
 import { useProfileUpdatePasswordMutation } from 'graphql/generated';
 import AlertError from 'ui/Alert/AlertError';
@@ -20,7 +19,8 @@ const PasswordForm: React.FC = () => {
     errorPolicy: 'all',
     onCompleted: (data) => {
       if (data) {
-        notification.success({ message: 'Pasword updated' });
+        const { message, type } = data.profileUpdatePassword.message;
+        notification[type]({ message });
       }
     },
   });

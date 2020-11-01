@@ -15,7 +15,8 @@ const EmailForm: React.FC = () => {
     errorPolicy: 'all',
     onCompleted: (data) => {
       if (data) {
-        notification.success({ message: 'Email was updated' });
+        const { message, type } = data.profileUpdateEmail.message;
+        notification[type]({ message });
       }
     },
   });

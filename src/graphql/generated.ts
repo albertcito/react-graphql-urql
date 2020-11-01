@@ -71,6 +71,26 @@ export type UserToken = {
   type: Scalars['String'];
 };
 
+export type MessageField = {
+  __typename?: 'MessageField';
+  type: MessageType;
+  message: Scalars['String'];
+};
+
+/** All possible message types */
+export enum MessageType {
+  Success = 'success',
+  Info = 'info',
+  Warning = 'warning',
+  Error = 'error'
+}
+
+export type LangCreateResponse = {
+  __typename?: 'LangCreateResponse';
+  data: Lang;
+  message: MessageField;
+};
+
 export type Pagination = {
   __typename?: 'Pagination';
   length: Scalars['Int'];
@@ -87,16 +107,52 @@ export type LangPaginationResponse = {
   pagination: Pagination;
 };
 
+export type LangUpdateResponse = {
+  __typename?: 'LangUpdateResponse';
+  data: Lang;
+  message: MessageField;
+};
+
 export type LoginResponse = {
   __typename?: 'LoginResponse';
   token: Scalars['String'];
   user: User;
 };
 
+export type ProfileUpdateEmailResponse = {
+  __typename?: 'ProfileUpdateEmailResponse';
+  data: User;
+  message: MessageField;
+};
+
+export type ProfileUpdatePasswordResponse = {
+  __typename?: 'ProfileUpdatePasswordResponse';
+  data: User;
+  message: MessageField;
+};
+
+export type UserBasicUpdateResponse = {
+  __typename?: 'UserBasicUpdateResponse';
+  data: User;
+  message: MessageField;
+};
+
 export type UserPaginationResponse = {
   __typename?: 'UserPaginationResponse';
   data: Array<User>;
   pagination: Pagination;
+};
+
+export type UserUpdateEmailResponse = {
+  __typename?: 'UserUpdateEmailResponse';
+  data: User;
+  message: MessageField;
+};
+
+export type UserUpdatePasswordResponse = {
+  __typename?: 'UserUpdatePasswordResponse';
+  data: User;
+  message: MessageField;
 };
 
 export type Query = {
@@ -143,18 +199,18 @@ export type QueryUsersArgs = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  langCreate: Lang;
+  langCreate: LangCreateResponse;
   langDelete: Scalars['String'];
-  langUpdate: Lang;
+  langUpdate: LangUpdateResponse;
   activateEmail: Scalars['String'];
   forgotPassword: Scalars['String'];
-  profileUpdateEmail: User;
-  profileUpdatePassword: User;
+  profileUpdateEmail: ProfileUpdateEmailResponse;
+  profileUpdatePassword: ProfileUpdatePasswordResponse;
   resetPassword: Scalars['String'];
   signUp: User;
-  userUpdate: User;
-  userUpdateEmail: User;
-  userUpdatePassword: User;
+  userBasicUpdate: UserBasicUpdateResponse;
+  userUpdateEmail: UserUpdateEmailResponse;
+  userUpdatePassword: UserUpdatePasswordResponse;
 };
 
 
@@ -219,7 +275,7 @@ export type MutationSignUpArgs = {
 };
 
 
-export type MutationUserUpdateArgs = {
+export type MutationUserBasicUpdateArgs = {
   lastName: Scalars['String'];
   firstName: Scalars['String'];
   userID: Scalars['Int'];
@@ -300,8 +356,14 @@ export type ProfileUpdateEmailMutationVariables = Exact<{
 export type ProfileUpdateEmailMutation = (
   { __typename?: 'Mutation' }
   & { profileUpdateEmail: (
-    { __typename?: 'User' }
-    & Pick<User, 'userID' | 'firstName' | 'lastName' | 'email'>
+    { __typename?: 'ProfileUpdateEmailResponse' }
+    & { data: (
+      { __typename?: 'User' }
+      & Pick<User, 'userID' | 'firstName' | 'lastName' | 'email'>
+    ), message: (
+      { __typename?: 'MessageField' }
+      & Pick<MessageField, 'type' | 'message'>
+    ) }
   ) }
 );
 
@@ -314,8 +376,14 @@ export type ProfileUpdatePasswordMutationVariables = Exact<{
 export type ProfileUpdatePasswordMutation = (
   { __typename?: 'Mutation' }
   & { profileUpdatePassword: (
-    { __typename?: 'User' }
-    & Pick<User, 'userID' | 'firstName' | 'lastName' | 'email'>
+    { __typename?: 'ProfileUpdatePasswordResponse' }
+    & { data: (
+      { __typename?: 'User' }
+      & Pick<User, 'userID' | 'firstName' | 'lastName' | 'email'>
+    ), message: (
+      { __typename?: 'MessageField' }
+      & Pick<MessageField, 'type' | 'message'>
+    ) }
   ) }
 );
 
@@ -517,10 +585,16 @@ export type LogoutQueryResult = Apollo.QueryResult<LogoutQuery, LogoutQueryVaria
 export const ProfileUpdateEmailDocument = gql`
     mutation profileUpdateEmail($email: String!, $password: String!) {
   profileUpdateEmail(email: $email, password: $password) {
-    userID
-    firstName
-    lastName
-    email
+    data {
+      userID
+      firstName
+      lastName
+      email
+    }
+    message {
+      type
+      message
+    }
   }
 }
     `;
@@ -553,10 +627,16 @@ export type ProfileUpdateEmailMutationOptions = Apollo.BaseMutationOptions<Profi
 export const ProfileUpdatePasswordDocument = gql`
     mutation profileUpdatePassword($password: String!, $newPassword: String!) {
   profileUpdatePassword(newPassword: $newPassword, password: $password) {
-    userID
-    firstName
-    lastName
-    email
+    data {
+      userID
+      firstName
+      lastName
+      email
+    }
+    message {
+      type
+      message
+    }
   }
 }
     `;
