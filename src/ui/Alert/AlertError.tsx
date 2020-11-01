@@ -4,16 +4,16 @@ import { ApolloError } from '@apollo/client';
 
 export interface AlertErrorProperties {
   error: ApolloError;
-  mgBtm?: boolean;
 }
-const AlertError: React.FC<AlertErrorProperties> = ({ error, mgBtm }) => {
-  const style = mgBtm ? { marginBottom: 20 } : undefined;
+
+const AlertError: React.FC<AlertErrorProperties> = ({ error }) => {
   return (
-    <div style={style}>
+    <div>
       <Alert
         type='error'
         showIcon
         message={error.message}
+        style={{ marginBottom: 20 }}
       />
     </div>
   );

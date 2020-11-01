@@ -1,67 +1,85 @@
-import { InboxOutlined, LockOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Spin, notification } from 'antd';
 import React from 'react';
+import { InboxOutlined, LockOutlined } from '@ant-design/icons';
+import { Button, Form, Input, notification, Spin } from 'antd';
 
-const onFinish = () => notification.info({
-  message: 'To be implemented',
-  description: 'This feature will be implemented ASAP.',
-});
+import { useProfileUpdateEmailMutation } from 'graphql/generated';
+import AlertError from 'ui/Alert/AlertError';
 
-const EmailForm: React.FC = () => (
-  <Spin spinning={false}>
-    <Form initialValues={{ email: 'me@albertcito.com' }} onFinish={onFinish}>
-      <Form.Item
-        name='email'
-        rules={[
-          {
-            required: true,
-            message: 'Please input your email',
-          },
-          {
-            type: 'email',
-            message: 'The input is not valid E-mail',
-          },
-        ]}
-        hasFeedback
+interface OnFinishArguments {
+  email: string;
+  password: string;
+}
+
+const EmailForm: React.FC = () => {
+  const [updateEmail, { loading, error }] = useProfileUpdateEmailMutation({
+    errorPolicy: 'all',
+    onCompleted: (data) => {
+      if (data) {
+        notification.success({ message: 'Email was updated' });
+      }
+    },
+  });
+
+  return (
+    <Spin spinning={loading}>
+      {error && <AlertError error={error} />}
+      <Form
+        initialValues={{ email: 'me@albertcito.com' }}
+        onFinish={(variables: OnFinishArguments) => updateEmail({ variables })}
       >
-        <Input
-          autoComplete='email'
-          placeholder='Email'
-          size='large'
-          type='email'
-          prefix={<InboxOutlined />}
-        />
-      </Form.Item>
-
-      <Form.Item
-        name='password'
-        rules={[
-          {
-            required: true,
-            message: 'Please input your password!',
-          },
-        ]}
-        hasFeedback
-      >
-        <Input.Password
-          autoComplete='password'
-          size='large'
-          placeholder='Password'
-          prefix={<LockOutlined />}
-        />
-      </Form.Item>
-
-      <Form.Item>
-        <Button
-          type='primary'
-          htmlType='submit'
-          className='session-form-button'
+        <Form.Item
+          name='email'
+          rules={[
+            {
+              required: true,
+              message: 'Please input your email',
+            },
+            {
+              type: 'email',
+              message: 'The input is not valid E-mail',
+            },
+          ]}
+          hasFeedback
         >
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
-  </Spin>
-);
+          <Input
+            autoComplete='email'
+            placeholder='Email'
+            size='large'
+            type='email'
+            prefix={<InboxOutlined />}
+          />
+        </Form.Item>
+
+        <Form.Item
+          name='password'
+          rules={[
+            {
+              required: true,
+              message: 'Please input your password!',
+            },
+          ]}
+          hasFeedback
+        >
+          <Input.Password
+            autoComplete='password'
+            size='large'
+            placeholder='Password'
+            prefix={<LockOutlined />}
+          />
+        </Form.Item>
+
+        <Form.Item>
+          <Button
+            type='primary'
+            htmlType='submit'
+            className='session-form-button'
+          >
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+    </Spin>
+  );
+}
 
 export default EmailForm;

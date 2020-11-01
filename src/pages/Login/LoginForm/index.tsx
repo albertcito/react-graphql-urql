@@ -32,12 +32,7 @@ const LoginForm: React.FC<LoginFormProperties> = ({ doLogin, loading, error }) =
         <h2 className='modal-title'>
           Login
         </h2>
-        {error && (
-          <AlertError
-            error={error}
-            mgBtm
-          />
-        )}
+        {error && <AlertError error={error} />}
         <Form onFinish={onSubmit} initialValues={{ email: 'me@albertcito.com', password: '123456' }}>
           <Form.Item
             name='email'
