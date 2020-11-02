@@ -1,6 +1,9 @@
 import React, { useContext } from 'react';
 import { LockOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Spin, notification } from 'antd';
+import { ApolloError, MutationHookOptions } from '@apollo/client';
+import { MutationTuple } from '@apollo/client/react/types/types';
+
 
 import { useProfileUpdatePasswordMutation } from 'graphql/generated';
 import AlertError from 'ui/Alert/AlertError';
@@ -13,17 +16,44 @@ interface OnFinishArguments {
   confirmNewPassword: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type useMutationFnType<TQuery, TVariables> = (
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  baseOptions?: MutationHookOptions<TQuery, TVariables>
+) => MutationTuple<TQuery, TVariables>;
+
+function useMutation<TQuery, TVariables>(
+  mutation: useMutationFnType<TQuery, TVariables>,
+  baseOptions?: MutationHookOptions<TQuery, TVariables>,
+) {
+  const onError = (error: ApolloError) => {
+    if (baseOptions && baseOptions.onError) {
+      baseOptions.onError(error);
+    }
+    return false;
+  };
+
+  const options = {
+    ...baseOptions,
+    onError,
+  };
+  return mutation(options);
+}
+
 const PasswordForm: React.FC = () => {
   const { sessions: { user } } = useContext(GlobalContext);
-  const [updatePasword, { loading, error }] = useProfileUpdatePasswordMutation({
-    errorPolicy: 'all',
-    onCompleted: (data) => {
-      if (data) {
-        const { message, type } = data.profileUpdatePassword.message;
-        notification[type]({ message });
-      }
+  const [updatePasword, { loading, error }] = useMutation(
+    useProfileUpdatePasswordMutation,
+    {
+      errorPolicy: 'all',
+      onCompleted: (data) => {
+        if (data) {
+          const { message, type } = data.profileUpdatePassword.message;
+          notification[type]({ message });
+        }
+      },
     },
-  });
+  );
 
   const validationErrors = getValidationErrors<OnFinishArguments>(error);
   return (
