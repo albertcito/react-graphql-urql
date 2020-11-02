@@ -21,14 +21,11 @@ const Users: React.FC = () => {
           loading={fetching}
           users={data.users.data}
           pagination={data.users.pagination}
-          fetchMore={console.log}
-          /* fetchMore={(variables) => getUsers({
-            variables,
-            updateQuery: (previous, { fetchMoreResult }) => {
-              if (!fetchMoreResult) return previous;
-              return fetchMoreResult;
-            },
-          })} */
+          // fetchMore={console.log}
+          fetchMore={(variables) => {
+            console.log(variables);
+            getUsers({ ...variables, requestPolicy: 'network-only' });
+          }}
         />
       </div>
     );

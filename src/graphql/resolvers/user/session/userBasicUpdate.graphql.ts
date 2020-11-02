@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import gql from 'graphql-tag';
 
 const userBasicUpdate = gql`mutation userBasicUpdate($userID: Int!, $firstName: String!, $lastName: String!) {
   userBasicUpdate(userID: $userID, lastName: $lastName, firstName: $firstName) {

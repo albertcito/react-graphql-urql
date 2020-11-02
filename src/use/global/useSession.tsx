@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react';
-import { ApolloError } from '@apollo/client';
 
 import storage from 'util/Storage';
 import { useLoggedUserMutation, LoggedUserMutation } from 'graphql/generated';
@@ -9,7 +8,6 @@ type UserSession = LoggedUserMutation['loggedUser'];
 export interface UseSessionProperties {
   user?: UserSession;
   fetching: boolean;
-  error?: ApolloError;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getSession: () => void;

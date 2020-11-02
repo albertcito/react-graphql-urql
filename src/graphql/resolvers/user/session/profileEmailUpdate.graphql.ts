@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import gql from 'graphql-tag';
 
 const profileEmailUpdate = gql`mutation profileUpdateEmail(
   $email: String!
