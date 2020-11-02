@@ -5,7 +5,7 @@ import { Button, Form, Input, Spin, notification } from 'antd';
 import { useProfileUpdatePasswordMutation } from 'graphql/generated';
 import AlertError from 'ui/Alert/AlertError';
 import { GlobalContext } from 'use/global';
-import { getValidationErrors } from 'util/Errors/getErrors';
+// import { getValidationErrors } from 'util/Errors/getErrors';
 
 interface OnFinishArguments {
   password: string;
@@ -15,22 +15,23 @@ interface OnFinishArguments {
 
 const PasswordForm: React.FC = () => {
   const { sessions: { user } } = useContext(GlobalContext);
-  const [updatePasword, { loading, error }] = useProfileUpdatePasswordMutation({
-    errorPolicy: 'all',
-    onCompleted: (data) => {
-      if (data) {
-        const { message, type } = data.profileUpdatePassword.message;
-        notification[type]({ message });
-      }
-    },
-  });
+  const [{ fetching, error }, updatePasword] = useProfileUpdatePasswordMutation();
 
-  const validationErrors = getValidationErrors<OnFinishArguments>(error);
+  // const validationErrors = getValidationErrors<OnFinishArguments>(error);
+
+  const onFinish = async (variables: OnFinishArguments) => {
+    const response = await updatePasword(variables);
+    if (response.data) {
+      const { message, type } = response.data.profileUpdatePassword.message;
+      notification[type]({ message });
+    }
+  };
+
   return (
     <div>
       {error && <AlertError error={error} />}
-      <Spin spinning={loading}>
-        <Form autoComplete='off' onFinish={(variables: OnFinishArguments) => updatePasword({ variables }) }>
+      <Spin spinning={fetching}>
+        <Form autoComplete='off' onFinish={onFinish}>
           <input
             type='email'
             autoComplete='email'
@@ -42,8 +43,8 @@ const PasswordForm: React.FC = () => {
           <Form.Item
             name='password'
             hasFeedback
-            validateStatus={validationErrors?.errors.password && 'error'}
-            help={validationErrors?.errors.password}
+            // validateStatus={validationErrors?.errors.password && 'error'}
+            // help={validationErrors?.errors.password}
           >
             <Input.Password
               autoComplete='password'
@@ -56,8 +57,8 @@ const PasswordForm: React.FC = () => {
           <Form.Item
             name='newPassword'
             hasFeedback
-            validateStatus={validationErrors?.errors.newPassword && 'error'}
-            help={validationErrors?.errors.newPassword}
+            // validateStatus={validationErrors?.errors.newPassword && 'error'}
+            // help={validationErrors?.errors.newPassword}
           >
             <Input.Password
               autoComplete='newPassword'
@@ -71,8 +72,8 @@ const PasswordForm: React.FC = () => {
             name='confirmNewPassword'
             dependencies={['newPassword']}
             hasFeedback
-            validateStatus={validationErrors?.errors.confirmNewPassword && 'error'}
-            help={validationErrors?.errors.confirmNewPassword}
+            // validateStatus={validationErrors?.errors.confirmNewPassword && 'error'}
+            // help={validationErrors?.errors.confirmNewPassword}
           >
             <Input.Password
               autoComplete='new-password'

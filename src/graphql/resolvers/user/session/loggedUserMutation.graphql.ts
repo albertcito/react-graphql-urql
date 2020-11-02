@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
-const userSessionQuery = gql`query userSession($userID: Int!) {
-  user(userID: $userID) {
+const loggedUserMutation = gql`mutation loggedUser {
+  loggedUser {
     userID
     email
     firstName
@@ -11,4 +11,4 @@ const userSessionQuery = gql`query userSession($userID: Int!) {
   }
 }`;
 
-export default userSessionQuery;
+export default loggedUserMutation;

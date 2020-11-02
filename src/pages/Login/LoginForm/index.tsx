@@ -1,7 +1,7 @@
-import { InboxOutlined, LockOutlined } from '@ant-design/icons';
-import { ApolloError } from '@apollo/client';
-import { Button, Form, Input, Spin, notification } from 'antd';
 import React from 'react';
+import { InboxOutlined, LockOutlined } from '@ant-design/icons';
+import { Button, Form, Input, Spin, notification } from 'antd';
+import { CombinedError } from '@urql/core';
 
 import AlertError from 'ui/Alert/AlertError';
 
@@ -14,11 +14,11 @@ const onClick = () => notification.info({
 type onLoginType = (email: string, password: string) => void;
 interface LoginFormProperties {
   doLogin: onLoginType;
-  loading: boolean;
-  error?: ApolloError;
+  fetching: boolean;
+  error?: CombinedError;
 }
 
-const LoginForm: React.FC<LoginFormProperties> = ({ doLogin, loading, error }) => {
+const LoginForm: React.FC<LoginFormProperties> = ({ doLogin, fetching, error }) => {
   const onSubmit = ({ email, password }: {
     email: string;
     password: string;
@@ -27,7 +27,7 @@ const LoginForm: React.FC<LoginFormProperties> = ({ doLogin, loading, error }) =
   };
 
   return (
-    <Spin spinning={loading}>
+    <Spin spinning={fetching}>
       <div className='modal session-form'>
         <h2 className='modal-title'>
           Login

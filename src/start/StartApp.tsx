@@ -1,31 +1,20 @@
 import React from 'react';
 import { IntlProvider } from 'react-intl';
-import { HttpLink, ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
+import { createClient, Provider } from 'urql';
 
 import { GlobalContext, useGlobal } from 'use/global';
 import Routes from './Routes';
 import constants from 'config/constants';
 
-const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('accessToken');
-  return {
-    headers: {
-      ...headers,
-      Authorization: token ? `Bearer ${token}` : '',
+const client = createClient({
+  url: `${constants.urlServer}/graphql/public`,
+  fetchOptions: () => {
+    const token = localStorage.getItem('accessToken');
+    return {
+      headers: { authorization: token ? `Bearer ${token}` : '' },
       withCredentials: true,
-    },
-  };
-});
-
-const httpLink = new HttpLink({
-  uri: `${constants.urlServer}/graphql/public`,
-  credentials: 'include',
-});
-
-const client = new ApolloClient({
-  cache: new InMemoryCache(),
-  link: authLink.concat(httpLink),
+    };
+  },
 });
 
 const GlobalSomething: React.FC = () => {
@@ -44,9 +33,9 @@ const GlobalSomething: React.FC = () => {
 };
 
 const StartApp = () => (
-  <ApolloProvider client={client}>
+  <Provider value={client}>
     <GlobalSomething />
-  </ApolloProvider>
+  </Provider>
 );
 
 export default StartApp;

@@ -17,11 +17,11 @@ interface AuthProperties<T = React.ReactNode> {
 }
 const Auth = ({ appRoute, Template, route, type }: AuthProperties) => {
   const {
-    sessions: { user, loading },
-    logout: { loading: logoutLoading },
+    sessions: { user, fetching },
+    logout: { fetching: logoutLoading },
   } = React.useContext(GlobalContext);
 
-  if (loading) {
+  if (fetching) {
     return <>...loading</>;
   }
 

@@ -2,18 +2,17 @@ import { useCallback, useState } from 'react';
 import { ApolloError } from '@apollo/client';
 
 import storage from 'util/Storage';
-import { useUserSessionLazyQuery, UserSessionQuery } from 'graphql/generated';
+import { useLoggedUserMutation, LoggedUserMutation } from 'graphql/generated';
 
-type UserSession = UserSessionQuery['user'];
+type UserSession = LoggedUserMutation['loggedUser'];
 
 export interface UseSessionProperties {
   user?: UserSession;
-  called: boolean;
-  loading: boolean;
+  fetching: boolean;
   error?: ApolloError;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getSession: (userID: number) => void;
+  getSession: () => void;
   delSession: () => void;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   saveSession: (data: UserSession, accessToken?: string) => void;
@@ -34,21 +33,23 @@ const useSession = (): UseSessionProperties => {
     }
   }, []);
 
-  const [callUser, { called, loading, error }] = useUserSessionLazyQuery({
-    context: { clientName: 'public' },
-    onCompleted: (data) => {
-      saveSession(data.user);
-    },
-  });
+  const [{ fetching }, getLoggedUser] = useLoggedUserMutation();
 
   /**
    * Get data from the current user logged
    *
    * @param userID: number
    */
-  const getSession = useCallback(async (userID: number) => {
-    callUser({ variables: { userID } });
-  }, [callUser]);
+  const getSession = useCallback(async () => {
+    try {
+      const response = await getLoggedUser();
+      if (response.data) {
+        saveSession(response.data.loggedUser);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [getLoggedUser, saveSession]);
 
   /**
    * Clean user's private data
@@ -63,9 +64,7 @@ const useSession = (): UseSessionProperties => {
     getSession,
     delSession,
     saveSession,
-    called,
-    loading,
-    error,
+    fetching,
   };
 };
 

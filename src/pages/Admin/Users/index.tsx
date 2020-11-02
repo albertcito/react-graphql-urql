@@ -5,14 +5,12 @@ import { useUsersQuery } from 'graphql/generated';
 import UsersTable from 'ui/Users/Table';
 
 const Users: React.FC = () => {
-  const { data, loading, fetchMore } = useUsersQuery({
-    variables: { limit: 10 },
-    fetchPolicy: 'cache-first',
-  });
+  const [{ data, fetching }, getUsers] = useUsersQuery({ variables: { limit: 10 } });
 
-  if (loading && !data) {
+  if (fetching && !data) {
     return <div> Loading... </div>;
   }
+
   if (data) {
     return (
       <div>
@@ -20,21 +18,22 @@ const Users: React.FC = () => {
           Users
         </Title>
         <UsersTable
-          loading={loading}
+          loading={fetching}
           users={data.users.data}
           pagination={data.users.pagination}
-          fetchMore={(variables) => fetchMore({
+          fetchMore={console.log}
+          /* fetchMore={(variables) => getUsers({
             variables,
             updateQuery: (previous, { fetchMoreResult }) => {
               if (!fetchMoreResult) return previous;
               return fetchMoreResult;
             },
-          })}
+          })} */
         />
       </div>
     );
   }
-  throw new Error('Users should be printed');
+  return <div>sdasdas</div>;
 };
 
 export default Users;

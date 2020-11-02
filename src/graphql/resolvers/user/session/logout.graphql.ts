@@ -1,4 +1,4 @@
 import { gql } from '@apollo/client';
 
-const logoutQuery = gql`query logout { logout }`;
+const logoutQuery = gql`mutation logout { logout }`;
 export default logoutQuery;

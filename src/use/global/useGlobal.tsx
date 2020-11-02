@@ -1,26 +1,26 @@
 import { useEffect } from 'react';
-import { ApolloError } from '@apollo/client';
+import { CombinedError } from '@urql/core';
 
 import useSession, { UseSessionProperties } from 'use/global/useSession';
 import storage from 'util/Storage';
 import useUnauthorized from './useUnauthorized';
 // import useStartData, { StartDataFormat } from './useStartData';
 import useIntl, { UseIntlFormat } from './useIntl';
-import { useLoginLazyQuery, useLogoutLazyQuery } from 'graphql/generated';
+import { useLoginMutation, useLogoutMutation } from 'graphql/generated';
 
 export interface UseGlobalProperties {
   sessions: Omit<UseSessionProperties, 'getSession' >;
   logout: {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     doLogout: () => void;
-    loading: boolean;
-    error?: ApolloError;
+    fetching: boolean;
+    error?: CombinedError;
   };
   login: {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     doLogin: (email: string, password: string) => void;
-    loading: boolean;
-    error?: ApolloError;
+    fetching: boolean;
+    error?: CombinedError;
   };
   // appData: Omit<StartDataFormat, 'getData'>;
   intl: UseIntlFormat;
@@ -31,31 +31,24 @@ const useGlobal = (): UseGlobalProperties => {
   // const { getData, ...appData } = useStartData();
   const intl = useIntl();
 
-  const [doLogout, { loading: loadingLogout, error: logoutError }] = useLogoutLazyQuery({
-    onCompleted: () => delSession(),
-    onError: console.log,
-  });
+  const [{ fetching: loadingLogout, error: logoutError }, logout] = useLogoutMutation();
+  const doLogout = () => logout().then(() => delSession());
 
-  const [login, { loading: loadingLogin, error: loginError }] = useLoginLazyQuery({
-    onCompleted: (response) => sessions.saveSession(response.login.user, response.login.token),
-    onError: console.log,
-  });
+  const [{ fetching: loadingLogin, error: loginError }, login] = useLoginMutation();
 
-  const doLogin = (email: string, password: string) => {
-    login({
-      variables: {
-        email,
-        password,
-      },
-    });
+  const doLogin = async (email: string, password: string) => {
+    const response = await login({ email, password });
+    if (response.data) {
+      const { user, token } = response.data.login;
+      sessions.saveSession(user, token);
+    }
   };
 
   useUnauthorized(delSession);
 
   useEffect(() => {
-    const userID = storage.getUserID();
-    if (userID) {
-      getSession(userID);
+    if (storage.getToken()) {
+      getSession();
     }
   }, [getSession]);
 
@@ -68,12 +61,12 @@ const useGlobal = (): UseGlobalProperties => {
     },
     logout: {
       doLogout,
-      loading: loadingLogout,
+      fetching: loadingLogout,
       error: logoutError,
     },
     login: {
       doLogin,
-      loading: loadingLogin,
+      fetching: loadingLogin,
       error: loginError,
     },
     // appData,

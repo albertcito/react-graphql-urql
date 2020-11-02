@@ -11,22 +11,22 @@ interface OnFinishArguments {
 }
 
 const EmailForm: React.FC = () => {
-  const [updateEmail, { loading, error }] = useProfileUpdateEmailMutation({
-    errorPolicy: 'all',
-    onCompleted: (data) => {
-      if (data) {
-        const { message, type } = data.profileUpdateEmail.message;
-        notification[type]({ message });
-      }
-    },
-  });
+  const [{ fetching, error }, updateEmail] = useProfileUpdateEmailMutation();
+
+  const onFinish = async (variables: OnFinishArguments) => {
+    const response = await updateEmail(variables);
+    if (response.data) {
+      const { message, type } = response.data.profileUpdateEmail.message;
+      notification[type]({ message });
+    }
+  };
 
   return (
-    <Spin spinning={loading}>
+    <Spin spinning={fetching}>
       {error && <AlertError error={error} />}
       <Form
         initialValues={{ email: 'me@albertcito.com' }}
-        onFinish={(variables: OnFinishArguments) => updateEmail({ variables })}
+        onFinish={onFinish}
       >
         <Form.Item
           name='email'

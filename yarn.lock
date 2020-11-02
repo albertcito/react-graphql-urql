@@ -1406,6 +1406,17 @@
     pascal-case "^3.1.1"
     tslib "~2.0.1"
 
+"@graphql-codegen/typescript-urql@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-urql/-/typescript-urql-2.0.2.tgz#a2f8c6b245522fafe38c6e43961b43fba52fe9c5"
+  integrity sha512-UXBk60grKDBbqKS5LflZxMLWyKPinzrVHiC5AFGamoM5uxYCHAAKf42MXL7Fbvo29u63yv7rSfIFGmjd5fKP7A==
+  dependencies:
+    "@graphql-codegen/plugin-helpers" "^1.17.9"
+    "@graphql-codegen/visitor-plugin-common" "^1.17.15"
+    auto-bind "~4.0.0"
+    pascal-case "^3.1.1"
+    tslib "~2.0.1"
+
 "@graphql-codegen/typescript@1.17.11", "@graphql-codegen/typescript@^1.17.8":
   version "1.17.11"
   resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript/-/typescript-1.17.11.tgz#9bcc00580b36e8c98e7cc565dbccaf1b8b8ce85d"
@@ -2403,6 +2414,13 @@
   dependencies:
     "@typescript-eslint/types" "4.6.0"
     eslint-visitor-keys "^2.0.0"
+
+"@urql/core@^1.14.1":
+  version "1.14.1"
+  resolved "https://registry.yarnpkg.com/@urql/core/-/core-1.14.1.tgz#eadd3f4dbbb9d194a67bc84fcce082bb511d13fe"
+  integrity sha512-yRpGazoqn4eSzcVcnwKCYcXEePiwc/fwkKAzguPP9sNZu3qWMBSHzH7huu0FeuwTiSxu6S1x3l0s7QYere0ZFQ==
+  dependencies:
+    wonka "^4.0.14"
 
 "@webassemblyjs/ast@1.8.5":
   version "1.8.5"
@@ -14527,6 +14545,14 @@ url@^0.11.0:
     punycode "1.3.2"
     querystring "0.2.0"
 
+urql@^1.10.3:
+  version "1.10.3"
+  resolved "https://registry.yarnpkg.com/urql/-/urql-1.10.3.tgz#cc2e5355d74210055c0cb08cf3a5792a706ca8d7"
+  integrity sha512-dR3SLG0S+DUeiedIzAKvzzZnl+QOxsxbLneqft26ewYiJQPLqTJLGnD63cXYGpkcst5+/QlPFF9nMH0xz6DV2A==
+  dependencies:
+    "@urql/core" "^1.14.1"
+    wonka "^4.0.14"
+
 use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
@@ -14942,6 +14968,11 @@ widest-line@^2.0.0:
   integrity sha512-Ba5m9/Fa4Xt9eb2ELXt77JxVDV8w7qQrH0zS/TWSJdLyAwQjWoOzpzj5lwVftDz6n/EOu3tNACS84v509qwnJA==
   dependencies:
     string-width "^2.1.1"
+
+wonka@^4.0.14:
+  version "4.0.15"
+  resolved "https://registry.yarnpkg.com/wonka/-/wonka-4.0.15.tgz#9aa42046efa424565ab8f8f451fcca955bf80b89"
+  integrity sha512-U0IUQHKXXn6PFo9nqsHphVCE5m3IntqZNB9Jjn7EB1lrR7YTDY3YWgFvEvwniTzXSvOH/XMzAZaIfJF/LvHYXg==
 
 word-wrap@~1.2.3:
   version "1.2.3"
