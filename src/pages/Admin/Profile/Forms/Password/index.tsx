@@ -4,7 +4,6 @@ import { Button, Form, Input, Spin, notification } from 'antd';
 
 import { useProfileUpdatePasswordMutation } from 'graphql/generated';
 import AlertError from 'ui/Alert/AlertError';
-import UserContext from 'use/user/UserContext';
 // import { getValidationErrors } from 'util/Errors/getErrors';
 
 interface OnFinishArguments {
@@ -13,8 +12,7 @@ interface OnFinishArguments {
   confirmNewPassword: string;
 }
 
-const PasswordForm: React.FC = () => {
-  const { user } = useContext(UserContext);
+const PasswordForm: React.FC<{ email: string}> = ({ email }) => {
   const [{ fetching, error }, updatePasword] = useProfileUpdatePasswordMutation();
 
   // const validationErrors = getValidationErrors<OnFinishArguments>(error);
@@ -35,7 +33,7 @@ const PasswordForm: React.FC = () => {
           <input
             type='email'
             autoComplete='email'
-            value={user?.email}
+            value={email}
             readOnly
             style={{ display: 'none' }}
           />

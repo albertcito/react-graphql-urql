@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { IntlProvider } from 'react-intl';
-import { createClient, Provider, dedupExchange, cacheExchange, fetchExchange, makeOperation } from 'urql';
-import { authExchange } from '@urql/exchange-auth';
+import { createClient, Provider, dedupExchange, cacheExchange, fetchExchange } from 'urql';
 import { retryExchange } from '@urql/exchange-retry';
 
 import { GlobalContext, useGlobal } from 'use/global';
@@ -9,76 +8,7 @@ import Routes from './Routes';
 import constants from 'config/constants';
 import UserContext, { useUser } from 'use/user/UserContext';
 
-function promise<T>(value: T): Promise<T> {
-  return new Promise((resolve) => resolve(value));
-}
-const client = createClient({
-  url: `${constants.urlServer}/graphql/public`,
-  fetchOptions: () => {
-    const token = localStorage.getItem('accessToken');
-    return {
-      headers: { authorization: token ? `Bearer ${token}` : '' },
-      withCredentials: true,
-    };
-  },
-  exchanges: [
-    dedupExchange,
-    cacheExchange,
-    retryExchange({
-      retryIf: (error) => {
-        console.log(error);
-        if ((error && error.graphQLErrors.length > 0) || error.networkError) {
-          console.log("true");
-          return true;
-        }
-        console.log("false");
-        return false;
-      },
-    }),
-    fetchExchange,
-    // dedupExchange,
-    // cacheExchange,
-    /*
-    authExchange<{token: string }>({
-      getAuth: ({ authState }) => {
-        if (!authState) {
-          const token = localStorage.getItem('userToken');
-          if (token) {
-            return promise({ token });
-          }
-          return promise({ token: '' });
-        }
-        return promise({ token: '' });
-      },
-      addAuthToOperation: ({ authState, operation }) => {
-        if (!authState || !authState.token) {
-          return operation;
-        }
-        const fetchOptions = typeof operation.context.fetchOptions === 'function'
-          ? operation.context.fetchOptions()
-          : operation.context.fetchOptions || {};
-        return makeOperation(operation.kind, operation, {
-          ...operation.context,
-          fetchOptions: {
-            ...fetchOptions,
-            headers: {
-              ...fetchOptions.headers,
-              Authorization: authState.token,
-            },
-          },
-        });
-      },
-      willAuthError: ({ authState }) => {
-        if (!authState) return true;
-        return false;
-      },
-      didAuthError: ({ error }) => error.graphQLErrors.some((event) => event.extensions?.code === 'FORBIDDEN'),
-    }),
-    */
-  ],
-});
-
-const GlobalSomething: React.FC = () => {
+const GlobalStatus: React.FC = () => {
   const global = useGlobal();
   return (
     <GlobalContext.Provider value={global}>
@@ -94,11 +24,32 @@ const GlobalSomething: React.FC = () => {
 };
 
 const StartApp = () => {
-  const user = useUser();
+  const { setUser, ...props } = useUser();
+  const client = useRef(createClient({
+    url: `${constants.urlServer}/graphql/public`,
+    fetchOptions: () => {
+      const token = localStorage.getItem('accessToken');
+      return {
+        headers: { authorization: token ? `Bearer ${token}` : '' },
+        withCredentials: true,
+      };
+    },
+    exchanges: [
+      dedupExchange,
+      cacheExchange,
+      retryExchange({
+        retryIf: (error) => {
+          if (error.response.status === 403) { setUser(); }
+          return false;
+        },
+      }),
+      fetchExchange,
+    ],
+  })).current;
   return (
-    <UserContext.Provider value={user}>
+    <UserContext.Provider value={{ ...props, setUser }}>
       <Provider value={client}>
-        <GlobalSomething />
+        <GlobalStatus />
       </Provider>
     </UserContext.Provider>
   );

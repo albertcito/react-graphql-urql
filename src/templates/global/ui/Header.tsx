@@ -28,7 +28,9 @@ export default function Header() {
     </Menu.Item>,
     <Menu.Item key='profile'>
       <Link to='/admin/profile'>
-        Profile
+        Hello,
+        {' '}
+        {user?.firstName}
       </Link>
     </Menu.Item>,
     <Menu.Item key='users'>

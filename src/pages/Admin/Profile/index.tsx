@@ -1,37 +1,50 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Typography, Tabs } from 'antd';
 
 import UserTitle from 'ui/User/UserTitle';
-import { EmailForm, PasswordForm } from './Forms';
+import { EmailForm, PasswordForm, BasicForm } from './Forms';
+import UserContext from 'use/user/UserContext';
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
 
-const Profile: React.FC = () => (
-  <div>
-    <Title>
-      Profile
-    </Title>
-    <UserTitle {...{
-      name: 'Albert Tjornehoj',
-      emailVerified: true,
-      userStatusID: 'active',
-    }}
-    />
-    <Tabs defaultActiveKey='name' style={{ width: '100%' }}>
-      <TabPane
-        tab='Email'
-        key='email'
-      >
-        <EmailForm />
-      </TabPane>
-      <TabPane
-        tab='Password'
-        key='password'
-      >
-        <PasswordForm />
-      </TabPane>
-    </Tabs>
-  </div>
-);
+const Profile: React.FC = () => {
+  const { user, setName, setEmail } = useContext(UserContext);
+  if (!user) {
+    return <div>Must be logged</div>;
+  }
+  return (
+    <div>
+      <Title>
+        Profile
+      </Title>
+      <UserTitle {...{
+        name: user.fullName,
+        emailVerified: user.emailVerified,
+        userStatusID: 'active',
+      }}
+      />
+      <Tabs defaultActiveKey='name' style={{ width: '100%' }}>
+        <TabPane
+          tab='Name'
+          key='name'
+        >
+          <BasicForm firstName={user.firstName} lastName={user.lastName} onSuccess={setName} />
+        </TabPane>
+        <TabPane
+          tab='Email'
+          key='email'
+        >
+          <EmailForm email={user.email} onSuccess={setEmail} />
+        </TabPane>
+        <TabPane
+          tab='Password'
+          key='password'
+        >
+          <PasswordForm email={user.email} />
+        </TabPane>
+      </Tabs>
+    </div>
+  );
+};
 export default Profile;

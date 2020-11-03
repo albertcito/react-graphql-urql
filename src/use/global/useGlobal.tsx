@@ -3,7 +3,6 @@ import { CombinedError } from '@urql/core';
 
 import useSession, { UseSessionProperties } from 'use/global/useSession';
 import storage from 'util/Storage';
-import useUnauthorized from './useUnauthorized';
 // import useStartData, { StartDataFormat } from './useStartData';
 import useIntl, { UseIntlFormat } from './useIntl';
 import { useLoginMutation, useLogoutMutation } from 'graphql/generated';
@@ -43,8 +42,6 @@ const useGlobal = (): UseGlobalProperties => {
       sessions.saveSession(user, token);
     }
   };
-
-  useUnauthorized(delSession);
 
   useEffect(() => {
     if (storage.getToken()) {

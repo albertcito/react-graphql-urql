@@ -10,7 +10,12 @@ interface OnFinishArguments {
   password: string;
 }
 
-const EmailForm: React.FC = () => {
+interface EmailFormProperties {
+  email: string;
+  onSuccess: (email: string) => void;
+}
+
+const EmailForm: React.FC<EmailFormProperties> = ({ email, onSuccess }) => {
   const [{ fetching, error }, updateEmail] = useProfileUpdateEmailMutation();
 
   const onFinish = async (variables: OnFinishArguments) => {
@@ -18,6 +23,7 @@ const EmailForm: React.FC = () => {
     if (response.data) {
       const { message, type } = response.data.profileUpdateEmail.message;
       notification[type]({ message });
+      onSuccess(response.data.profileUpdateEmail.data.email);
     }
   };
 
@@ -25,7 +31,7 @@ const EmailForm: React.FC = () => {
     <Spin spinning={fetching}>
       {error && <AlertError error={error} />}
       <Form
-        initialValues={{ email: 'me@albertcito.com' }}
+        initialValues={{ email }}
         onFinish={onFinish}
       >
         <Form.Item
