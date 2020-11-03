@@ -1,9 +1,9 @@
 import React from 'react';
 import { Alert } from 'antd';
-import { ApolloError } from '@apollo/client';
+import { CombinedError } from '@urql/core';
 
 export interface AlertErrorProperties {
-  error: ApolloError;
+  error: CombinedError;
 }
 
 const AlertError: React.FC<AlertErrorProperties> = ({ error }) => {

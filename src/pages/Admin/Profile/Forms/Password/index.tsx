@@ -1,14 +1,10 @@
 import React, { useContext } from 'react';
 import { LockOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Spin, notification } from 'antd';
-import { ApolloError, MutationHookOptions } from '@apollo/client';
-import { MutationTuple } from '@apollo/client/react/types/types';
-
 
 import { useProfileUpdatePasswordMutation } from 'graphql/generated';
 import AlertError from 'ui/Alert/AlertError';
-import { GlobalContext } from 'use/global';
-import { getValidationErrors } from 'util/Errors/getErrors';
+// import { getValidationErrors } from 'util/Errors/getErrors';
 
 interface OnFinishArguments {
   password: string;
@@ -16,55 +12,28 @@ interface OnFinishArguments {
   confirmNewPassword: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type useMutationFnType<TQuery, TVariables> = (
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  baseOptions?: MutationHookOptions<TQuery, TVariables>
-) => MutationTuple<TQuery, TVariables>;
+const PasswordForm: React.FC<{ email: string}> = ({ email }) => {
+  const [{ fetching, error }, updatePasword] = useProfileUpdatePasswordMutation();
 
-function useMutation<TQuery, TVariables>(
-  mutation: useMutationFnType<TQuery, TVariables>,
-  baseOptions?: MutationHookOptions<TQuery, TVariables>,
-) {
-  const onError = (error: ApolloError) => {
-    if (baseOptions && baseOptions.onError) {
-      baseOptions.onError(error);
+  // const validationErrors = getValidationErrors<OnFinishArguments>(error);
+
+  const onFinish = async (variables: OnFinishArguments) => {
+    const response = await updatePasword(variables);
+    if (response.data) {
+      const { message, type } = response.data.profileUpdatePassword.message;
+      notification[type]({ message });
     }
-    return false;
   };
 
-  const options = {
-    ...baseOptions,
-    onError,
-  };
-  return mutation(options);
-}
-
-const PasswordForm: React.FC = () => {
-  const { sessions: { user } } = useContext(GlobalContext);
-  const [updatePasword, { loading, error }] = useMutation(
-    useProfileUpdatePasswordMutation,
-    {
-      errorPolicy: 'all',
-      onCompleted: (data) => {
-        if (data) {
-          const { message, type } = data.profileUpdatePassword.message;
-          notification[type]({ message });
-        }
-      },
-    },
-  );
-
-  const validationErrors = getValidationErrors<OnFinishArguments>(error);
   return (
     <div>
       {error && <AlertError error={error} />}
-      <Spin spinning={loading}>
-        <Form autoComplete='off' onFinish={(variables: OnFinishArguments) => updatePasword({ variables }) }>
+      <Spin spinning={fetching}>
+        <Form autoComplete='off' onFinish={onFinish}>
           <input
             type='email'
             autoComplete='email'
-            value={user?.email}
+            value={email}
             readOnly
             style={{ display: 'none' }}
           />
@@ -72,8 +41,8 @@ const PasswordForm: React.FC = () => {
           <Form.Item
             name='password'
             hasFeedback
-            validateStatus={validationErrors?.errors.password && 'error'}
-            help={validationErrors?.errors.password}
+            // validateStatus={validationErrors?.errors.password && 'error'}
+            // help={validationErrors?.errors.password}
           >
             <Input.Password
               autoComplete='password'
@@ -86,8 +55,8 @@ const PasswordForm: React.FC = () => {
           <Form.Item
             name='newPassword'
             hasFeedback
-            validateStatus={validationErrors?.errors.newPassword && 'error'}
-            help={validationErrors?.errors.newPassword}
+            // validateStatus={validationErrors?.errors.newPassword && 'error'}
+            // help={validationErrors?.errors.newPassword}
           >
             <Input.Password
               autoComplete='newPassword'
@@ -101,8 +70,8 @@ const PasswordForm: React.FC = () => {
             name='confirmNewPassword'
             dependencies={['newPassword']}
             hasFeedback
-            validateStatus={validationErrors?.errors.confirmNewPassword && 'error'}
-            help={validationErrors?.errors.confirmNewPassword}
+            // validateStatus={validationErrors?.errors.confirmNewPassword && 'error'}
+            // help={validationErrors?.errors.confirmNewPassword}
           >
             <Input.Password
               autoComplete='new-password'

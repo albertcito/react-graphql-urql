@@ -1,5 +1,3 @@
-import { ApolloError } from '@apollo/client';
-
 // eslint-disable-next-line no-shadow
 export enum ServerErrors {
   ValidatorError = 'ValidatorError',
@@ -10,6 +8,7 @@ export interface MessageError {
   message: string;
 }
 
+/*
 export interface ValidatorErrorMessage<T = unknown> extends MessageError {
   code: ServerErrors.ValidatorError;
   errors: {
@@ -45,3 +44,5 @@ export function getValidationErrors<T>(error?: ApolloError) {
   }
   return null;
 }
+
+*/

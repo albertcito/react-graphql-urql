@@ -1,34 +1,14 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { IntlProvider } from 'react-intl';
-import { HttpLink, ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
+import { createClient, Provider, dedupExchange, cacheExchange, fetchExchange } from 'urql';
+import { retryExchange } from '@urql/exchange-retry';
 
 import { GlobalContext, useGlobal } from 'use/global';
 import Routes from './Routes';
 import constants from 'config/constants';
+import UserContext, { useUser } from 'use/user/UserContext';
 
-const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('accessToken');
-  return {
-    headers: {
-      ...headers,
-      Authorization: token ? `Bearer ${token}` : '',
-      withCredentials: true,
-    },
-  };
-});
-
-const httpLink = new HttpLink({
-  uri: `${constants.urlServer}/graphql/public`,
-  credentials: 'include',
-});
-
-const client = new ApolloClient({
-  cache: new InMemoryCache(),
-  link: authLink.concat(httpLink),
-});
-
-const GlobalSomething: React.FC = () => {
+const GlobalStatus: React.FC = () => {
   const global = useGlobal();
   return (
     <GlobalContext.Provider value={global}>
@@ -43,10 +23,35 @@ const GlobalSomething: React.FC = () => {
   );
 };
 
-const StartApp = () => (
-  <ApolloProvider client={client}>
-    <GlobalSomething />
-  </ApolloProvider>
-);
-
+const StartApp = () => {
+  const { setUser, ...props } = useUser();
+  const client = useRef(createClient({
+    url: `${constants.urlServer}/graphql/public`,
+    fetchOptions: () => {
+      const token = localStorage.getItem('accessToken');
+      return {
+        headers: { authorization: token ? `Bearer ${token}` : '' },
+        withCredentials: true,
+      };
+    },
+    exchanges: [
+      dedupExchange,
+      cacheExchange,
+      retryExchange({
+        retryIf: (error) => {
+          if (error.response.status === 403) { setUser(); }
+          return false;
+        },
+      }),
+      fetchExchange,
+    ],
+  })).current;
+  return (
+    <UserContext.Provider value={{ ...props, setUser }}>
+      <Provider value={client}>
+        <GlobalStatus />
+      </Provider>
+    </UserContext.Provider>
+  );
+};
 export default StartApp;

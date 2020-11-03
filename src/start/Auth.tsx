@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { RouteComponentProps, Redirect } from 'react-router-dom';
 import { Spin } from 'antd';
 
@@ -8,6 +8,7 @@ import { GlobalLayout } from 'templates/';
 import { Error403 } from 'templates/errors';
 import AppPageInterface from 'templates/interfaces/LayoutPageProperties';
 import { GlobalContext } from 'use/global';
+import UserContext from 'use/user/UserContext';
 
 interface AuthProperties<T = React.ReactNode> {
   appRoute: RouteProperties;
@@ -16,12 +17,13 @@ interface AuthProperties<T = React.ReactNode> {
   type: RouteTypeEnum;
 }
 const Auth = ({ appRoute, Template, route, type }: AuthProperties) => {
+  const { user } = useContext(UserContext);
   const {
-    sessions: { user, loading },
-    logout: { loading: logoutLoading },
-  } = React.useContext(GlobalContext);
+    sessions: { fetching },
+    logout: { fetching: logoutLoading },
+  } = useContext(GlobalContext);
 
-  if (loading) {
+  if (fetching) {
     return <>...loading</>;
   }
 

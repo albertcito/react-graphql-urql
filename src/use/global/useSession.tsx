@@ -1,19 +1,16 @@
-import { useCallback, useState } from 'react';
-import { ApolloError } from '@apollo/client';
+import { useCallback, useContext } from 'react';
 
 import storage from 'util/Storage';
-import { useUserSessionLazyQuery, UserSessionQuery } from 'graphql/generated';
+import { useLoggedUserMutation, LoggedUserMutation } from 'graphql/generated';
+import UserContext from 'use/user/UserContext';
 
-type UserSession = UserSessionQuery['user'];
+type UserSession = LoggedUserMutation['loggedUser'];
 
 export interface UseSessionProperties {
-  user?: UserSession;
-  called: boolean;
-  loading: boolean;
-  error?: ApolloError;
+  fetching: boolean;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getSession: (userID: number) => void;
+  getSession: () => void;
   delSession: () => void;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   saveSession: (data: UserSession, accessToken?: string) => void;
@@ -24,7 +21,7 @@ export interface UseSessionProperties {
  * in the localStorage and the hook's status
  */
 const useSession = (): UseSessionProperties => {
-  const [user, setUser] = useState<UserSession>();
+  const { setUser } = useContext(UserContext);
 
   const saveSession = useCallback((data: UserSession, accessToken?: string) => {
     storage.setUserID(data.userID);
@@ -32,23 +29,25 @@ const useSession = (): UseSessionProperties => {
     if (accessToken) {
       storage.setToken(accessToken);
     }
-  }, []);
+  }, [setUser]);
 
-  const [callUser, { called, loading, error }] = useUserSessionLazyQuery({
-    context: { clientName: 'public' },
-    onCompleted: (data) => {
-      saveSession(data.user);
-    },
-  });
+  const [{ fetching }, getLoggedUser] = useLoggedUserMutation();
 
   /**
    * Get data from the current user logged
    *
    * @param userID: number
    */
-  const getSession = useCallback(async (userID: number) => {
-    callUser({ variables: { userID } });
-  }, [callUser]);
+  const getSession = useCallback(async () => {
+    try {
+      const response = await getLoggedUser();
+      if (response.data) {
+        saveSession(response.data.loggedUser);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [getLoggedUser, saveSession]);
 
   /**
    * Clean user's private data
@@ -56,16 +55,13 @@ const useSession = (): UseSessionProperties => {
   const delSession = useCallback((): void => {
     storage.logout();
     setUser(undefined);
-  }, []);
+  }, [setUser]);
 
   return {
-    user,
     getSession,
     delSession,
     saveSession,
-    called,
-    loading,
-    error,
+    fetching,
   };
 };
 

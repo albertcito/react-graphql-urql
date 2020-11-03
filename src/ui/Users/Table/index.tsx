@@ -24,8 +24,9 @@ interface OrderByArguments {
   order: 'ASC' | 'DESC';
 }
 
-interface UserFetchMore extends Partial<OrderByArguments>, Partial<PaginationArguments> {
+interface UserFetchMore extends PaginationArguments {
   search?: string;
+  order?: OrderByArguments;
 }
 
 interface UsersTableProperties {
@@ -41,7 +42,6 @@ const UsersTable: React.FC<UsersTableProperties> = ({
   pagination,
   fetchMore,
 }) => {
-
   const [search, setSearch] = useState('');
 
   const tableColumns = new TableColumns([
@@ -67,11 +67,15 @@ const UsersTable: React.FC<UsersTableProperties> = ({
     } else {
       const column = sorter.column as ColumnTableProperties;
       const order = (sorter.order === 'ascend') ? 'ASC' : 'DESC';
+      const columnOrder = column.orderBy
+        ? {
+          orderBy: column.orderBy,
+          order,
+        } as OrderByArguments : undefined;
       fetchMore({
         page: 1,
         limit: pagination.limit,
-        orderBy: column.orderBy,
-        order,
+        order: columnOrder,
         search,
       });
     }

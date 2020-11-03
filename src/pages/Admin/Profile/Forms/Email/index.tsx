@@ -10,23 +10,29 @@ interface OnFinishArguments {
   password: string;
 }
 
-const EmailForm: React.FC = () => {
-  const [updateEmail, { loading, error }] = useProfileUpdateEmailMutation({
-    errorPolicy: 'all',
-    onCompleted: (data) => {
-      if (data) {
-        const { message, type } = data.profileUpdateEmail.message;
-        notification[type]({ message });
-      }
-    },
-  });
+interface EmailFormProperties {
+  email: string;
+  onSuccess: (email: string) => void;
+}
+
+const EmailForm: React.FC<EmailFormProperties> = ({ email, onSuccess }) => {
+  const [{ fetching, error }, updateEmail] = useProfileUpdateEmailMutation();
+
+  const onFinish = async (variables: OnFinishArguments) => {
+    const response = await updateEmail(variables);
+    if (response.data) {
+      const { message, type } = response.data.profileUpdateEmail.message;
+      notification[type]({ message });
+      onSuccess(response.data.profileUpdateEmail.data.email);
+    }
+  };
 
   return (
-    <Spin spinning={loading}>
+    <Spin spinning={fetching}>
       {error && <AlertError error={error} />}
       <Form
-        initialValues={{ email: 'me@albertcito.com' }}
-        onFinish={(variables: OnFinishArguments) => updateEmail({ variables })}
+        initialValues={{ email }}
+        onFinish={onFinish}
       >
         <Form.Item
           name='email'

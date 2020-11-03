@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import gql from 'graphql-tag';
 
 const profileUpdatePassword = gql`mutation profileUpdatePassword($password: String!, $newPassword: String!) {
   profileUpdatePassword(newPassword: $newPassword, password: $password) {
