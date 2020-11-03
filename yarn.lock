@@ -2367,11 +2367,27 @@
     "@typescript-eslint/types" "4.6.0"
     eslint-visitor-keys "^2.0.0"
 
-"@urql/core@^1.14.1":
+"@urql/core@>=1.14.0", "@urql/core@>=1.14.1", "@urql/core@^1.14.1":
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/@urql/core/-/core-1.14.1.tgz#eadd3f4dbbb9d194a67bc84fcce082bb511d13fe"
   integrity sha512-yRpGazoqn4eSzcVcnwKCYcXEePiwc/fwkKAzguPP9sNZu3qWMBSHzH7huu0FeuwTiSxu6S1x3l0s7QYere0ZFQ==
   dependencies:
+    wonka "^4.0.14"
+
+"@urql/exchange-auth@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@urql/exchange-auth/-/exchange-auth-0.1.2.tgz#67a76ef78ab4ea9dc51c050d1b79362e9abbffc6"
+  integrity sha512-SIrcnbom+nro0pALmqQmcMxUcy8qZUoykoPs5LezYVPmvZXx4ErXwly58g0XoU4eX10U2gakjCFPTyleF8Nt6Q==
+  dependencies:
+    "@urql/core" ">=1.14.0"
+    wonka "^4.0.14"
+
+"@urql/exchange-retry@^0.1.10":
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/@urql/exchange-retry/-/exchange-retry-0.1.10.tgz#5c3fcf8fe0cf50dcfc7ef67d9956b5ca332a7d94"
+  integrity sha512-kPxP6T4/i/dO/iw/tWbf1ib7C8Jo1YfwgRfWZz/m2iv0ywYNkOOfnQu61ufFRba0F6cqnhsAWArcuouNIQl/Gg==
+  dependencies:
+    "@urql/core" ">=1.14.1"
     wonka "^4.0.14"
 
 "@webassemblyjs/ast@1.8.5":

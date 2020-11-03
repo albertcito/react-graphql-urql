@@ -4,7 +4,7 @@ import { Button, Form, Input, Spin, notification } from 'antd';
 
 import { useProfileUpdatePasswordMutation } from 'graphql/generated';
 import AlertError from 'ui/Alert/AlertError';
-import { GlobalContext } from 'use/global';
+import UserContext from 'use/user/UserContext';
 // import { getValidationErrors } from 'util/Errors/getErrors';
 
 interface OnFinishArguments {
@@ -14,7 +14,7 @@ interface OnFinishArguments {
 }
 
 const PasswordForm: React.FC = () => {
-  const { sessions: { user } } = useContext(GlobalContext);
+  const { user } = useContext(UserContext);
   const [{ fetching, error }, updatePasword] = useProfileUpdatePasswordMutation();
 
   // const validationErrors = getValidationErrors<OnFinishArguments>(error);

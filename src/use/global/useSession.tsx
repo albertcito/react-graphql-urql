@@ -1,12 +1,12 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useContext } from 'react';
 
 import storage from 'util/Storage';
 import { useLoggedUserMutation, LoggedUserMutation } from 'graphql/generated';
+import UserContext from 'use/user/UserContext';
 
 type UserSession = LoggedUserMutation['loggedUser'];
 
 export interface UseSessionProperties {
-  user?: UserSession;
   fetching: boolean;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -21,7 +21,7 @@ export interface UseSessionProperties {
  * in the localStorage and the hook's status
  */
 const useSession = (): UseSessionProperties => {
-  const [user, setUser] = useState<UserSession>();
+  const { setUser } = useContext(UserContext);
 
   const saveSession = useCallback((data: UserSession, accessToken?: string) => {
     storage.setUserID(data.userID);
@@ -29,7 +29,7 @@ const useSession = (): UseSessionProperties => {
     if (accessToken) {
       storage.setToken(accessToken);
     }
-  }, []);
+  }, [setUser]);
 
   const [{ fetching }, getLoggedUser] = useLoggedUserMutation();
 
@@ -55,10 +55,9 @@ const useSession = (): UseSessionProperties => {
   const delSession = useCallback((): void => {
     storage.logout();
     setUser(undefined);
-  }, []);
+  }, [setUser]);
 
   return {
-    user,
     getSession,
     delSession,
     saveSession,

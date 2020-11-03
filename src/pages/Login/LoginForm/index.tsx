@@ -33,7 +33,7 @@ const LoginForm: React.FC<LoginFormProperties> = ({ doLogin, fetching, error }) 
           Login
         </h2>
         {error && <AlertError error={error} />}
-        <Form onFinish={onSubmit} initialValues={{ email: 'me@albertcito.com', password: '123456' }}>
+        <Form onFinish={onSubmit} initialValues={{ email: 'me@albertcito.com', password: 'Hola12345' }}>
           <Form.Item
             name='email'
             rules={[

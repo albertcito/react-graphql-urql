@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Affix, Col, Row, Menu, Button } from 'antd';
 import { Link } from 'react-router-dom';
 
 import { GlobalContext } from 'use/global';
+import UserContext from 'use/user/UserContext';
 
 export default function Header() {
-  const { sessions: { user }, logout } = React.useContext(GlobalContext);
+  const { user } = useContext(UserContext);
+  const { logout } = useContext(GlobalContext);
   const [afixClass, setAfixClass] = useState('');
 
   const globalMenu = [
