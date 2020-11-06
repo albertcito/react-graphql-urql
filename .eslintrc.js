@@ -1,10 +1,10 @@
-{
-  "env": {
+module.exports = {
+  env: {
     "browser": true,
     "es6": true,
     "jest": true
   },
-  "plugins": [
+  plugins: [
     "@typescript-eslint",
     "eslint-comments",
     "jest",
@@ -13,7 +13,7 @@
     "import",
     "react-hooks"
   ],
-  "extends": [
+  extends: [
     "airbnb-typescript",
     "plugin:@typescript-eslint/recommended",
     "plugin:eslint-comments/recommended",
@@ -23,7 +23,7 @@
     "plugin:import/errors",
     "plugin:import/typescript"
   ],
-  "rules": {
+  rules: {
     "max-len": [2, 120],
     "react/jsx-props-no-spreading": 0,
     "react/prop-types": 0,
@@ -32,6 +32,10 @@
       "error",
       "prefer-single"
     ],
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": "error",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error",
     "import/no-extraneous-dependencies": ["error"],
     "jsx-a11y/label-has-associated-control": [ 2, {
       "labelComponents": ["Label"],
@@ -67,7 +71,7 @@
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn"
   },
-  "settings": {
+  settings: {
     "import/parsers": {
       "@typescript-eslint/parser": [".ts", ".tsx"]
     },

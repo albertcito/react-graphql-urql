@@ -39,7 +39,9 @@ const StartApp = () => {
       cacheExchange,
       retryExchange({
         retryIf: (error) => {
-          if (error.response.status === 403) { setUser(); }
+          if (error && error.response && error.response.status === 403) {
+            setUser();
+          }
           return false;
         },
       }),

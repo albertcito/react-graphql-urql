@@ -4,7 +4,6 @@ import { Button, Form, Input, Spin, notification } from 'antd';
 
 import { useProfileUpdatePasswordMutation } from 'graphql/generated';
 import AlertError from 'ui/Alert/AlertError';
-// import { getValidationErrors } from 'util/Errors/getErrors';
 
 interface OnFinishArguments {
   password: string;
