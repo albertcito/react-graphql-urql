@@ -4,7 +4,7 @@ import { GlobalContext } from 'use/global';
 import LoginForm from './LoginForm';
 
 const Login: React.FC = () => {
-  const { login: { doLogin, error, fetching }} = useContext(GlobalContext);
+  const { login: { doLogin, error, fetching } } = useContext(GlobalContext);
 
   return (
     <div style={{ maxWidth: 450, margin: '0 auto' }}>

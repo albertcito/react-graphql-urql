@@ -34,7 +34,7 @@ export const getErrors = (error: CombinedError) => {
             :
             {' '}
             <span className='validation-error-list'>{htmlErrors}</span>
-          </div>
+          </div>,
         );
       }
       return html;

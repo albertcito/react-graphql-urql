@@ -8,7 +8,6 @@ import AlertError from 'ui/Alert/AlertError';
 interface UserProfileFormProperties {
   firstName: string;
   lastName: string;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onSuccess: (firstName: string, lastName: string) => void;
 }
 

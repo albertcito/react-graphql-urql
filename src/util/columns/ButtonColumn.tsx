@@ -7,9 +7,7 @@ import { ColumnTableProperties } from './base/ColumnTableProperties';
 import TableColumnAbstract from './base/TableColumnAbstract';
 
 export interface ButtonColumnProperties<T> {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onSelect: (data: T, index: number) => void;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   isLoading?: (data: T) => boolean;
   buttonText?: string;
   props?: ColumnProps<T>;
@@ -25,7 +23,6 @@ export default class ButtonColumn<T> implements TableColumnAbstract {
     props,
     isLoading,
   }: ButtonColumnProperties<T>) {
-
     const render = (_: string, data: T, index: number) => {
       const loading = isLoading ? isLoading(data) : false;
       return (

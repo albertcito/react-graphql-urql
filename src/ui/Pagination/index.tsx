@@ -19,7 +19,6 @@ const showTotal = (
 );
 
 interface PaginateProperties {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onChange: (page: number, pageSize: number) => void;
   pagination: {
     total: number;

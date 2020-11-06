@@ -5,9 +5,7 @@ import { Link } from 'react-router-dom';
 import { ColumnTableProperties } from './base/ColumnTableProperties';
 import TableColumnAbstract from './base/TableColumnAbstract';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type onSelectType<T> = (data: T, index: number) => void;
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type getLinkType<T> = (data: T) => string;
 
 interface StringColumnProperties<T> extends ColumnTableProperties {

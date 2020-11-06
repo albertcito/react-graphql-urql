@@ -41,7 +41,6 @@ export interface UseIntlFormat {
   lang: string;
   messages: Record<string, string> | Record<string, MessageFormatElement[]>;
   defaultLocale: string;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setLang: (lang: LangEnum) => void;
 }
 

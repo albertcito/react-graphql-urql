@@ -7,7 +7,6 @@ export interface StartDataFormat {
   submit: boolean;
 
   langs: LangFormat[];
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setLang: (lang: string) => void;
   lang: string;
 }

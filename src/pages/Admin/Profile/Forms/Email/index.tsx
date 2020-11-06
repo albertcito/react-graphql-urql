@@ -87,6 +87,6 @@ const EmailForm: React.FC<EmailFormProperties> = ({ email, onSuccess }) => {
       </Form>
     </Spin>
   );
-}
+};
 
 export default EmailForm;

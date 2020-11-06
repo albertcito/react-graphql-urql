@@ -33,7 +33,6 @@ interface UsersTableProperties {
   users: User[];
   loading?: boolean;
   pagination: Pagination;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   fetchMore: (parameters: UserFetchMore) => void;
 }
 const UsersTable: React.FC<UsersTableProperties> = ({

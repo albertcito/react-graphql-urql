@@ -8,11 +8,8 @@ type UserSession = LoggedUserMutation['loggedUser'];
 
 export interface UseSessionProperties {
   fetching: boolean;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getSession: () => void;
   delSession: () => void;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   saveSession: (data: UserSession, accessToken?: string) => void;
 }
 

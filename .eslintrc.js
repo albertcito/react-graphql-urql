@@ -37,6 +37,15 @@ module.exports = {
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "error",
     "import/no-extraneous-dependencies": ["error"],
+    "@typescript-eslint/camelcase": "off",
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "variable",
+        "format": ["camelCase", "PascalCase", "UPPER_CASE"],
+        "trailingUnderscore": "allow",
+      }
+    ],
     "jsx-a11y/label-has-associated-control": [ 2, {
       "labelComponents": ["Label"],
       "labelAttributes": ["title"],

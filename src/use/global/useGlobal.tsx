@@ -10,13 +10,11 @@ import { useLoginMutation, useLogoutMutation } from 'graphql/generated';
 export interface UseGlobalProperties {
   sessions: Omit<UseSessionProperties, 'getSession' >;
   logout: {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     doLogout: () => void;
     fetching: boolean;
     error?: CombinedError;
   };
   login: {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     doLogin: (email: string, password: string) => void;
     fetching: boolean;
     error?: CombinedError;

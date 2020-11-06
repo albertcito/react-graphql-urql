@@ -7,9 +7,7 @@ import TableColumnAbstract from './base/TableColumnAbstract';
 import ConfirmDelete from 'ui/Buttons/ConfirmDelete';
 
 export interface DeleteColumnProperties<T> {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onDelete: (item: T, index: number) => void;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   isLoading?: (item: T, index: number) => boolean;
   props?: ColumnProps<T>;
 }

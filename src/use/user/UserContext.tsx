@@ -4,7 +4,6 @@ import { LoggedUserMutation } from 'graphql/generated';
 
 export interface UseUserReturn {
   user?: LoggedUserMutation['loggedUser'];
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setUser: (user?: LoggedUserMutation['loggedUser']) => void;
   setEmail: (email: string) => void;
   setName: (firstName: string, lastName: string) => void;
