@@ -9,7 +9,7 @@ import { IDColumn, StringColumn, DeleteColumn } from 'util/columns';
 import PaginationUI from 'ui/Pagination';
 import { ColumnTableProperties } from 'util/columns/base/ColumnTableProperties';
 
-interface User {
+export interface User {
   userID: number;
   email: string;
   fullName: string;
@@ -34,21 +34,29 @@ interface UsersTableProperties {
   loading?: boolean;
   pagination: Pagination;
   fetchMore: (parameters: UserFetchMore) => void;
+  getLink?: (user: User) => string;
+  onSelect?: (data: User, index: number) => void;
+  onDelete?: (item: User, index: number) => void;
 }
 const UsersTable: React.FC<UsersTableProperties> = ({
   users,
   loading = false,
   pagination,
   fetchMore,
+  getLink,
+  onSelect,
+  onDelete,
 }) => {
   const [search, setSearch] = useState('');
 
   const tableColumns = new TableColumns([
     new IDColumn<User>({ indexID: 'userID', orderBy: 'user_id' }),
-    new StringColumn<User>({ indexID: 'fullName', title: 'Name', orderBy: 'first_name' }),
-    new StringColumn<User>({ indexID: 'email', title: 'Email', orderBy: 'email' }),
-    new DeleteColumn({ onDelete: console.log }),
+    new StringColumn<User>({ indexID: 'fullName', title: 'Name', orderBy: 'first_name', getLink, onSelect }),
+    new StringColumn<User>({ indexID: 'email', title: 'Email', orderBy: 'email', getLink, onSelect }),
   ]);
+  if (onDelete) {
+    tableColumns.append(new DeleteColumn({ onDelete }));
+  }
   const columns = tableColumns.getColumns();
 
   const onChangeTable = (

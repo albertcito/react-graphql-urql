@@ -20,17 +20,35 @@ export type BaseDataEntity = {
   updatedBy?: Maybe<Scalars['Int']>;
 };
 
-export type Lang = {
-  __typename?: 'Lang';
+export type Role = {
+  __typename?: 'Role';
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
-  langID: Scalars['String'];
-  name: Scalars['String'];
-  localname: Scalars['String'];
-  active: Scalars['Boolean'];
-  isBlocked: Scalars['Boolean'];
+  roleID: Roles;
+  description: Scalars['String'];
+};
+
+/** All possible roles */
+export enum Roles {
+  SuperAdmin = 'superAdmin',
+  Admin = 'admin'
+}
+
+export type User = {
+  __typename?: 'User';
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  createdBy?: Maybe<Scalars['Int']>;
+  updatedBy?: Maybe<Scalars['Int']>;
+  userID: Scalars['Int'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  email: Scalars['String'];
+  emailVerified: Scalars['Boolean'];
+  fullName: Scalars['String'];
+  roles: Array<Role>;
 };
 
 export type OauthAccessToken = {
@@ -46,18 +64,26 @@ export type OauthAccessToken = {
   revoked: Scalars['Boolean'];
 };
 
-export type User = {
-  __typename?: 'User';
+export type Lang = {
+  __typename?: 'Lang';
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
-  userID: Scalars['Int'];
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
-  email: Scalars['String'];
-  emailVerified: Scalars['Boolean'];
-  fullName: Scalars['String'];
+  langID: Scalars['String'];
+  name: Scalars['String'];
+  localname: Scalars['String'];
+  active: Scalars['Boolean'];
+  isBlocked: Scalars['Boolean'];
+};
+
+export type UserRole = {
+  __typename?: 'UserRole';
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  createdBy?: Maybe<Scalars['Int']>;
+  updatedBy?: Maybe<Scalars['Int']>;
+  userRoleID: Scalars['Int'];
 };
 
 export type UserToken = {
@@ -114,6 +140,18 @@ export type LangUpdateResponse = {
   message: MessageField;
 };
 
+export type RolePaginationResponse = {
+  __typename?: 'RolePaginationResponse';
+  data: Array<Role>;
+  pagination: Pagination;
+};
+
+export type RoleUpdateResponse = {
+  __typename?: 'RoleUpdateResponse';
+  data: Role;
+  message: MessageField;
+};
+
 export type LoginResponse = {
   __typename?: 'LoginResponse';
   token: Scalars['String'];
@@ -166,6 +204,8 @@ export type Query = {
   __typename?: 'Query';
   lang: Lang;
   langs: LangPaginationResponse;
+  role: Role;
+  roles: RolePaginationResponse;
   user: User;
   users: UserPaginationResponse;
 };
@@ -177,6 +217,17 @@ export type QueryLangArgs = {
 
 
 export type QueryLangsArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryRoleArgs = {
+  roleID: Roles;
+};
+
+
+export type QueryRolesArgs = {
   limit?: Maybe<Scalars['Int']>;
   page?: Maybe<Scalars['Int']>;
 };
@@ -200,6 +251,8 @@ export type Mutation = {
   langCreate: LangCreateResponse;
   langDelete: Scalars['String'];
   langUpdate: LangUpdateResponse;
+  roleDelete: Scalars['String'];
+  roleUpdate: RoleUpdateResponse;
   activateEmail: Scalars['String'];
   forgotPassword: Scalars['String'];
   loggedUser: User;
@@ -214,6 +267,8 @@ export type Mutation = {
   userBasicUpdate: UserBasicUpdateResponse;
   userUpdateEmail: UserUpdateEmailResponse;
   userUpdatePassword: UserUpdatePasswordResponse;
+  userRoleCreate: Scalars['String'];
+  userRoleDelete: Scalars['String'];
 };
 
 
@@ -237,6 +292,17 @@ export type MutationLangUpdateArgs = {
   localname: Scalars['String'];
   name: Scalars['String'];
   langID: Scalars['String'];
+};
+
+
+export type MutationRoleDeleteArgs = {
+  roleID: Roles;
+};
+
+
+export type MutationRoleUpdateArgs = {
+  description: Scalars['String'];
+  roleID: Roles;
 };
 
 
@@ -305,6 +371,18 @@ export type MutationUserUpdateEmailArgs = {
 
 export type MutationUserUpdatePasswordArgs = {
   password: Scalars['String'];
+  userID: Scalars['Int'];
+};
+
+
+export type MutationUserRoleCreateArgs = {
+  roleID: Roles;
+  userID: Scalars['Int'];
+};
+
+
+export type MutationUserRoleDeleteArgs = {
+  roleID: Roles;
   userID: Scalars['Int'];
 };
 
@@ -444,6 +522,46 @@ export type UserBasicUpdateMutation = (
   { __typename?: 'Mutation' }
   & { userBasicUpdate: (
     { __typename?: 'UserBasicUpdateResponse' }
+    & { data: (
+      { __typename?: 'User' }
+      & Pick<User, 'userID' | 'firstName' | 'lastName' | 'email'>
+    ), message: (
+      { __typename?: 'MessageField' }
+      & Pick<MessageField, 'type' | 'message'>
+    ) }
+  ) }
+);
+
+export type UserUpdateEmailMutationVariables = Exact<{
+  userID: Scalars['Int'];
+  email: Scalars['String'];
+}>;
+
+
+export type UserUpdateEmailMutation = (
+  { __typename?: 'Mutation' }
+  & { userUpdateEmail: (
+    { __typename?: 'UserUpdateEmailResponse' }
+    & { data: (
+      { __typename?: 'User' }
+      & Pick<User, 'userID' | 'firstName' | 'lastName' | 'email'>
+    ), message: (
+      { __typename?: 'MessageField' }
+      & Pick<MessageField, 'type' | 'message'>
+    ) }
+  ) }
+);
+
+export type UserUpdatePasswordMutationVariables = Exact<{
+  userID: Scalars['Int'];
+  password: Scalars['String'];
+}>;
+
+
+export type UserUpdatePasswordMutation = (
+  { __typename?: 'Mutation' }
+  & { userUpdatePassword: (
+    { __typename?: 'UserUpdatePasswordResponse' }
     & { data: (
       { __typename?: 'User' }
       & Pick<User, 'userID' | 'firstName' | 'lastName' | 'email'>
@@ -645,6 +763,46 @@ export const UserBasicUpdateDocument = gql`
 
 export function useUserBasicUpdateMutation() {
   return Urql.useMutation<UserBasicUpdateMutation, UserBasicUpdateMutationVariables>(UserBasicUpdateDocument);
+};
+export const UserUpdateEmailDocument = gql`
+    mutation userUpdateEmail($userID: Int!, $email: String!) {
+  userUpdateEmail(userID: $userID, email: $email) {
+    data {
+      userID
+      firstName
+      lastName
+      email
+    }
+    message {
+      type
+      message
+    }
+  }
+}
+    `;
+
+export function useUserUpdateEmailMutation() {
+  return Urql.useMutation<UserUpdateEmailMutation, UserUpdateEmailMutationVariables>(UserUpdateEmailDocument);
+};
+export const UserUpdatePasswordDocument = gql`
+    mutation userUpdatePassword($userID: Int!, $password: String!) {
+  userUpdatePassword(userID: $userID, password: $password) {
+    data {
+      userID
+      firstName
+      lastName
+      email
+    }
+    message {
+      type
+      message
+    }
+  }
+}
+    `;
+
+export function useUserUpdatePasswordMutation() {
+  return Urql.useMutation<UserUpdatePasswordMutation, UserUpdatePasswordMutationVariables>(UserUpdatePasswordDocument);
 };
 export const UserDocument = gql`
     query user($userID: Int!) {

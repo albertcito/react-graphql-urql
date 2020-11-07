@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import Title from 'antd/lib/typography/Title';
 
 import { useUsersQuery } from 'graphql/generated';
-import UsersTable from 'ui/Users/Table';
+import UsersTable, { User } from 'ui/Users/Table';
 import AlertError from 'ui/Alert/AlertError';
 import NoDataUrql from 'ui/NoDataUrql';
 import PageProperties from 'routes/PageProperties';
 
-const Users: React.FC<PageProperties> = () => {
+const Users: React.FC<PageProperties> = ({ route }) => {
   const [limit, setLimit] = useState<number>(10);
   const [page, setPage] = useState<number>(1);
   const [search, setSearch] = useState<string>();
@@ -16,6 +16,7 @@ const Users: React.FC<PageProperties> = () => {
   const [{ data, fetching, error }] = useUsersQuery(
     { variables: { limit, page, search, order, orderBy } },
   );
+
   if (!data) {
     return <NoDataUrql fetching={fetching} error={error} />;
   }
@@ -29,6 +30,7 @@ const Users: React.FC<PageProperties> = () => {
       <UsersTable
         loading={fetching}
         users={data.users.data}
+        getLink={(user: User) => `${route.location.pathname}/${user.userID}`}
         pagination={data.users.pagination}
         fetchMore={({ page: page_, limit: limit_, search: search_, order: order_ }) => {
           setLimit(limit_);
