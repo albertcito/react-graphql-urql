@@ -1,14 +1,8 @@
 import React from 'react';
-import { InboxOutlined, LockOutlined } from '@ant-design/icons';
-import { Button, Form, Input, notification, Spin } from 'antd';
+import { notification } from 'antd';
 
 import { useProfileUpdateEmailMutation } from 'graphql/generated';
-import AlertError from 'ui/Alert/AlertError';
-
-interface OnFinishArguments {
-  email: string;
-  password: string;
-}
+import { EmailProfileForm, OnFinishArguments } from './Form';
 
 interface EmailFormProperties {
   email: string;
@@ -28,64 +22,7 @@ const EmailForm: React.FC<EmailFormProperties> = ({ email, onSuccess }) => {
   };
 
   return (
-    <Spin spinning={fetching}>
-      {error && <AlertError error={error} />}
-      <Form
-        initialValues={{ email }}
-        onFinish={onFinish}
-      >
-        <Form.Item
-          name='email'
-          rules={[
-            {
-              required: true,
-              message: 'Please input your email',
-            },
-            {
-              type: 'email',
-              message: 'The input is not valid E-mail',
-            },
-          ]}
-          hasFeedback
-        >
-          <Input
-            autoComplete='email'
-            placeholder='Email'
-            size='large'
-            type='email'
-            prefix={<InboxOutlined />}
-          />
-        </Form.Item>
-
-        <Form.Item
-          name='password'
-          rules={[
-            {
-              required: true,
-              message: 'Please input your password!',
-            },
-          ]}
-          hasFeedback
-        >
-          <Input.Password
-            autoComplete='password'
-            size='large'
-            placeholder='Password'
-            prefix={<LockOutlined />}
-          />
-        </Form.Item>
-
-        <Form.Item>
-          <Button
-            type='primary'
-            htmlType='submit'
-            className='session-form-button'
-          >
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
-    </Spin>
+    <EmailProfileForm {...{ fetching, error, onFinish, email }} />
   );
 };
 
