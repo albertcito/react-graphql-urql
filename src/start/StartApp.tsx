@@ -7,6 +7,7 @@ import { GlobalContext, useGlobal } from 'use/global';
 import Routes from './Routes';
 import constants from 'config/constants';
 import UserContext, { useUser } from 'use/user/UserContext';
+import { StorageItems } from 'util/Storage';
 
 const GlobalStatus: React.FC = () => {
   const global = useGlobal();
@@ -39,8 +40,11 @@ const StartApp: React.FC = () => {
       cacheExchange,
       retryExchange({
         retryIf: (error) => {
-          if (error && error.response && error.response.status === 403) {
+          if (error && error.response && error.response.status === 401) {
             setUser();
+            localStorage.removeItem(StorageItems.accessToken);
+            localStorage.removeItem(StorageItems.langID);
+            localStorage.removeItem(StorageItems.userID);
           }
           return false;
         },

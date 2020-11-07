@@ -1,9 +1,14 @@
+export enum StorageItems {
+  accessToken = 'accessToken',
+  userID = 'userID',
+  langID = 'langID',
+}
 class Storage {
-  private readonly accessToken = 'accessToken';
+  private readonly accessToken = StorageItems.accessToken;
 
-  private readonly userID = 'userID';
+  private readonly userID = StorageItems.userID;
 
-  private readonly langID = 'langID';
+  private readonly langID = StorageItems.langID;
 
   public getUserID(): number | null {
     const userID = localStorage.getItem(this.userID);
