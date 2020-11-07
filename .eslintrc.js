@@ -38,6 +38,7 @@ module.exports = {
     "@typescript-eslint/no-unused-vars": "error",
     "import/no-extraneous-dependencies": ["error"],
     "@typescript-eslint/camelcase": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/naming-convention": [
       "error",
       {
