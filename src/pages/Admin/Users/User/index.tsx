@@ -6,7 +6,7 @@ import PageProperties from 'routes/PageProperties';
 import { useUserQuery } from 'graphql/generated';
 import NoDataUrql from 'ui/NoDataUrql';
 import UserMenu from './Menu';
-import UserForms from './ui/Forms';
+import UserContent from './UserContent';
 
 export interface UserRoute {
   userID: string;
@@ -33,7 +33,7 @@ const User: React.FC<PageProperties<UserRoute>> = ({ route }) => {
           <UserMenu userID={data.user.userID} />
         </Col>
         <Col span={18}>
-          <UserForms user={data.user} />
+          <UserContent user={data.user} route={route.location.pathname} />
         </Col>
       </Row>
     </div>

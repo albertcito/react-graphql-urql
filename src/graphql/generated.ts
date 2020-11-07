@@ -414,6 +414,23 @@ export type LangsQueryPartialQuery = (
   ) }
 );
 
+export type RolesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type RolesQuery = (
+  { __typename?: 'Query' }
+  & { roles: (
+    { __typename?: 'RolePaginationResponse' }
+    & { pagination: (
+      { __typename?: 'Pagination' }
+      & Pick<Pagination, 'from' | 'to' | 'total' | 'limit' | 'page' | 'length'>
+    ), data: Array<(
+      { __typename?: 'Role' }
+      & Pick<Role, 'roleID' | 'description'>
+    )> }
+  ) }
+);
+
 export type LoggedUserMutationVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -582,6 +599,10 @@ export type UserQuery = (
   & { user: (
     { __typename?: 'User' }
     & Pick<User, 'userID' | 'email' | 'firstName' | 'lastName' | 'fullName' | 'createdAt' | 'updatedAt' | 'emailVerified'>
+    & { roles: Array<(
+      { __typename?: 'Role' }
+      & Pick<Role, 'roleID' | 'description' | 'createdAt' | 'updatedAt' | 'createdBy' | 'updatedBy'>
+    )> }
   ) }
 );
 
@@ -637,6 +658,28 @@ export const LangsQueryPartialDocument = gql`
 
 export function useLangsQueryPartialQuery(options: Omit<Urql.UseQueryArgs<LangsQueryPartialQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<LangsQueryPartialQuery>({ query: LangsQueryPartialDocument, ...options });
+};
+export const RolesDocument = gql`
+    query roles {
+  roles {
+    pagination {
+      from
+      to
+      total
+      limit
+      page
+      length
+    }
+    data {
+      roleID
+      description
+    }
+  }
+}
+    `;
+
+export function useRolesQuery(options: Omit<Urql.UseQueryArgs<RolesQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<RolesQuery>({ query: RolesDocument, ...options });
 };
 export const LoggedUserDocument = gql`
     mutation loggedUser {
@@ -815,6 +858,14 @@ export const UserDocument = gql`
     createdAt
     updatedAt
     emailVerified
+    roles {
+      roleID
+      description
+      createdAt
+      updatedAt
+      createdBy
+      updatedBy
+    }
   }
 }
     `;

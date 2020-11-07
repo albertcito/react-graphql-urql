@@ -16,6 +16,12 @@ const routes: RoutePropertiesParameters[] = [
     params: { userID: 'asd' },
   },
   {
+    component: User,
+    exact: true,
+    path: '/admin/users/:userID/roles',
+    params: { userID: 'asd' },
+  },
+  {
     component: Profile,
     exact: true,
     path: '/admin/profile',
