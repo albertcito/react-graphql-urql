@@ -2,8 +2,9 @@ import React, { useContext } from 'react';
 
 import { GlobalContext } from 'use/global';
 import LoginForm from './LoginForm';
+import PageProperties from 'routes/PageProperties';
 
-const Login: React.FC = () => {
+const Login: React.FC<PageProperties> = () => {
   const { login: { doLogin, error, fetching } } = useContext(GlobalContext);
 
   return (

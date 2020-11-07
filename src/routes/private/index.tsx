@@ -1,6 +1,6 @@
-import { RouteProperties } from '../interfaces';
+import { RoutePropertiesParameters } from '../interfaces';
 import admin from './admin';
 
-const routes: RouteProperties[] = admin;
+const routes: RoutePropertiesParameters[] = admin;
 
 export default routes;

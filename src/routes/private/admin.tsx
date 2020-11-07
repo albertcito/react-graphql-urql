@@ -1,12 +1,19 @@
+import { RoutePropertiesParameters } from '../interfaces';
 import Profile from '../../pages/Admin/Profile';
 import Users from '../../pages/Admin/Users';
-import { RouteProperties } from '../interfaces';
+import User from '../../pages/Admin/Users/User';
 
-const routes: RouteProperties[] = [
+const routes: RoutePropertiesParameters[] = [
   {
     component: Users,
     exact: true,
     path: '/admin/users',
+  },
+  {
+    component: User,
+    exact: true,
+    path: '/admin/users/:userID',
+    params: { userID: 'asd' },
   },
   {
     component: Profile,

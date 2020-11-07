@@ -4,11 +4,12 @@ import { Typography, Tabs } from 'antd';
 import UserTitle from 'ui/User/UserTitle';
 import { EmailForm, PasswordForm, BasicForm } from './Forms';
 import UserContext from 'use/user/UserContext';
+import PageProperties from 'routes/PageProperties';
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
 
-const Profile: React.FC = () => {
+const Profile: React.FC<PageProperties>  = () => {
   const { user, setName, setEmail } = useContext(UserContext);
   if (!user) {
     return <div>Must be logged</div>;

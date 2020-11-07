@@ -1,9 +1,9 @@
 import { GlobalLayout } from 'templates';
-import { RouteTemplateProperties } from './interfaces';
 import privateRoutes from './private';
 import publicRoutes from './public';
 import sessionRoutes from './session';
 import { RouteTypeEnum } from './routeTypes';
+import { RouteTemplateProperties } from './interfaces';
 
 const routesTemplate: RouteTemplateProperties[] = [
   {

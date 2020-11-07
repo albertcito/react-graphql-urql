@@ -1,7 +1,7 @@
 import Login from '../pages/Login';
-import { RouteProperties } from './interfaces';
+import { RoutePropertiesParameters } from './interfaces';
 
-const routes: RouteProperties[] = [
+const routes: RoutePropertiesParameters[] = [
   {
     component: Login,
     exact: true,

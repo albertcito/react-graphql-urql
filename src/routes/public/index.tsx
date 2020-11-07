@@ -1,8 +1,8 @@
 import Index from '../../pages/Index';
 import AboutMe from '../../pages/AboutMe';
-import { RouteProperties } from '../interfaces';
+import { RoutePropertiesParameters } from '../interfaces';
 
-const routes: RouteProperties[] = [
+const routes: RoutePropertiesParameters[] = [
   {
     component: Index,
     exact: true,

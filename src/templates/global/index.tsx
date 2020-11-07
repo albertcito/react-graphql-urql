@@ -11,7 +11,7 @@ notification.config({
   duration: 3,
 });
 
-const GlobalLayout = ({ Component, route }: LayoutPageProperties) => (
+const GlobalLayout: React.FC<LayoutPageProperties> = ({ Component, route }) => (
   <div className='public-layout'>
     <Header />
     <div className='content-page'>

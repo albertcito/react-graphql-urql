@@ -1,23 +1,26 @@
-import React from 'react';
+import { FC } from 'react';
 
-import PageProperties from './PageProperties';
 import LayoutPageProperties from '../templates/interfaces/LayoutPageProperties';
 import { RouteTypeEnum } from './routeTypes';
+import PageProperties from './PageProperties';
+import { UserRoute } from 'pages/Admin/Users/User';
 
-export interface RouteProperties {
-  component: React.FC<PageProperties>;
+export interface RouteProperties<RouteParameters> {
+  component: FC<PageProperties<RouteParameters>>;
   exact?: boolean;
   params?: {
-    // To be solve, it's the URL params
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [key: string]: any;
+    [key in keyof RouteParameters]: string;
   };
   path: string;
-  template?: React.FC<LayoutPageProperties>;
+  template?: FC<LayoutPageProperties>;
 }
 
+export type RoutePropertiesParameters = (
+  RouteProperties<UserRoute>
+);
+
 export interface RouteTemplateProperties {
-  routes: RouteProperties[];
-  template: React.FC<LayoutPageProperties>;
+  routes: RoutePropertiesParameters[];
+  template: FC<LayoutPageProperties>;
   type: RouteTypeEnum;
 }

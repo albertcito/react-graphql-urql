@@ -5,8 +5,9 @@ import { useUsersQuery } from 'graphql/generated';
 import UsersTable from 'ui/Users/Table';
 import AlertError from 'ui/Alert/AlertError';
 import NoDataUrql from 'ui/NoDataUrql';
+import PageProperties from 'routes/PageProperties';
 
-const Users: React.FC = () => {
+const Users: React.FC<PageProperties> = () => {
   const [limit, setLimit] = useState<number>(10);
   const [page, setPage] = useState<number>(1);
   const [search, setSearch] = useState<string>();

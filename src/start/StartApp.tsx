@@ -23,7 +23,7 @@ const GlobalStatus: React.FC = () => {
   );
 };
 
-const StartApp = () => {
+const StartApp: React.FC = () => {
   const { setUser, ...props } = useUser();
   const client = useRef(createClient({
     url: `${constants.urlServer}/graphql/public`,

@@ -2,21 +2,22 @@ import React, { useContext } from 'react';
 import { RouteComponentProps, Redirect } from 'react-router-dom';
 import { Spin } from 'antd';
 
-import { RouteProperties } from 'routes/interfaces';
+import { RoutePropertiesParameters } from 'routes/interfaces';
 import { isPrivate, RouteTypeEnum, isSession } from 'routes/routeTypes';
 import { GlobalLayout } from 'templates/';
 import { Error403 } from 'templates/errors';
-import AppPageInterface from 'templates/interfaces/LayoutPageProperties';
+import LayoutPageProperties from 'templates/interfaces/LayoutPageProperties';
 import { GlobalContext } from 'use/global';
 import UserContext from 'use/user/UserContext';
 
-interface AuthProperties<T = React.ReactNode> {
-  appRoute: RouteProperties;
-  Template: React.FC<AppPageInterface>;
-  route: RouteComponentProps<T>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+interface AuthProperties<T = any> {
+  route: RoutePropertiesParameters;
+  Template: React.FC<LayoutPageProperties>;
+  reactRouter: RouteComponentProps<T>;
   type: RouteTypeEnum;
 }
-const Auth = ({ appRoute, Template, route, type }: AuthProperties) => {
+const Auth: React.FC<AuthProperties> = ({ route, Template, reactRouter, type }) => {
   const { user } = useContext(UserContext);
   const {
     sessions: { fetching },
@@ -28,18 +29,18 @@ const Auth = ({ appRoute, Template, route, type }: AuthProperties) => {
   }
 
   if (isPrivate(type) && !user) {
-    return <GlobalLayout Component={Error403} route={route} />;
+    return <GlobalLayout Component={Error403} route={reactRouter} />;
   }
   if (isSession(type) && user) {
     return <Redirect to='/' />;
   }
 
-  const Layout = appRoute.template ? appRoute.template : Template;
+  const Layout = route.template ?? Template;
   return (
     <Spin spinning={logoutLoading}>
       <Layout
-        Component={appRoute.component}
-        route={route}
+        Component={route.component}
+        route={reactRouter}
       />
     </Spin>
   );

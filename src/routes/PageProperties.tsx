@@ -1,6 +1,6 @@
-import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-export default interface PageProperties<T = React.ReactNode> {
-  route: RouteComponentProps<T>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default interface PageProperties<RouteParameters = any> {
+  route: RouteComponentProps<RouteParameters>;
 }
