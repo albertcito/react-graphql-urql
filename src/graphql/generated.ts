@@ -253,6 +253,7 @@ export type Mutation = {
   langUpdate: LangUpdateResponse;
   roleDelete: Scalars['String'];
   roleUpdate: RoleUpdateResponse;
+  userRolesUpdate: MessageField;
   activateEmail: Scalars['String'];
   forgotPassword: Scalars['String'];
   loggedUser: User;
@@ -267,8 +268,6 @@ export type Mutation = {
   userBasicUpdate: UserBasicUpdateResponse;
   userUpdateEmail: UserUpdateEmailResponse;
   userUpdatePassword: UserUpdatePasswordResponse;
-  userRoleCreate: Scalars['String'];
-  userRoleDelete: Scalars['String'];
 };
 
 
@@ -303,6 +302,12 @@ export type MutationRoleDeleteArgs = {
 export type MutationRoleUpdateArgs = {
   description: Scalars['String'];
   roleID: Roles;
+};
+
+
+export type MutationUserRolesUpdateArgs = {
+  userID: Scalars['Int'];
+  rolesID: Array<Scalars['String']>;
 };
 
 
@@ -371,18 +376,6 @@ export type MutationUserUpdateEmailArgs = {
 
 export type MutationUserUpdatePasswordArgs = {
   password: Scalars['String'];
-  userID: Scalars['Int'];
-};
-
-
-export type MutationUserRoleCreateArgs = {
-  roleID: Roles;
-  userID: Scalars['Int'];
-};
-
-
-export type MutationUserRoleDeleteArgs = {
-  roleID: Roles;
   userID: Scalars['Int'];
 };
 
@@ -586,6 +579,20 @@ export type UserUpdatePasswordMutation = (
       { __typename?: 'MessageField' }
       & Pick<MessageField, 'type' | 'message'>
     ) }
+  ) }
+);
+
+export type UserRolesUpdateMutationVariables = Exact<{
+  userID: Scalars['Int'];
+  rolesID: Array<Scalars['String']>;
+}>;
+
+
+export type UserRolesUpdateMutation = (
+  { __typename?: 'Mutation' }
+  & { userRolesUpdate: (
+    { __typename?: 'MessageField' }
+    & Pick<MessageField, 'message' | 'type'>
   ) }
 );
 
@@ -846,6 +853,18 @@ export const UserUpdatePasswordDocument = gql`
 
 export function useUserUpdatePasswordMutation() {
   return Urql.useMutation<UserUpdatePasswordMutation, UserUpdatePasswordMutationVariables>(UserUpdatePasswordDocument);
+};
+export const UserRolesUpdateDocument = gql`
+    mutation userRolesUpdate($userID: Int!, $rolesID: [String!]!) {
+  userRolesUpdate(userID: $userID, rolesID: $rolesID) {
+    message
+    type
+  }
+}
+    `;
+
+export function useUserRolesUpdateMutation() {
+  return Urql.useMutation<UserRolesUpdateMutation, UserRolesUpdateMutationVariables>(UserRolesUpdateDocument);
 };
 export const UserDocument = gql`
     query user($userID: Int!) {

@@ -1,7 +1,8 @@
 import React from 'react';
 import Title from 'antd/lib/typography/Title';
+import { notification } from 'antd';
 
-import { UserQuery, useRolesQuery } from 'graphql/generated';
+import { UserQuery, useRolesQuery, useUserRolesUpdateMutation } from 'graphql/generated';
 import NoDataUrql from 'ui/NoDataUrql';
 import UserRolesForm from './UserRolesForm';
 import { StructFormat } from 'util/stateHandler/struct';
@@ -10,14 +11,21 @@ interface RolesProperties {
   user: UserQuery['user'];
 }
 const Roles: React.FC<RolesProperties> = ({ user }) => {
-  const [{ error, fetching, data }] = useRolesQuery();
-
-  const onSave = (values: StructFormat<boolean>) => {
-    console.log(values);
+  const [{ error: errorRoles, fetching: fetchingRoles, data: dataRoles }] = useRolesQuery();
+  const [{ fetching }, updateRoles] = useUserRolesUpdateMutation();
+  const onSave = async (values: StructFormat<boolean>) => {
+    const response = await updateRoles({
+      userID: user.userID,
+      rolesID: Object.keys(values),
+    });
+    if (response.data) {
+      const { message, type } = response.data.userRolesUpdate;
+      notification[type]({ message });
+    }
   };
 
-  if (!data) {
-    return <NoDataUrql fetching={fetching} error={error} />;
+  if (!dataRoles) {
+    return <NoDataUrql fetching={fetching} error={errorRoles} />;
   }
 
   return (
@@ -26,10 +34,10 @@ const Roles: React.FC<RolesProperties> = ({ user }) => {
         Users
       </Title>
       <UserRolesForm
-        roles={data.roles.data}
+        roles={dataRoles.roles.data}
         userRoles={user.roles}
         onSave={onSave}
-        loading={false}
+        loading={fetchingRoles && fetching}
       />
     </div>
   );
