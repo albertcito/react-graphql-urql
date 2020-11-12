@@ -7,10 +7,12 @@ import { useUserQuery } from 'graphql/generated';
 import NoDataUrql from 'ui/NoDataUrql';
 import UserMenu from './Menu';
 import UserContent from './UserContent';
+import { getViewCode } from './config';
 
 export interface UserRoute {
   userID: string;
 }
+
 const User: React.FC<PageProperties<UserRoute>> = ({ route }) => {
   const userID = parseInt(route.match.params.userID, 10);
   const [{ data, fetching, error }] = useUserQuery({ variables: { userID } });
@@ -18,6 +20,8 @@ const User: React.FC<PageProperties<UserRoute>> = ({ route }) => {
   if (!data) {
     return <NoDataUrql fetching={fetching} error={error} />;
   }
+
+  const view = getViewCode(route.location.pathname, data.user.userID);
 
   return (
     <div className='content-width'>
@@ -30,10 +34,10 @@ const User: React.FC<PageProperties<UserRoute>> = ({ route }) => {
       <Divider />
       <Row gutter={16}>
         <Col span={6}>
-          <UserMenu userID={data.user.userID} />
+          <UserMenu userID={data.user.userID} view={view} />
         </Col>
         <Col span={18}>
-          <UserContent user={data.user} route={route.location.pathname} />
+          <UserContent user={data.user} view={view} />
         </Col>
       </Row>
     </div>

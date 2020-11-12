@@ -12,7 +12,14 @@ const rolesQuery = gql`query roles {
     }
     data {
       roleID
-      description
+      nameID
+      name {
+        text
+      }
+      description {
+        text
+      }
+      descriptionID
     }
   }
 }`;

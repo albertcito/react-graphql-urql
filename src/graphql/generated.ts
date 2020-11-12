@@ -20,18 +20,56 @@ export type BaseDataEntity = {
   updatedBy?: Maybe<Scalars['Int']>;
 };
 
+export type VText = {
+  __typename?: 'VText';
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  createdBy?: Maybe<Scalars['Int']>;
+  updatedBy?: Maybe<Scalars['Int']>;
+  text: Scalars['String'];
+  langID: Scalars['String'];
+  translationID: Scalars['Int'];
+  /** Language name */
+  name: Scalars['String'];
+  /** If the current text exist in this language */
+  isAvailable: Scalars['Boolean'];
+  /** If the text does not exist it will be replaced by the text of this language */
+  originalLangID: Scalars['String'];
+  /** Lang table value */
+  active: Scalars['Boolean'];
+  /** Translation status */
+  isBlocked: Scalars['Boolean'];
+  /** Translation code */
+  code: Scalars['String'];
+};
+
 export type Role = {
   __typename?: 'Role';
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
-  roleID: Roles;
-  description: Scalars['String'];
+  roleID: RolesEnum;
+  nameID: Scalars['Int'];
+  descriptionID?: Maybe<Scalars['Int']>;
+  names: Array<VText>;
+  name: VText;
+  descriptions?: Maybe<Array<VText>>;
+  description?: Maybe<VText>;
+};
+
+
+export type RoleNameArgs = {
+  langID?: Maybe<Scalars['String']>;
+};
+
+
+export type RoleDescriptionArgs = {
+  langID?: Maybe<Scalars['String']>;
 };
 
 /** All possible roles */
-export enum Roles {
+export enum RolesEnum {
   SuperAdmin = 'superAdmin',
   Admin = 'admin'
 }
@@ -47,6 +85,7 @@ export type User = {
   lastName: Scalars['String'];
   email: Scalars['String'];
   emailVerified: Scalars['Boolean'];
+  userStatusID: Scalars['String'];
   fullName: Scalars['String'];
   roles: Array<Role>;
 };
@@ -77,6 +116,35 @@ export type Lang = {
   isBlocked: Scalars['Boolean'];
 };
 
+export type Text = {
+  __typename?: 'Text';
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  createdBy?: Maybe<Scalars['Int']>;
+  updatedBy?: Maybe<Scalars['Int']>;
+  text: Scalars['String'];
+  langID: Scalars['String'];
+  translationID: Scalars['Int'];
+};
+
+export type Translation = {
+  __typename?: 'Translation';
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  createdBy?: Maybe<Scalars['Int']>;
+  updatedBy?: Maybe<Scalars['Int']>;
+  translationID: Scalars['Int'];
+  code: Scalars['String'];
+  isBlocked: Scalars['Boolean'];
+  texts: Array<VText>;
+  text: VText;
+};
+
+
+export type TranslationTextArgs = {
+  langID?: Maybe<Scalars['String']>;
+};
+
 export type UserRole = {
   __typename?: 'UserRole';
   createdAt: Scalars['String'];
@@ -84,6 +152,49 @@ export type UserRole = {
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
   userRoleID: Scalars['Int'];
+};
+
+export type UserStatus = {
+  __typename?: 'UserStatus';
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  createdBy?: Maybe<Scalars['Int']>;
+  updatedBy?: Maybe<Scalars['Int']>;
+  userStatusID: UserStatusEnum;
+  nameID: Scalars['Int'];
+  descriptionID?: Maybe<Scalars['Int']>;
+  available: Scalars['Boolean'];
+  names: Array<VText>;
+  name: VText;
+  descriptions?: Maybe<Array<VText>>;
+  description?: Maybe<VText>;
+};
+
+
+export type UserStatusNameArgs = {
+  langID?: Maybe<Scalars['String']>;
+};
+
+
+export type UserStatusDescriptionArgs = {
+  langID?: Maybe<Scalars['String']>;
+};
+
+/** All possible user status */
+export enum UserStatusEnum {
+  Active = 'active',
+  Inactive = 'inactive'
+}
+
+export type UserStatusReason = {
+  __typename?: 'UserStatusReason';
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  createdBy?: Maybe<Scalars['Int']>;
+  updatedBy?: Maybe<Scalars['Int']>;
+  userID: Scalars['Int'];
+  userStatusID: UserStatusEnum;
+  reason: Scalars['String'];
 };
 
 export type UserToken = {
@@ -152,6 +263,24 @@ export type RoleUpdateResponse = {
   message: MessageField;
 };
 
+export type TranslationCreateResponse = {
+  __typename?: 'TranslationCreateResponse';
+  data: Translation;
+  message: MessageField;
+};
+
+export type TranslationPaginationResponse = {
+  __typename?: 'TranslationPaginationResponse';
+  data: Array<Translation>;
+  pagination: Pagination;
+};
+
+export type TranslationUpdateResponse = {
+  __typename?: 'TranslationUpdateResponse';
+  data: Translation;
+  message: MessageField;
+};
+
 export type LoginResponse = {
   __typename?: 'LoginResponse';
   token: Scalars['String'];
@@ -200,12 +329,25 @@ export type UserPaginationResponse = {
   pagination: Pagination;
 };
 
+export type TextInputCreate = {
+  text: Scalars['String'];
+  langID: Scalars['String'];
+};
+
+export type TextInputUpdate = {
+  text: Scalars['String'];
+  langID: Scalars['String'];
+  translationID?: Maybe<Scalars['Int']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   lang: Lang;
   langs: LangPaginationResponse;
   role: Role;
   roles: RolePaginationResponse;
+  translation: Translation;
+  translations: TranslationPaginationResponse;
   user: User;
   users: UserPaginationResponse;
 };
@@ -223,11 +365,22 @@ export type QueryLangsArgs = {
 
 
 export type QueryRoleArgs = {
-  roleID: Roles;
+  roleID: RolesEnum;
 };
 
 
 export type QueryRolesArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryTranslationArgs = {
+  translationID: Scalars['Int'];
+};
+
+
+export type QueryTranslationsArgs = {
   limit?: Maybe<Scalars['Int']>;
   page?: Maybe<Scalars['Int']>;
 };
@@ -253,6 +406,9 @@ export type Mutation = {
   langUpdate: LangUpdateResponse;
   roleDelete: Scalars['String'];
   roleUpdate: RoleUpdateResponse;
+  translationCreate: TranslationCreateResponse;
+  translationDelete: MessageField;
+  translationUpdate: TranslationUpdateResponse;
   userRolesUpdate: MessageField;
   activateEmail: Scalars['String'];
   forgotPassword: Scalars['String'];
@@ -268,6 +424,8 @@ export type Mutation = {
   userBasicUpdate: UserBasicUpdateResponse;
   userUpdateEmail: UserUpdateEmailResponse;
   userUpdatePassword: UserUpdatePasswordResponse;
+  /** Update user status. If it is inactive revoked all oAuth token */
+  userStatusUpdate: MessageField;
 };
 
 
@@ -295,13 +453,34 @@ export type MutationLangUpdateArgs = {
 
 
 export type MutationRoleDeleteArgs = {
-  roleID: Roles;
+  roleID: RolesEnum;
 };
 
 
 export type MutationRoleUpdateArgs = {
-  description: Scalars['String'];
-  roleID: Roles;
+  descriptionID: Scalars['Int'];
+  nameID: Scalars['Int'];
+  roleID: RolesEnum;
+};
+
+
+export type MutationTranslationCreateArgs = {
+  isBlocked?: Maybe<Scalars['Boolean']>;
+  code?: Maybe<Scalars['String']>;
+  texts: Array<TextInputCreate>;
+};
+
+
+export type MutationTranslationDeleteArgs = {
+  translationID: Scalars['Int'];
+};
+
+
+export type MutationTranslationUpdateArgs = {
+  isBlocked?: Maybe<Scalars['Boolean']>;
+  code?: Maybe<Scalars['String']>;
+  texts: Array<TextInputUpdate>;
+  translationID: Scalars['Int'];
 };
 
 
@@ -379,6 +558,13 @@ export type MutationUserUpdatePasswordArgs = {
   userID: Scalars['Int'];
 };
 
+
+export type MutationUserStatusUpdateArgs = {
+  userID: Scalars['Int'];
+  reason: Scalars['String'];
+  userStatusID: Scalars['String'];
+};
+
 export type LangsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -419,7 +605,14 @@ export type RolesQuery = (
       & Pick<Pagination, 'from' | 'to' | 'total' | 'limit' | 'page' | 'length'>
     ), data: Array<(
       { __typename?: 'Role' }
-      & Pick<Role, 'roleID' | 'description'>
+      & Pick<Role, 'roleID' | 'nameID' | 'descriptionID'>
+      & { name: (
+        { __typename?: 'VText' }
+        & Pick<VText, 'text'>
+      ), description?: Maybe<(
+        { __typename?: 'VText' }
+        & Pick<VText, 'text'>
+      )> }
     )> }
   ) }
 );
@@ -608,7 +801,7 @@ export type UserQuery = (
     & Pick<User, 'userID' | 'email' | 'firstName' | 'lastName' | 'fullName' | 'createdAt' | 'updatedAt' | 'emailVerified'>
     & { roles: Array<(
       { __typename?: 'Role' }
-      & Pick<Role, 'roleID' | 'description' | 'createdAt' | 'updatedAt' | 'createdBy' | 'updatedBy'>
+      & Pick<Role, 'roleID'>
     )> }
   ) }
 );
@@ -679,7 +872,14 @@ export const RolesDocument = gql`
     }
     data {
       roleID
-      description
+      nameID
+      name {
+        text
+      }
+      description {
+        text
+      }
+      descriptionID
     }
   }
 }
@@ -879,11 +1079,6 @@ export const UserDocument = gql`
     emailVerified
     roles {
       roleID
-      description
-      createdAt
-      updatedAt
-      createdBy
-      updatedBy
     }
   }
 }

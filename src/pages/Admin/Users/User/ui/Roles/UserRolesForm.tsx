@@ -3,16 +3,27 @@ import { List, Button, Switch, Spin } from 'antd';
 
 import verifyRolesUser from './verifyRolesUser';
 import { set, StructFormat } from 'util/stateHandler/struct';
-import { Roles } from 'graphql/generated';
+
+interface Text {
+  text: string;
+}
 
 interface Role {
-  roleID: Roles;
-  description: string;
+  roleID: string;
+  nameID: number;
+  name: {
+    text: string;
+  };
+  description?: Text | null;
+}
+
+interface UseRole {
+  roleID: string;
 }
 
 interface RolesFormProperties {
   roles: Role[];
-  userRoles: Role[];
+  userRoles: UseRole[];
   onSave: (roles: StructFormat<boolean>) => void;
   loading: boolean;
 }
@@ -41,8 +52,8 @@ const UserRolesForm: React.FC<RolesFormProperties> = ({
             />]}
           >
             <List.Item.Meta
-              title={role.roleID}
-              description={role.description}
+              title={`${role.name.text} (${role.roleID})`}
+              description={role.description?.text}
             />
           </List.Item>
         )}

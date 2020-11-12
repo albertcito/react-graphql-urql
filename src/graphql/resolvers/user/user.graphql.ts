@@ -12,11 +12,6 @@ const userQuery = gql`query user($userID: Int!) {
     emailVerified
     roles {
       roleID
-      description
-      createdAt
-      updatedAt
-      createdBy
-      updatedBy
     }
   }
 }`;

@@ -10,12 +10,15 @@ import {
 import { Menu } from 'antd';
 import { Link } from 'react-router-dom';
 
+import { userViewEnum } from '../config';
+
 interface UserMenuProperties {
   userID: number;
+  view: userViewEnum;
 }
 
-const UserMenu = ({ userID }: UserMenuProperties) => (
-  <Menu>
+const UserMenu = ({ userID, view }: UserMenuProperties) => (
+  <Menu defaultSelectedKeys={[view]}>
     <Menu.Item key='profile' icon={<UserOutlined />}>
       <Link to={`/admin/users/${userID}`}>
         Profile
