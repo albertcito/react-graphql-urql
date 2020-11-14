@@ -381,6 +381,10 @@ export type QueryTranslationArgs = {
 
 
 export type QueryTranslationsArgs = {
+  langID?: Maybe<Scalars['String']>;
+  search?: Maybe<Scalars['String']>;
+  order?: Maybe<Scalars['String']>;
+  orderBy?: Maybe<Scalars['String']>;
   limit?: Maybe<Scalars['Int']>;
   page?: Maybe<Scalars['Int']>;
 };
@@ -613,6 +617,37 @@ export type RolesQuery = (
         { __typename?: 'VText' }
         & Pick<VText, 'text'>
       )> }
+    )> }
+  ) }
+);
+
+export type TranslationsQueryVariables = Exact<{
+  order?: Maybe<Scalars['String']>;
+  orderBy?: Maybe<Scalars['String']>;
+  search?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+  langID?: Maybe<Scalars['String']>;
+}>;
+
+
+export type TranslationsQuery = (
+  { __typename?: 'Query' }
+  & { translations: (
+    { __typename?: 'TranslationPaginationResponse' }
+    & { pagination: (
+      { __typename?: 'Pagination' }
+      & Pick<Pagination, 'from' | 'to' | 'total' | 'limit' | 'page' | 'length'>
+    ), data: Array<(
+      { __typename?: 'Translation' }
+      & Pick<Translation, 'translationID' | 'code'>
+      & { texts: Array<(
+        { __typename?: 'VText' }
+        & Pick<VText, 'text' | 'langID'>
+      )>, text: (
+        { __typename?: 'VText' }
+        & Pick<VText, 'text' | 'langID' | 'originalLangID'>
+      ) }
     )> }
   ) }
 );
@@ -887,6 +922,44 @@ export const RolesDocument = gql`
 
 export function useRolesQuery(options: Omit<Urql.UseQueryArgs<RolesQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<RolesQuery>({ query: RolesDocument, ...options });
+};
+export const TranslationsDocument = gql`
+    query translations($order: String, $orderBy: String, $search: String, $limit: Int, $page: Int, $langID: String) {
+  translations(
+    order: $order
+    orderBy: $orderBy
+    search: $search
+    limit: $limit
+    page: $page
+    langID: $langID
+  ) {
+    pagination {
+      from
+      to
+      total
+      limit
+      page
+      length
+    }
+    data {
+      translationID
+      code
+      texts {
+        text
+        langID
+      }
+      text(langID: $langID) {
+        text
+        langID
+        originalLangID
+      }
+    }
+  }
+}
+    `;
+
+export function useTranslationsQuery(options: Omit<Urql.UseQueryArgs<TranslationsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<TranslationsQuery>({ query: TranslationsDocument, ...options });
 };
 export const LoggedUserDocument = gql`
     mutation loggedUser {

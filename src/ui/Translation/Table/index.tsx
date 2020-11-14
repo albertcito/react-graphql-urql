@@ -5,14 +5,19 @@ import { Key, SorterResult } from 'antd/lib/table/interface';
 
 import { Pagination } from 'graphql/generated';
 import TableColumns from 'util/columns/base/TableColumns';
-import { IDColumn, StringColumn, DeleteColumn, OnSelectColumn } from 'util/columns';
+import { IDColumn, DeleteColumn, TextColumn, OnSelectColumn } from 'util/columns';
 import PaginationUI from 'ui/Pagination';
 import { ColumnTableProperties } from 'util/columns/base/ColumnTableProperties';
 
-export interface User {
-  userID: number;
-  email: string;
-  fullName: string;
+export interface Translation {
+  translationID: number;
+  code?: string;
+  isBlocked?: boolean;
+  text: {
+    text: string;
+    langID: string;
+    originalLangID: string;
+  }
 }
 
 interface PaginationArguments {
@@ -24,40 +29,38 @@ interface OrderByArguments {
   order: 'ASC' | 'DESC';
 }
 
-interface UserFetchMore extends PaginationArguments {
+interface TranslationFetchMore extends PaginationArguments {
   search?: string;
   order?: OrderByArguments;
+  langID?: string;
 }
 
-interface UsersTableProperties {
-  users: User[];
+interface TranslationsTableProperties {
+  translations: Translation[];
   loading?: boolean;
   pagination: Pagination;
-  fetchMore: (parameters: UserFetchMore) => void;
-  getLink?: (user: User) => string;
-  onSelectLink?: (data: User, index: number) => void;
-  onSelect?: (data: User, index: number) => void;
-  onDelete?: (item: User, index: number) => void;
+  fetchMore: (parameters: TranslationFetchMore) => void;
+  getLink?: (translation: Translation) => string;
+  onSelect?: (data: Translation, index: number) => void;
+  onDelete?: (item: Translation, index: number) => void;
 }
-const UsersTable: React.FC<UsersTableProperties> = ({
-  users,
+const TranslationsTable: React.FC<TranslationsTableProperties> = ({
+  translations,
   loading = false,
   pagination,
   fetchMore,
   getLink,
-  onSelectLink,
   onSelect,
   onDelete,
 }) => {
   const [search, setSearch] = useState('');
 
   const tableColumns = new TableColumns([
-    new IDColumn<User>({ indexID: 'userID', orderBy: 'user_id' }),
-    new StringColumn<User>({ indexID: 'fullName', title: 'Name', orderBy: 'first_name', getLink, onSelectLink }),
-    new StringColumn<User>({ indexID: 'email', title: 'Email', orderBy: 'email', getLink, onSelectLink }),
+    new IDColumn<Translation>({ indexID: 'translationID', orderBy: 'translation.translation_id' }),
+    new TextColumn<Translation>({ indexID: 'text', title: 'Text', getLink }),
   ]);
   if (onSelect) {
-    tableColumns.append(new OnSelectColumn<User>({ indexID: 'userID', onSelect }));
+    tableColumns.append(new OnSelectColumn<Translation>({ indexID: 'translationID', onSelect }));
   }
   if (onDelete) {
     tableColumns.append(new DeleteColumn({ onDelete }));
@@ -67,7 +70,7 @@ const UsersTable: React.FC<UsersTableProperties> = ({
   const onChangeTable = (
     _pagination: TablePaginationConfig,
     _filters: Record<string, Key[] | null>,
-    sorter: SorterResult<User> | SorterResult<User>[],
+    sorter: SorterResult<Translation> | SorterResult<Translation>[],
   ) => {
     if (Array.isArray(sorter)) { return; }
     if (!sorter.column) {
@@ -105,7 +108,7 @@ const UsersTable: React.FC<UsersTableProperties> = ({
     <div className='table-view'>
       <Spin spinning={loading}>
         <Input.Search
-          placeholder='Search by name, email or ID'
+          placeholder='Search by text or ID'
           onSearch={onSearch}
           enterButton
           value={search}
@@ -118,7 +121,7 @@ const UsersTable: React.FC<UsersTableProperties> = ({
         />
         <Table
           columns={columns}
-          dataSource={users}
+          dataSource={translations}
           pagination={false}
           onChange={onChangeTable}
         />
@@ -131,4 +134,4 @@ const UsersTable: React.FC<UsersTableProperties> = ({
   );
 };
 
-export default UsersTable;
+export default TranslationsTable;

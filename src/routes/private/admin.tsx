@@ -2,6 +2,7 @@ import { RoutePropertiesParameters } from '../interfaces';
 import Profile from '../../pages/Admin/Profile';
 import Users from '../../pages/Admin/Users';
 import User from '../../pages/Admin/Users/User';
+import Translations from '../../pages/Admin/Translations';
 
 const routes: RoutePropertiesParameters[] = [
   {
@@ -25,6 +26,11 @@ const routes: RoutePropertiesParameters[] = [
     component: Profile,
     exact: true,
     path: '/admin/profile',
+  },
+  {
+    component: Translations,
+    exact: true,
+    path: '/admin/translations',
   },
 ];
 

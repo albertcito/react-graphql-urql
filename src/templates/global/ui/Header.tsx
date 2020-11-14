@@ -38,6 +38,11 @@ export default function Header() {
         Users
       </Link>
     </Menu.Item>,
+    <Menu.Item key='translations'>
+      <Link to='/admin/translations'>
+        Translations
+      </Link>
+    </Menu.Item>,
   ];
 
   const signOutMenu = [

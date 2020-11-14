@@ -8,16 +8,22 @@ import TableColumnAbstract from './base/TableColumnAbstract';
 type onSelectType<T> = (data: T, index: number) => void;
 type getLinkType<T> = (data: T) => string;
 
-interface StringColumnProperties<T> extends ColumnTableProperties {
+interface VText {
+  text: string;
+  langID: string;
+  originalLangID: string;
+}
+
+interface TextColumnProperties<T> extends ColumnTableProperties {
   indexID: keyof T;
   onSelectLink?: onSelectType<T>;
   getLink?: getLinkType<T>;
 }
 
-export default class StringColumn<T> implements TableColumnAbstract {
+export default class TextColumn<T> implements TableColumnAbstract {
   public readonly column: ColumnTableProperties;
 
-  constructor(private readonly properties: StringColumnProperties<T>) {
+  constructor(private readonly properties: TextColumnProperties<T>) {
     const { indexID, onSelectLink, getLink, orderBy, ...props } = properties;
     this.column = {
       ...props,
@@ -39,28 +45,37 @@ export default class StringColumn<T> implements TableColumnAbstract {
 
   private getRenderButton(onSelectLink: onSelectType<T>) {
     const { indexID } = this.properties;
-    return (_: string, data: T, index: number) => (
-      <Button
-        onClick={() => onSelectLink(data, index)}
-        type='link'
-        className='link-button'
-      >
-        {data[indexID]}
-      </Button>
-    );
+    return (_: string, data: T, index: number) => {
+      const text = data[indexID] as unknown as VText;
+      return (
+        <Button
+          onClick={() => onSelectLink(data, index)}
+          type='link'
+          className='link-button'
+        >
+          {text.text}
+        </Button>
+      );
+    };
   }
 
   private getRenderLink(getLink: getLinkType<T>) {
     const { indexID } = this.properties;
-    return (_: string, data: T) => (
-      <Link to={getLink(data)}>
-        {data[indexID]}
-      </Link>
-    );
+    return (_: string, data: T) => {
+      const text = data[indexID] as unknown as VText;
+      return (
+        <Link to={getLink(data)}>
+          {text.text}
+        </Link>
+      );
+    };
   }
 
   private getRenderString() {
     const { indexID } = this.properties;
-    return (_: string, data: T) => data[indexID];
+    return (_: string, data: T) => {
+      const text = data[indexID] as unknown as VText;
+      return text.text;
+    };
   }
 }
