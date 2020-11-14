@@ -18,6 +18,10 @@ export interface Translation {
     langID: string;
     originalLangID: string;
   }
+  texts: {
+    langID: string;
+    originalLangID: string;
+  }[]
 }
 
 interface PaginationArguments {
@@ -42,6 +46,7 @@ interface TranslationsTableProperties {
   fetchMore: (parameters: TranslationFetchMore) => void;
   getLink?: (translation: Translation) => string;
   onSelect?: (data: Translation, index: number) => void;
+  onSelectLink?: (data: Translation, index: number) => void;
   onDelete?: (item: Translation, index: number) => void;
 }
 const TranslationsTable: React.FC<TranslationsTableProperties> = ({
@@ -51,13 +56,14 @@ const TranslationsTable: React.FC<TranslationsTableProperties> = ({
   fetchMore,
   getLink,
   onSelect,
+  onSelectLink,
   onDelete,
 }) => {
   const [search, setSearch] = useState('');
 
   const tableColumns = new TableColumns([
     new IDColumn<Translation>({ indexID: 'translationID', orderBy: 'translation.translation_id' }),
-    new TextColumn<Translation>({ indexID: 'text', title: 'Text', getLink }),
+    new TextColumn<Translation>({ indexID: 'text', title: 'Text', getLink, onSelectLink }),
   ]);
   if (onSelect) {
     tableColumns.append(new OnSelectColumn<Translation>({ indexID: 'translationID', onSelect }));

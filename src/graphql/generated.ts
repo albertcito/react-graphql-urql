@@ -643,7 +643,7 @@ export type TranslationsQuery = (
       & Pick<Translation, 'translationID' | 'code'>
       & { texts: Array<(
         { __typename?: 'VText' }
-        & Pick<VText, 'text' | 'langID'>
+        & Pick<VText, 'langID' | 'originalLangID'>
       )>, text: (
         { __typename?: 'VText' }
         & Pick<VText, 'text' | 'langID' | 'originalLangID'>
@@ -945,8 +945,8 @@ export const TranslationsDocument = gql`
       translationID
       code
       texts {
-        text
         langID
+        originalLangID
       }
       text(langID: $langID) {
         text

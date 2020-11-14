@@ -30,7 +30,7 @@ const Translations: React.FC<PageProperties> = ({ route }) => {
       <TranslationTable
         loading={fetching}
         translations={data.translations.data}
-        // getLink={(translation: Translation) => `${route.location.pathname}/${translation.translationID}`}
+        getLink={(translation) => `${route.location.pathname}/${translation.translationID}`}
         pagination={data.translations.pagination}
         fetchMore={({ page: page_, limit: limit_, search: search_, order: order_ }) => {
           setLimit(limit_);

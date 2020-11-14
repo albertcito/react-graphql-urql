@@ -38,14 +38,14 @@ export default function useStartData(): StartDataFormat {
       name: 'Spanish',
       localName: 'Espa\u00F1ol',
       active: true,
-      isBlocked: false,
+      isBlocked: true,
     },
     {
       langID: 'EN',
       name: 'English',
       localName: 'English',
       active: true,
-      isBlocked: false,
+      isBlocked: true,
     },
   ];
 
