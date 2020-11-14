@@ -12,7 +12,7 @@ export enum LangEnum {
 
 interface LangFormat {
   lang: LangEnum;
-  messages: any;
+  messages: Record<string, string> | Record<string, MessageFormatElement[]>;
 }
 
 const getLang = (localLanguage: string): LangFormat => {

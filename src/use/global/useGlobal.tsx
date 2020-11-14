@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { CombinedError } from '@urql/core';
 
 import useSession, { UseSessionProperties } from 'use/global/useSession';
 import storage from 'util/Storage';
-import useIntl, { UseIntlFormat } from './useIntl';
+import useIntl, { LangEnum, UseIntlFormat } from './useIntl';
 import { useLoginMutation, useLogoutMutation } from 'graphql/generated';
 import { LangProperties, langs } from './public';
 
@@ -19,16 +19,16 @@ export interface UseGlobalProperties {
     fetching: boolean;
     error?: CombinedError;
   };
-  // appData: Omit<StartDataFormat, 'getData'>;
   intl: UseIntlFormat;
   langs: LangProperties[];
   langID: string;
+  setLang: (langID: string) => void;
 }
 
 const useGlobal = (): UseGlobalProperties => {
   const { getSession, delSession, ...sessions } = useSession();
   const intl = useIntl();
-  const [langID] = useState<string>('EN');
+  const [langID, setLangID] = useState<string>('EN');
 
   const [{ fetching: loadingLogout, error: logoutError }, logout] = useLogoutMutation();
   const doLogout = () => logout().then(() => delSession());
@@ -42,6 +42,12 @@ const useGlobal = (): UseGlobalProperties => {
       sessions.saveSession(user, token);
     }
   };
+
+  const setLang = useCallback((langID_: string) => {
+    setLangID(langID_);
+    intl.setLang(langID_ as LangEnum);
+    storage.setLangID(langID_);
+  }, [intl]);
 
   useEffect(() => {
     if (storage.getToken()) {
@@ -67,6 +73,7 @@ const useGlobal = (): UseGlobalProperties => {
     intl,
     langs,
     langID,
+    setLang,
   };
 };
 
