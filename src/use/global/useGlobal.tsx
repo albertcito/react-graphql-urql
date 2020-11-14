@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { CombinedError } from '@urql/core';
 
 import useSession, { UseSessionProperties } from 'use/global/useSession';
 import storage from 'util/Storage';
-// import useStartData, { StartDataFormat } from './useStartData';
 import useIntl, { UseIntlFormat } from './useIntl';
 import { useLoginMutation, useLogoutMutation } from 'graphql/generated';
+import { LangProperties, langs } from './public';
 
 export interface UseGlobalProperties {
   sessions: Omit<UseSessionProperties, 'getSession' >;
@@ -21,12 +21,14 @@ export interface UseGlobalProperties {
   };
   // appData: Omit<StartDataFormat, 'getData'>;
   intl: UseIntlFormat;
+  langs: LangProperties[];
+  langID: string;
 }
 
 const useGlobal = (): UseGlobalProperties => {
   const { getSession, delSession, ...sessions } = useSession();
-  // const { getData, ...appData } = useStartData();
   const intl = useIntl();
+  const [langID] = useState<string>('EN');
 
   const [{ fetching: loadingLogout, error: logoutError }, logout] = useLogoutMutation();
   const doLogout = () => logout().then(() => delSession());
@@ -47,8 +49,6 @@ const useGlobal = (): UseGlobalProperties => {
     }
   }, [getSession]);
 
-  // useEffect(() => { getData(); }, [getData]);
-
   return {
     sessions: {
       ...sessions,
@@ -64,8 +64,9 @@ const useGlobal = (): UseGlobalProperties => {
       fetching: loadingLogin,
       error: loginError,
     },
-    // appData,
     intl,
+    langs,
+    langID,
   };
 };
 

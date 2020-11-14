@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Title from 'antd/lib/typography/Title';
 
-import { Translation, useTranslationsQuery } from 'graphql/generated';
+import { useTranslationsQuery } from 'graphql/generated';
 import AlertError from 'ui/Alert/AlertError';
 import NoDataUrql from 'ui/NoDataUrql';
 import PageProperties from 'routes/PageProperties';
 import TranslationTable from 'ui/Translation/Table';
+import { GlobalContext } from 'use/global';
 
 const Translations: React.FC<PageProperties> = ({ route }) => {
+  const { langs, langID } = useContext(GlobalContext);
   const [limit, setLimit] = useState<number>(10);
   const [page, setPage] = useState<number>(1);
   const [search, setSearch] = useState<string>();
@@ -28,6 +30,8 @@ const Translations: React.FC<PageProperties> = ({ route }) => {
       </Title>
       {error && <AlertError error={error} />}
       <TranslationTable
+        langID={langID}
+        langs={langs}
         loading={fetching}
         translations={data.translations.data}
         getLink={(translation) => `${route.location.pathname}/${translation.translationID}`}

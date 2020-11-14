@@ -8,8 +8,9 @@ import TableColumns from 'util/columns/base/TableColumns';
 import { IDColumn, DeleteColumn, TextColumn, OnSelectColumn } from 'util/columns';
 import PaginationUI from 'ui/Pagination';
 import { ColumnTableProperties } from 'util/columns/base/ColumnTableProperties';
+import getLangColumns from 'util/columns/Langs/LangsColumn';
 
-export interface Translation {
+interface Translation {
   translationID: number;
   code?: string;
   isBlocked?: boolean;
@@ -22,6 +23,10 @@ export interface Translation {
     langID: string;
     originalLangID: string;
   }[]
+}
+
+interface LangProperties {
+  langID: string;
 }
 
 interface PaginationArguments {
@@ -41,6 +46,8 @@ interface TranslationFetchMore extends PaginationArguments {
 
 interface TranslationsTableProperties {
   translations: Translation[];
+  langs: LangProperties[];
+  langID: string;
   loading?: boolean;
   pagination: Pagination;
   fetchMore: (parameters: TranslationFetchMore) => void;
@@ -51,6 +58,8 @@ interface TranslationsTableProperties {
 }
 const TranslationsTable: React.FC<TranslationsTableProperties> = ({
   translations,
+  langs,
+  langID,
   loading = false,
   pagination,
   fetchMore,
@@ -64,6 +73,7 @@ const TranslationsTable: React.FC<TranslationsTableProperties> = ({
   const tableColumns = new TableColumns([
     new IDColumn<Translation>({ indexID: 'translationID', orderBy: 'translation.translation_id' }),
     new TextColumn<Translation>({ indexID: 'text', title: 'Text', getLink, onSelectLink }),
+    ...getLangColumns('texts', langs, langID),
   ]);
   if (onSelect) {
     tableColumns.append(new OnSelectColumn<Translation>({ indexID: 'translationID', onSelect }));
@@ -114,7 +124,7 @@ const TranslationsTable: React.FC<TranslationsTableProperties> = ({
     <div className='table-view'>
       <Spin spinning={loading}>
         <Input.Search
-          placeholder='Search by text or ID'
+          placeholder='Search by Text or ID'
           onSearch={onSearch}
           enterButton
           value={search}

@@ -1,7 +1,11 @@
 import LangColumn from './LangColumn';
 
-export default function getLangColumns<T>() {
+interface LangProperties {
+  langID: string;
+}
+
+export default function getLangColumns<T>(indexID: keyof T, langs: LangProperties[], langIDGlobal: string) {
   const columns: LangColumn<T>[] = [];
-  // langs.forEach((lang: any) => columns.push(new LangColumn({ indexID })));
+  langs.forEach(({ langID }) => columns.push(new LangColumn({ indexID, langID, langIDGlobal })));
   return columns;
 }
