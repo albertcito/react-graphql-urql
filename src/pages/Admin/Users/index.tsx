@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Title from 'antd/lib/typography/Title';
+import { FormattedMessage } from 'react-intl';
 
 import { useUsersQuery } from 'graphql/generated';
 import UsersTable, { User } from 'ui/Users/Table';
@@ -24,7 +25,7 @@ const Users: React.FC<PageProperties> = ({ route }) => {
   return (
     <div>
       <Title level={1}>
-        Users
+        <FormattedMessage id='user.users' />
       </Title>
       {error && <AlertError error={error} />}
       <UsersTable

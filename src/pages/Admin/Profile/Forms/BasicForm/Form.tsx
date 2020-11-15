@@ -2,6 +2,7 @@ import React from 'react';
 import { UserOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Spin } from 'antd';
 import { CombinedError } from 'urql';
+import { FormattedMessage } from 'react-intl';
 
 import AlertError from 'ui/Alert/AlertError';
 
@@ -58,8 +59,9 @@ export const UserProfileForm: React.FC<UserProfileFormProperties> = ({
           type='primary'
           htmlType='submit'
           className='session-form-button'
+          disabled={fetching}
         >
-          Submit
+          <FormattedMessage id='generic.submit' />
         </Button>
       </Form.Item>
     </Form>

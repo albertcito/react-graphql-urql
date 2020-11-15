@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import Title from 'antd/lib/typography/Title';
+import { FormattedMessage } from 'react-intl';
 
 import { useTranslationsQuery } from 'graphql/generated';
 import AlertError from 'ui/Alert/AlertError';
@@ -7,6 +8,7 @@ import NoDataUrql from 'ui/NoDataUrql';
 import PageProperties from 'routes/PageProperties';
 import TranslationTable from 'ui/Translation/Table';
 import { GlobalContext } from 'use/global';
+import ButtonLink from 'ui/Buttons/ButtonLink';
 
 const Translations: React.FC<PageProperties> = ({ route }) => {
   const { langs, langID } = useContext(GlobalContext);
@@ -25,9 +27,12 @@ const Translations: React.FC<PageProperties> = ({ route }) => {
 
   return (
     <div>
-      <Title level={1}>
-        Translation
-      </Title>
+      <div className='title'>
+        <Title level={1}>
+          <FormattedMessage id='translation.translations' />
+        </Title>
+        <ButtonLink link={`${route.location.pathname}/add`} />
+      </div>
       {error && <AlertError error={error} />}
       <TranslationTable
         langID={langID}

@@ -4,6 +4,7 @@ import LayoutPageProperties from '../templates/interfaces/LayoutPageProperties';
 import { RouteTypeEnum } from './routeTypes';
 import PageProperties from './PageProperties';
 import { UserRoute } from 'pages/Admin/Users/User';
+import { TranslationRoute } from 'pages/Admin/Translations/Translation';
 
 export interface RouteProperties<RouteParameters> {
   component: FC<PageProperties<RouteParameters>>;
@@ -16,7 +17,8 @@ export interface RouteProperties<RouteParameters> {
 }
 
 export type RoutePropertiesParameters = (
-  RouteProperties<UserRoute>
+  RouteProperties<UserRoute> |
+  RouteProperties<TranslationRoute>
 );
 
 export interface RouteTemplateProperties {

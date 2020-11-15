@@ -3,6 +3,8 @@ import Profile from '../../pages/Admin/Profile';
 import Users from '../../pages/Admin/Users';
 import User from '../../pages/Admin/Users/User';
 import Translations from '../../pages/Admin/Translations';
+import Translation from '../../pages/Admin/Translations/Translation';
+import TranslationAdd from '../../pages/Admin/Translations/Translation/Add';
 
 const routes: RoutePropertiesParameters[] = [
   {
@@ -31,6 +33,16 @@ const routes: RoutePropertiesParameters[] = [
     component: Translations,
     exact: true,
     path: '/admin/translations',
+  },
+  {
+    component: TranslationAdd,
+    exact: true,
+    path: '/admin/translations/add',
+  },
+  {
+    component: Translation,
+    exact: true,
+    path: '/admin/translations/:translationID',
   },
 ];
 

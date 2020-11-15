@@ -334,12 +334,6 @@ export type TextInputCreate = {
   langID: Scalars['String'];
 };
 
-export type TextInputUpdate = {
-  text: Scalars['String'];
-  langID: Scalars['String'];
-  translationID?: Maybe<Scalars['Int']>;
-};
-
 export type Query = {
   __typename?: 'Query';
   lang: Lang;
@@ -483,7 +477,7 @@ export type MutationTranslationDeleteArgs = {
 export type MutationTranslationUpdateArgs = {
   isBlocked?: Maybe<Scalars['Boolean']>;
   code?: Maybe<Scalars['String']>;
-  texts: Array<TextInputUpdate>;
+  texts: Array<TextInputCreate>;
   translationID: Scalars['Int'];
 };
 
@@ -618,6 +612,72 @@ export type RolesQuery = (
         & Pick<VText, 'text'>
       )> }
     )> }
+  ) }
+);
+
+export type TranslationQueryVariables = Exact<{
+  translationID: Scalars['Int'];
+}>;
+
+
+export type TranslationQuery = (
+  { __typename?: 'Query' }
+  & { translation: (
+    { __typename?: 'Translation' }
+    & Pick<Translation, 'translationID' | 'code' | 'isBlocked'>
+    & { texts: Array<(
+      { __typename?: 'VText' }
+      & Pick<VText, 'text' | 'langID' | 'originalLangID'>
+    )> }
+  ) }
+);
+
+export type TranslationCreateMutationVariables = Exact<{
+  texts: Array<TextInputCreate>;
+}>;
+
+
+export type TranslationCreateMutation = (
+  { __typename?: 'Mutation' }
+  & { translationCreate: (
+    { __typename?: 'TranslationCreateResponse' }
+    & { data: (
+      { __typename?: 'Translation' }
+      & Pick<Translation, 'translationID' | 'code'>
+      & { texts: Array<(
+        { __typename?: 'VText' }
+        & Pick<VText, 'text' | 'langID'>
+      )> }
+    ), message: (
+      { __typename?: 'MessageField' }
+      & Pick<MessageField, 'type' | 'message'>
+    ) }
+  ) }
+);
+
+export type TranslationUpdateMutationVariables = Exact<{
+  translationID: Scalars['Int'];
+  texts: Array<TextInputCreate>;
+  code?: Maybe<Scalars['String']>;
+  isBlocked?: Maybe<Scalars['Boolean']>;
+}>;
+
+
+export type TranslationUpdateMutation = (
+  { __typename?: 'Mutation' }
+  & { translationUpdate: (
+    { __typename?: 'TranslationUpdateResponse' }
+    & { data: (
+      { __typename?: 'Translation' }
+      & Pick<Translation, 'translationID' | 'code'>
+      & { texts: Array<(
+        { __typename?: 'VText' }
+        & Pick<VText, 'text' | 'langID'>
+      )> }
+    ), message: (
+      { __typename?: 'MessageField' }
+      & Pick<MessageField, 'type' | 'message'>
+    ) }
   ) }
 );
 
@@ -922,6 +982,73 @@ export const RolesDocument = gql`
 
 export function useRolesQuery(options: Omit<Urql.UseQueryArgs<RolesQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<RolesQuery>({ query: RolesDocument, ...options });
+};
+export const TranslationDocument = gql`
+    query translation($translationID: Int!) {
+  translation(translationID: $translationID) {
+    translationID
+    code
+    isBlocked
+    texts {
+      text
+      langID
+      originalLangID
+    }
+  }
+}
+    `;
+
+export function useTranslationQuery(options: Omit<Urql.UseQueryArgs<TranslationQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<TranslationQuery>({ query: TranslationDocument, ...options });
+};
+export const TranslationCreateDocument = gql`
+    mutation translationCreate($texts: [TextInputCreate!]!) {
+  translationCreate(texts: $texts) {
+    data {
+      translationID
+      code
+      texts {
+        text
+        langID
+      }
+    }
+    message {
+      type
+      message
+    }
+  }
+}
+    `;
+
+export function useTranslationCreateMutation() {
+  return Urql.useMutation<TranslationCreateMutation, TranslationCreateMutationVariables>(TranslationCreateDocument);
+};
+export const TranslationUpdateDocument = gql`
+    mutation translationUpdate($translationID: Int!, $texts: [TextInputCreate!]!, $code: String, $isBlocked: Boolean) {
+  translationUpdate(
+    translationID: $translationID
+    texts: $texts
+    code: $code
+    isBlocked: $isBlocked
+  ) {
+    data {
+      translationID
+      code
+      texts {
+        text
+        langID
+      }
+    }
+    message {
+      type
+      message
+    }
+  }
+}
+    `;
+
+export function useTranslationUpdateMutation() {
+  return Urql.useMutation<TranslationUpdateMutation, TranslationUpdateMutationVariables>(TranslationUpdateDocument);
 };
 export const TranslationsDocument = gql`
     query translations($order: String, $orderBy: String, $search: String, $limit: Int, $page: Int, $langID: String) {
