@@ -1,9 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import Title from 'antd/lib/typography/Title';
 import { FormattedMessage } from 'react-intl';
+import { notification } from 'antd';
 
-import { useTranslationsQuery } from 'graphql/generated';
-import AlertError from 'ui/Alert/AlertError';
+import { useTranslationsQuery, useTranslationDeleteMutation } from 'graphql/generated';
+import AlertError, { getErrors } from 'ui/Alert/AlertError';
 import NoDataUrql from 'ui/NoDataUrql';
 import PageProperties from 'routes/PageProperties';
 import TranslationTable from 'ui/Translation/Table';
@@ -21,6 +22,19 @@ const Translations: React.FC<PageProperties> = ({ route }) => {
     { variables: { limit, page, search, order, orderBy } },
   );
 
+  const [{ fetching: deletingFetching }, onDeleteTranslation] = useTranslationDeleteMutation();
+
+  const onDelete = useCallback(async (translationID: number) => {
+    const response = await onDeleteTranslation({ translationID });
+    if (response.data) {
+      const { message, type } = response.data.translationDelete;
+      notification[type]({ message });
+    }
+    if (response.error) {
+      notification.error({ message: getErrors(response.error) });
+    }
+  }, [onDeleteTranslation]);
+
   if (!data) {
     return <NoDataUrql fetching={fetching} error={error} />;
   }
@@ -37,8 +51,9 @@ const Translations: React.FC<PageProperties> = ({ route }) => {
       <TranslationTable
         langID={langID}
         langs={langs}
-        loading={fetching}
+        loading={fetching || deletingFetching}
         translations={data.translations.data}
+        onDelete={(item) => onDelete(item.translationID)}
         getLink={(translation) => `${route.location.pathname}/${translation.translationID}`}
         pagination={data.translations.pagination}
         fetchMore={({ page: page_, limit: limit_, search: search_, order: order_ }) => {

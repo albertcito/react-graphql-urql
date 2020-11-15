@@ -655,6 +655,19 @@ export type TranslationCreateMutation = (
   ) }
 );
 
+export type TranslationDeleteMutationVariables = Exact<{
+  translationID: Scalars['Int'];
+}>;
+
+
+export type TranslationDeleteMutation = (
+  { __typename?: 'Mutation' }
+  & { translationDelete: (
+    { __typename?: 'MessageField' }
+    & Pick<MessageField, 'message' | 'type'>
+  ) }
+);
+
 export type TranslationUpdateMutationVariables = Exact<{
   translationID: Scalars['Int'];
   texts: Array<TextInputCreate>;
@@ -1022,6 +1035,18 @@ export const TranslationCreateDocument = gql`
 
 export function useTranslationCreateMutation() {
   return Urql.useMutation<TranslationCreateMutation, TranslationCreateMutationVariables>(TranslationCreateDocument);
+};
+export const TranslationDeleteDocument = gql`
+    mutation translationDelete($translationID: Int!) {
+  translationDelete(translationID: $translationID) {
+    message
+    type
+  }
+}
+    `;
+
+export function useTranslationDeleteMutation() {
+  return Urql.useMutation<TranslationDeleteMutation, TranslationDeleteMutationVariables>(TranslationDeleteDocument);
 };
 export const TranslationUpdateDocument = gql`
     mutation translationUpdate($translationID: Int!, $texts: [TextInputCreate!]!, $code: String, $isBlocked: Boolean) {

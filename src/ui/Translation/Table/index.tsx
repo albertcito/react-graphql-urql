@@ -56,6 +56,7 @@ interface TranslationsTableProperties {
   onSelectLink?: (data: Translation, index: number) => void;
   onDelete?: (item: Translation, index: number) => void;
 }
+
 const TranslationsTable: React.FC<TranslationsTableProperties> = ({
   translations,
   langs,
