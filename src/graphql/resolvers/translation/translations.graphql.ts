@@ -25,13 +25,15 @@ const translationsQuery = gql`query translations(
       length
     }
     data {
-      translationID
+      id
       code
       texts {
+        id
         langID
         originalLangID
       }
       text(langID: $langID) {
+        id
         text
         langID
         originalLangID

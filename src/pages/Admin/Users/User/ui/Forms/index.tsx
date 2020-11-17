@@ -16,13 +16,13 @@ const UserForms: React.FC<UserFormsProperties> = ({ user }) => {
   return (
     <div>
       <Row gutter={16}>
-        <Tabs defaultActiveKey='name' style={{width: '100%'}}>
+        <Tabs defaultActiveKey='name' style={{ width: '100%' }}>
           <TabPane
             tab='Name'
             key='name'
           >
             <BasicForm
-              userID={user.userID}
+              userID={user.id}
               firstName={user.firstName}
               lastName={user.lastName}
             />
@@ -31,13 +31,13 @@ const UserForms: React.FC<UserFormsProperties> = ({ user }) => {
             tab='Email'
             key='email'
           >
-            <EmailForm userID={user.userID} email={user.email} />
+            <EmailForm userID={user.id} email={user.email} />
           </TabPane>
           <TabPane
             tab='Password'
             key='password'
           >
-            <PasswordForm email={user.email} userID={user.userID} />
+            <PasswordForm email={user.email} userID={user.id} />
           </TabPane>
         </Tabs>
       </Row>

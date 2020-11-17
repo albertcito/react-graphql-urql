@@ -9,7 +9,7 @@ interface Text {
 }
 
 interface Role {
-  roleID: string;
+  id: string;
   nameID: number;
   name: {
     text: string;
@@ -18,7 +18,7 @@ interface Role {
 }
 
 interface UseRole {
-  roleID: string;
+  id: string;
 }
 
 interface RolesFormProperties {
@@ -34,7 +34,7 @@ const UserRolesForm: React.FC<RolesFormProperties> = ({
   onSave,
   loading,
 }) => {
-  const defaultState = userRoles.reduce((ac, a) => ({ ...ac, [a.roleID]: true }), {}) ?? {};
+  const defaultState = userRoles.reduce((ac, a) => ({ ...ac, [a.id]: true }), {}) ?? {};
   const [rolesStatus, setRolesStatus] = useState<StructFormat<boolean>>(defaultState);
   return (
     <Spin spinning={loading}>
@@ -45,14 +45,14 @@ const UserRolesForm: React.FC<RolesFormProperties> = ({
         renderItem={(role) => (
           <List.Item
             actions={[<Switch
-              defaultChecked={verifyRolesUser(userRoles, role.roleID)}
+              defaultChecked={verifyRolesUser(userRoles, role.id)}
               onChange={(checked) => setRolesStatus(
-                (rolesStatus_) => set(rolesStatus_, role.roleID, checked),
+                (rolesStatus_) => set(rolesStatus_, role.id, checked),
               )}
             />]}
           >
             <List.Item.Meta
-              title={`${role.name.text} (${role.roleID})`}
+              title={`${role.name.text} (${role.id})`}
               description={role.description?.text}
             />
           </List.Item>

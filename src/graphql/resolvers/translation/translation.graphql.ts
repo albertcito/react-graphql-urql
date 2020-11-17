@@ -1,11 +1,12 @@
 import gql from 'graphql-tag';
 
-const translationsQuery = gql`query translation($translationID: Int!) {
-  translation(translationID: $translationID) {
-    translationID
+const translationsQuery = gql`query translation($id: Int!) {
+  translation(id: $id) {
+    id
     code
     isBlocked
     texts {
+      id
       text
       langID
       originalLangID

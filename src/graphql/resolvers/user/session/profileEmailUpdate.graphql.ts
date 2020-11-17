@@ -6,7 +6,7 @@ const profileEmailUpdate = gql`mutation profileUpdateEmail(
 ) {
   profileUpdateEmail(email: $email, password: $password) {
     data {
-      userID
+      id
       firstName
       lastName
       email

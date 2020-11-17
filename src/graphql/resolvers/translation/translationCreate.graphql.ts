@@ -3,9 +3,10 @@ import gql from 'graphql-tag';
 const translationCreate = gql`mutation translationCreate($texts: [TextInputCreate!]!){
   translationCreate(texts: $texts) {
     data {
-      translationID
+      id
       code
       texts {
+        id
         text
         langID
       }

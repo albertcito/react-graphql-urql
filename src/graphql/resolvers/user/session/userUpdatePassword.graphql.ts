@@ -1,9 +1,9 @@
 import gql from 'graphql-tag';
 
-const userUpdatePassword = gql`mutation userUpdatePassword($userID: Int!, $password: String!) {
-  userUpdatePassword(userID: $userID, password: $password) {
+const userUpdatePassword = gql`mutation userUpdatePassword($id: Int!, $password: String!) {
+  userUpdatePassword(id: $id, password: $password) {
     data {
-      userID
+      id
       firstName
       lastName
       email

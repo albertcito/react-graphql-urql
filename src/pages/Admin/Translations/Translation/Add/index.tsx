@@ -19,7 +19,7 @@ const Translation: React.FC<PageProperties> = ({ route }) => {
       const { message, type } = response.data.translationCreate.message;
       notification[type]({ message });
       const URL = route.location.pathname.replace('add', '');
-      const newUrl = `${URL}${response.data.translationCreate.data.translationID}`;
+      const newUrl = `${URL}${response.data.translationCreate.data.id}`;
       route.history.replace(newUrl);
     }
   }, [route.history, route.location.pathname, update]);

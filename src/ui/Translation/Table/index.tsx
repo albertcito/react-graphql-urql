@@ -11,7 +11,7 @@ import { ColumnTableProperties } from 'util/columns/base/ColumnTableProperties';
 import getLangColumns from 'util/columns/Langs/LangsColumn';
 
 interface Translation {
-  translationID: number;
+  id: number;
   code?: string;
   isBlocked?: boolean;
   text: {
@@ -72,12 +72,12 @@ const TranslationsTable: React.FC<TranslationsTableProperties> = ({
   const [search, setSearch] = useState('');
 
   const tableColumns = new TableColumns([
-    new IDColumn<Translation>({ indexID: 'translationID', orderBy: 'translation.translation_id' }),
+    new IDColumn<Translation>({ indexID: 'id', orderBy: 'translation.translation_id' }),
     new TextColumn<Translation>({ indexID: 'text', title: 'Text', getLink, onSelectLink }),
     ...getLangColumns('texts', langs, langID),
   ]);
   if (onSelect) {
-    tableColumns.append(new OnSelectColumn<Translation>({ indexID: 'translationID', onSelect }));
+    tableColumns.append(new OnSelectColumn<Translation>({ indexID: 'id', onSelect }));
   }
   if (onDelete) {
     tableColumns.append(new DeleteColumn({ onDelete }));
@@ -141,6 +141,7 @@ const TranslationsTable: React.FC<TranslationsTableProperties> = ({
           dataSource={translations}
           pagination={false}
           onChange={onChangeTable}
+          rowKey={(translation) => translation.id}
         />
         <PaginationUI
           pagination={pagination}

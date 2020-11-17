@@ -21,7 +21,7 @@ const useSession = (): UseSessionProperties => {
   const { setUser } = useContext(UserContext);
 
   const saveSession = useCallback((data: UserSession, accessToken?: string) => {
-    storage.setUserID(data.userID);
+    storage.setUserID(data.id);
     setUser(data);
     if (accessToken) {
       storage.setToken(accessToken);

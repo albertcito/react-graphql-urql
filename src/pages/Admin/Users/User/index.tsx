@@ -10,18 +10,18 @@ import UserContent from './UserContent';
 import { getViewCode } from './config';
 
 export interface UserRoute {
-  userID: string;
+  id: string;
 }
 
 const User: React.FC<PageProperties<UserRoute>> = ({ route }) => {
-  const userID = parseInt(route.match.params.userID, 10);
-  const [{ data, fetching, error }] = useUserQuery({ variables: { userID } });
+  const id = parseInt(route.match.params.id, 10);
+  const [{ data, fetching, error }] = useUserQuery({ variables: { id } });
 
   if (!data) {
     return <NoDataUrql fetching={fetching} error={error} />;
   }
 
-  const view = getViewCode(route.location.pathname, data.user.userID);
+  const view = getViewCode(route.location.pathname, data.user.id);
 
   return (
     <div className='content-width'>
@@ -34,7 +34,7 @@ const User: React.FC<PageProperties<UserRoute>> = ({ route }) => {
       <Divider />
       <Row gutter={16}>
         <Col span={6}>
-          <UserMenu userID={data.user.userID} view={view} />
+          <UserMenu userID={data.user.id} view={view} />
         </Col>
         <Col span={18}>
           <UserContent user={data.user} view={view} />

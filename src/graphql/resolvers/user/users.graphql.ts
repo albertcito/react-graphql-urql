@@ -11,7 +11,7 @@ const usersQuery = gql`query users($limit: Int, $page: Int, $orderBy: String, $o
       length
     }
     data {
-      userID
+      id
       firstName
       lastName
       email

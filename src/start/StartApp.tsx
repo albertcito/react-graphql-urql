@@ -1,6 +1,13 @@
 import React, { useRef } from 'react';
 import { IntlProvider } from 'react-intl';
-import { createClient, Provider, dedupExchange, cacheExchange, fetchExchange } from 'urql';
+import {
+  createClient,
+  Provider as URQLProvider,
+  dedupExchange,
+  fetchExchange,
+  // cacheExchange,
+} from 'urql';
+import { cacheExchange } from '@urql/exchange-graphcache';
 import { retryExchange } from '@urql/exchange-retry';
 
 import { GlobalContext, useGlobal } from 'use/global';
@@ -8,6 +15,8 @@ import Routes from './Routes';
 import constants from 'config/constants';
 import UserContext, { useUser } from 'use/user/UserContext';
 import { StorageItems } from 'util/Storage';
+import { removeByColumn } from 'util/stateHandler/items';
+import { TranslationsDocument } from 'graphql/generated';
 
 const GlobalStatus: React.FC = () => {
   const global = useGlobal();
@@ -24,6 +33,34 @@ const GlobalStatus: React.FC = () => {
   );
 };
 
+const cache = cacheExchange({
+  keys: {
+    Pagination: () => null,
+    TranslationPaginationResponse: () => 'TranslationPaginationResponse',
+    UserPaginationResponse: () => 'UserPaginationResponse',
+  },
+  updates: {
+    Mutation: {
+      translationDelete: (result, { id }, cache, info) => {
+        console.log(cache.readQuery({ query: TranslationsDocument }));
+        cache.updateQuery({ query: TranslationsDocument }, (data) => {
+          console.log(data, id);
+          // removeByColumn(data, 'translationID', translationID);
+          return data;
+        });
+      },
+      translationCreate: (result, { id }, cache, info) => {
+        console.log(cache.readQuery({ query: TranslationsDocument }));
+        cache.updateQuery({ query: TranslationsDocument }, (data) => {
+          console.log(data, id);
+          // removeByColumn(data, 'translationID', translationID);
+          return data;
+        });
+      }
+    },
+  },
+});
+
 const StartApp: React.FC = () => {
   const { setUser, ...props } = useUser();
   const client = useRef(createClient({
@@ -36,8 +73,8 @@ const StartApp: React.FC = () => {
       };
     },
     exchanges: [
+      cache,
       dedupExchange,
-      cacheExchange,
       retryExchange({
         retryIf: (error) => {
           if (error && error.response && error.response.status === 401) {
@@ -54,9 +91,9 @@ const StartApp: React.FC = () => {
   })).current;
   return (
     <UserContext.Provider value={{ ...props, setUser }}>
-      <Provider value={client}>
+      <URQLProvider value={client}>
         <GlobalStatus />
-      </Provider>
+      </URQLProvider>
     </UserContext.Provider>
   );
 };

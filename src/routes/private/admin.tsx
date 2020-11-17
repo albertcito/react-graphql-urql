@@ -15,14 +15,14 @@ const routes: RoutePropertiesParameters[] = [
   {
     component: User,
     exact: true,
-    path: '/admin/users/:userID',
-    params: { userID: 'asd' },
+    path: '/admin/users/:id',
+    params: { id: 'asd' },
   },
   {
     component: User,
     exact: true,
-    path: '/admin/users/:userID/roles',
-    params: { userID: 'asd' },
+    path: '/admin/users/:id/roles',
+    params: { id: 'asd' },
   },
   {
     component: Profile,
@@ -42,7 +42,7 @@ const routes: RoutePropertiesParameters[] = [
   {
     component: Translation,
     exact: true,
-    path: '/admin/translations/:translationID',
+    path: '/admin/translations/:id',
   },
 ];
 

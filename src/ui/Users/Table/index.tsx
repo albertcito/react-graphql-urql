@@ -10,7 +10,7 @@ import PaginationUI from 'ui/Pagination';
 import { ColumnTableProperties } from 'util/columns/base/ColumnTableProperties';
 
 export interface User {
-  userID: number;
+  id: number;
   email: string;
   fullName: string;
 }
@@ -52,12 +52,12 @@ const UsersTable: React.FC<UsersTableProperties> = ({
   const [search, setSearch] = useState('');
 
   const tableColumns = new TableColumns([
-    new IDColumn<User>({ indexID: 'userID', orderBy: 'user_id' }),
+    new IDColumn<User>({ indexID: 'id', orderBy: 'user_id' }),
     new StringColumn<User>({ indexID: 'fullName', title: 'Name', orderBy: 'first_name', getLink, onSelectLink }),
     new StringColumn<User>({ indexID: 'email', title: 'Email', orderBy: 'email', getLink, onSelectLink }),
   ]);
   if (onSelect) {
-    tableColumns.append(new OnSelectColumn<User>({ indexID: 'userID', onSelect }));
+    tableColumns.append(new OnSelectColumn<User>({ indexID: 'id', onSelect }));
   }
   if (onDelete) {
     tableColumns.append(new DeleteColumn({ onDelete }));
@@ -121,6 +121,7 @@ const UsersTable: React.FC<UsersTableProperties> = ({
           dataSource={users}
           pagination={false}
           onChange={onChangeTable}
+          rowKey={(user) => user.id}
         />
         <PaginationUI
           pagination={pagination}

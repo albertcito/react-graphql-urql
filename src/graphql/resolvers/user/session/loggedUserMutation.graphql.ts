@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 const loggedUserMutation = gql`mutation loggedUser {
   loggedUser {
-    userID
+    id
     email
     firstName
     lastName

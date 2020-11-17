@@ -14,7 +14,7 @@ const UserContent: React.FC<UserContentProperties> = ({ view, user }) => {
   switch (true) {
     case view === userViewEnum.roles: return <Roles user={user} />;
     case view === userViewEnum.profile: return <Forms user={user} />;
-    default: throw new Error(`The view "${view}" for the user ${user.userID} cannot be found`);
+    default: throw new Error(`The view "${view}" for the user ${user.id} cannot be found`);
   }
 };
 export default UserContent;

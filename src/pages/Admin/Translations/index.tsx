@@ -24,8 +24,8 @@ const Translations: React.FC<PageProperties> = ({ route }) => {
 
   const [{ fetching: deletingFetching }, onDeleteTranslation] = useTranslationDeleteMutation();
 
-  const onDelete = useCallback(async (translationID: number) => {
-    const response = await onDeleteTranslation({ translationID });
+  const onDelete = useCallback(async (id: number) => {
+    const response = await onDeleteTranslation({ id });
     if (response.data) {
       const { message, type } = response.data.translationDelete;
       notification[type]({ message });
@@ -53,8 +53,8 @@ const Translations: React.FC<PageProperties> = ({ route }) => {
         langs={langs}
         loading={fetching || deletingFetching}
         translations={data.translations.data}
-        onDelete={(item) => onDelete(item.translationID)}
-        getLink={(translation) => `${route.location.pathname}/${translation.translationID}`}
+        onDelete={(item) => onDelete(item.id)}
+        getLink={(translation) => `${route.location.pathname}/${translation.id}`}
         pagination={data.translations.pagination}
         fetchMore={({ page: page_, limit: limit_, search: search_, order: order_ }) => {
           setLimit(limit_);

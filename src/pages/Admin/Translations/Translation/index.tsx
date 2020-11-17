@@ -10,12 +10,12 @@ import TranslationForm from './Form/TranslationForm';
 import AlertError from 'ui/Alert/AlertError';
 
 export interface TranslationRoute {
-  translationID: string;
+  id: string;
 }
 
 const Translation: React.FC<PageProperties<TranslationRoute>> = ({ route }) => {
-  const translationID = parseInt(route.match.params.translationID, 10);
-  const [{ data, fetching, error }] = useTranslationQuery({ variables: { translationID } });
+  const id = parseInt(route.match.params.id, 10);
+  const [{ data, fetching, error }] = useTranslationQuery({ variables: { id } });
   const [{ data: langs, fetching: langsFetching, error: langsError }] = useLangsQuery();
   const [{ fetching: creating, error: creatingError }, create] = useTranslationUpdateMutation();
 
@@ -46,7 +46,7 @@ const Translation: React.FC<PageProperties<TranslationRoute>> = ({ route }) => {
         translation={data.translation}
         fetching={creating}
         error={creatingError}
-        onFinish={(values) => onUpdate({ ...values, translationID })}
+        onFinish={(values) => onUpdate({ ...values, id })}
         langs={langs.langs.data}
       />
     </div>

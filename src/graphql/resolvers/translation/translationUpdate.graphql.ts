@@ -1,21 +1,22 @@
 import gql from 'graphql-tag';
 
 const translationUpdate = gql`mutation translationUpdate(
-  $translationID: Int!
+  $id: Int!
   $texts: [TextInputCreate!]!
   $code: String
   $isBlocked: Boolean
 ) {
   translationUpdate(
-    translationID: $translationID
+    id: $id
     texts: $texts
     code: $code
     isBlocked: $isBlocked
   ) {
     data {
-      translationID
+      id
       code
       texts {
+        id
         text
         langID
       }

@@ -12,7 +12,7 @@ const PasswordForm: React.FC<PasswordFormProperties> = ({ email, userID }) => {
   const [{ fetching, error }, updatePasword] = useUserUpdatePasswordMutation();
 
   const onFinish = async ({ password }: OnFinishArguments) => {
-    const response = await updatePasword({ password, userID });
+    const response = await updatePasword({ password, id: userID });
     if (response.data) {
       const { message, type } = response.data.userUpdatePassword.message;
       notification[type]({ message });

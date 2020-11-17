@@ -31,7 +31,7 @@ const Users: React.FC<PageProperties> = ({ route }) => {
       <UsersTable
         loading={fetching}
         users={data.users.data}
-        getLink={(user: User) => `${route.location.pathname}/${user.userID}`}
+        getLink={(user: User) => `${route.location.pathname}/${user.id}`}
         pagination={data.users.pagination}
         fetchMore={({ page: page_, limit: limit_, search: search_, order: order_ }) => {
           setLimit(limit_);

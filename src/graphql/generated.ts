@@ -26,6 +26,7 @@ export type VText = {
   updatedAt: Scalars['String'];
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
+  id: Scalars['String'];
   text: Scalars['String'];
   langID: Scalars['String'];
   translationID: Scalars['Int'];
@@ -49,7 +50,7 @@ export type Role = {
   updatedAt: Scalars['String'];
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
-  roleID: RolesEnum;
+  id: RolesEnum;
   nameID: Scalars['Int'];
   descriptionID?: Maybe<Scalars['Int']>;
   names: Array<VText>;
@@ -80,7 +81,7 @@ export type User = {
   updatedAt: Scalars['String'];
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
-  userID: Scalars['Int'];
+  id: Scalars['Int'];
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   email: Scalars['String'];
@@ -96,7 +97,7 @@ export type OauthAccessToken = {
   updatedAt: Scalars['String'];
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
-  oauthAccessTokenID: Scalars['Int'];
+  id: Scalars['Int'];
   userID: Scalars['Int'];
   signature: Scalars['String'];
   token: Scalars['String'];
@@ -109,7 +110,7 @@ export type Lang = {
   updatedAt: Scalars['String'];
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
-  langID: Scalars['String'];
+  id: Scalars['String'];
   name: Scalars['String'];
   localname: Scalars['String'];
   active: Scalars['Boolean'];
@@ -133,7 +134,7 @@ export type Translation = {
   updatedAt: Scalars['String'];
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
-  translationID: Scalars['Int'];
+  id: Scalars['Int'];
   code: Scalars['String'];
   isBlocked: Scalars['Boolean'];
   texts: Array<VText>;
@@ -151,7 +152,7 @@ export type UserRole = {
   updatedAt: Scalars['String'];
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
-  userRoleID: Scalars['Int'];
+  id: Scalars['Int'];
 };
 
 export type UserStatus = {
@@ -160,7 +161,7 @@ export type UserStatus = {
   updatedAt: Scalars['String'];
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
-  userStatusID: UserStatusEnum;
+  id: UserStatusEnum;
   nameID: Scalars['Int'];
   descriptionID?: Maybe<Scalars['Int']>;
   available: Scalars['Boolean'];
@@ -203,7 +204,7 @@ export type UserToken = {
   updatedAt: Scalars['String'];
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
-  userTokenID: Scalars['Int'];
+  id: Scalars['Int'];
   userID: Scalars['Int'];
   token: Scalars['String'];
   type: Scalars['String'];
@@ -348,7 +349,7 @@ export type Query = {
 
 
 export type QueryLangArgs = {
-  langID: Scalars['String'];
+  id: Scalars['String'];
 };
 
 
@@ -359,7 +360,7 @@ export type QueryLangsArgs = {
 
 
 export type QueryRoleArgs = {
-  roleID: RolesEnum;
+  id: RolesEnum;
 };
 
 
@@ -370,7 +371,7 @@ export type QueryRolesArgs = {
 
 
 export type QueryTranslationArgs = {
-  translationID: Scalars['Int'];
+  id: Scalars['Int'];
 };
 
 
@@ -385,7 +386,7 @@ export type QueryTranslationsArgs = {
 
 
 export type QueryUserArgs = {
-  userID?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
 };
 
 
@@ -432,12 +433,12 @@ export type MutationLangCreateArgs = {
   active?: Maybe<Scalars['Boolean']>;
   localname: Scalars['String'];
   name: Scalars['String'];
-  langID: Scalars['String'];
+  id: Scalars['String'];
 };
 
 
 export type MutationLangDeleteArgs = {
-  langID: Scalars['String'];
+  id: Scalars['String'];
 };
 
 
@@ -446,19 +447,19 @@ export type MutationLangUpdateArgs = {
   active?: Maybe<Scalars['Boolean']>;
   localname: Scalars['String'];
   name: Scalars['String'];
-  langID: Scalars['String'];
+  id: Scalars['String'];
 };
 
 
 export type MutationRoleDeleteArgs = {
-  roleID: RolesEnum;
+  id: RolesEnum;
 };
 
 
 export type MutationRoleUpdateArgs = {
   descriptionID: Scalars['Int'];
   nameID: Scalars['Int'];
-  roleID: RolesEnum;
+  id: RolesEnum;
 };
 
 
@@ -470,7 +471,7 @@ export type MutationTranslationCreateArgs = {
 
 
 export type MutationTranslationDeleteArgs = {
-  translationID: Scalars['Int'];
+  id: Scalars['Int'];
 };
 
 
@@ -478,7 +479,7 @@ export type MutationTranslationUpdateArgs = {
   isBlocked?: Maybe<Scalars['Boolean']>;
   code?: Maybe<Scalars['String']>;
   texts: Array<TextInputCreate>;
-  translationID: Scalars['Int'];
+  id: Scalars['Int'];
 };
 
 
@@ -541,19 +542,19 @@ export type MutationSignUpArgs = {
 export type MutationUserBasicUpdateArgs = {
   lastName: Scalars['String'];
   firstName: Scalars['String'];
-  userID: Scalars['Int'];
+  id: Scalars['Int'];
 };
 
 
 export type MutationUserUpdateEmailArgs = {
   email: Scalars['String'];
-  userID: Scalars['Int'];
+  id: Scalars['Int'];
 };
 
 
 export type MutationUserUpdatePasswordArgs = {
   password: Scalars['String'];
-  userID: Scalars['Int'];
+  id: Scalars['Int'];
 };
 
 
@@ -572,21 +573,7 @@ export type LangsQuery = (
     { __typename?: 'LangPaginationResponse' }
     & { data: Array<(
       { __typename?: 'Lang' }
-      & Pick<Lang, 'langID' | 'localname' | 'name'>
-    )> }
-  ) }
-);
-
-export type LangsQueryPartialQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type LangsQueryPartialQuery = (
-  { __typename?: 'Query' }
-  & { langs: (
-    { __typename?: 'LangPaginationResponse' }
-    & { data: Array<(
-      { __typename?: 'Lang' }
-      & Pick<Lang, 'langID' | 'name'>
+      & Pick<Lang, 'id' | 'localname' | 'name'>
     )> }
   ) }
 );
@@ -603,20 +590,20 @@ export type RolesQuery = (
       & Pick<Pagination, 'from' | 'to' | 'total' | 'limit' | 'page' | 'length'>
     ), data: Array<(
       { __typename?: 'Role' }
-      & Pick<Role, 'roleID' | 'nameID' | 'descriptionID'>
+      & Pick<Role, 'id' | 'nameID' | 'descriptionID'>
       & { name: (
         { __typename?: 'VText' }
-        & Pick<VText, 'text'>
+        & Pick<VText, 'id' | 'text'>
       ), description?: Maybe<(
         { __typename?: 'VText' }
-        & Pick<VText, 'text'>
+        & Pick<VText, 'id' | 'text'>
       )> }
     )> }
   ) }
 );
 
 export type TranslationQueryVariables = Exact<{
-  translationID: Scalars['Int'];
+  id: Scalars['Int'];
 }>;
 
 
@@ -624,10 +611,10 @@ export type TranslationQuery = (
   { __typename?: 'Query' }
   & { translation: (
     { __typename?: 'Translation' }
-    & Pick<Translation, 'translationID' | 'code' | 'isBlocked'>
+    & Pick<Translation, 'id' | 'code' | 'isBlocked'>
     & { texts: Array<(
       { __typename?: 'VText' }
-      & Pick<VText, 'text' | 'langID' | 'originalLangID'>
+      & Pick<VText, 'id' | 'text' | 'langID' | 'originalLangID'>
     )> }
   ) }
 );
@@ -643,10 +630,10 @@ export type TranslationCreateMutation = (
     { __typename?: 'TranslationCreateResponse' }
     & { data: (
       { __typename?: 'Translation' }
-      & Pick<Translation, 'translationID' | 'code'>
+      & Pick<Translation, 'id' | 'code'>
       & { texts: Array<(
         { __typename?: 'VText' }
-        & Pick<VText, 'text' | 'langID'>
+        & Pick<VText, 'id' | 'text' | 'langID'>
       )> }
     ), message: (
       { __typename?: 'MessageField' }
@@ -656,7 +643,7 @@ export type TranslationCreateMutation = (
 );
 
 export type TranslationDeleteMutationVariables = Exact<{
-  translationID: Scalars['Int'];
+  id: Scalars['Int'];
 }>;
 
 
@@ -669,7 +656,7 @@ export type TranslationDeleteMutation = (
 );
 
 export type TranslationUpdateMutationVariables = Exact<{
-  translationID: Scalars['Int'];
+  id: Scalars['Int'];
   texts: Array<TextInputCreate>;
   code?: Maybe<Scalars['String']>;
   isBlocked?: Maybe<Scalars['Boolean']>;
@@ -682,10 +669,10 @@ export type TranslationUpdateMutation = (
     { __typename?: 'TranslationUpdateResponse' }
     & { data: (
       { __typename?: 'Translation' }
-      & Pick<Translation, 'translationID' | 'code'>
+      & Pick<Translation, 'id' | 'code'>
       & { texts: Array<(
         { __typename?: 'VText' }
-        & Pick<VText, 'text' | 'langID'>
+        & Pick<VText, 'id' | 'text' | 'langID'>
       )> }
     ), message: (
       { __typename?: 'MessageField' }
@@ -713,13 +700,13 @@ export type TranslationsQuery = (
       & Pick<Pagination, 'from' | 'to' | 'total' | 'limit' | 'page' | 'length'>
     ), data: Array<(
       { __typename?: 'Translation' }
-      & Pick<Translation, 'translationID' | 'code'>
+      & Pick<Translation, 'id' | 'code'>
       & { texts: Array<(
         { __typename?: 'VText' }
-        & Pick<VText, 'langID' | 'originalLangID'>
+        & Pick<VText, 'id' | 'langID' | 'originalLangID'>
       )>, text: (
         { __typename?: 'VText' }
-        & Pick<VText, 'text' | 'langID' | 'originalLangID'>
+        & Pick<VText, 'id' | 'text' | 'langID' | 'originalLangID'>
       ) }
     )> }
   ) }
@@ -732,7 +719,7 @@ export type LoggedUserMutation = (
   { __typename?: 'Mutation' }
   & { loggedUser: (
     { __typename?: 'User' }
-    & Pick<User, 'userID' | 'email' | 'firstName' | 'lastName' | 'fullName' | 'emailVerified'>
+    & Pick<User, 'id' | 'email' | 'firstName' | 'lastName' | 'fullName' | 'emailVerified'>
   ) }
 );
 
@@ -749,7 +736,7 @@ export type LoginMutation = (
     & Pick<LoginResponse, 'token'>
     & { user: (
       { __typename?: 'User' }
-      & Pick<User, 'userID' | 'firstName' | 'lastName' | 'fullName' | 'email' | 'createdAt' | 'updatedAt' | 'emailVerified'>
+      & Pick<User, 'id' | 'firstName' | 'lastName' | 'fullName' | 'email' | 'createdAt' | 'updatedAt' | 'emailVerified'>
     ) }
   ) }
 );
@@ -774,7 +761,7 @@ export type ProfileBasicUpdateMutation = (
     { __typename?: 'ProfileBasicUpdateResponse' }
     & { data: (
       { __typename?: 'User' }
-      & Pick<User, 'userID' | 'firstName' | 'lastName' | 'email'>
+      & Pick<User, 'id' | 'firstName' | 'lastName' | 'email'>
     ), message: (
       { __typename?: 'MessageField' }
       & Pick<MessageField, 'type' | 'message'>
@@ -794,7 +781,7 @@ export type ProfileUpdateEmailMutation = (
     { __typename?: 'ProfileUpdateEmailResponse' }
     & { data: (
       { __typename?: 'User' }
-      & Pick<User, 'userID' | 'firstName' | 'lastName' | 'email'>
+      & Pick<User, 'id' | 'firstName' | 'lastName' | 'email'>
     ), message: (
       { __typename?: 'MessageField' }
       & Pick<MessageField, 'type' | 'message'>
@@ -814,7 +801,7 @@ export type ProfileUpdatePasswordMutation = (
     { __typename?: 'ProfileUpdatePasswordResponse' }
     & { data: (
       { __typename?: 'User' }
-      & Pick<User, 'userID' | 'firstName' | 'lastName' | 'email'>
+      & Pick<User, 'id' | 'firstName' | 'lastName' | 'email'>
     ), message: (
       { __typename?: 'MessageField' }
       & Pick<MessageField, 'type' | 'message'>
@@ -823,7 +810,7 @@ export type ProfileUpdatePasswordMutation = (
 );
 
 export type UserBasicUpdateMutationVariables = Exact<{
-  userID: Scalars['Int'];
+  id: Scalars['Int'];
   firstName: Scalars['String'];
   lastName: Scalars['String'];
 }>;
@@ -835,7 +822,7 @@ export type UserBasicUpdateMutation = (
     { __typename?: 'UserBasicUpdateResponse' }
     & { data: (
       { __typename?: 'User' }
-      & Pick<User, 'userID' | 'firstName' | 'lastName' | 'email'>
+      & Pick<User, 'id' | 'firstName' | 'lastName' | 'email'>
     ), message: (
       { __typename?: 'MessageField' }
       & Pick<MessageField, 'type' | 'message'>
@@ -844,7 +831,7 @@ export type UserBasicUpdateMutation = (
 );
 
 export type UserUpdateEmailMutationVariables = Exact<{
-  userID: Scalars['Int'];
+  id: Scalars['Int'];
   email: Scalars['String'];
 }>;
 
@@ -855,7 +842,7 @@ export type UserUpdateEmailMutation = (
     { __typename?: 'UserUpdateEmailResponse' }
     & { data: (
       { __typename?: 'User' }
-      & Pick<User, 'userID' | 'firstName' | 'lastName' | 'email'>
+      & Pick<User, 'id' | 'firstName' | 'lastName' | 'email'>
     ), message: (
       { __typename?: 'MessageField' }
       & Pick<MessageField, 'type' | 'message'>
@@ -864,7 +851,7 @@ export type UserUpdateEmailMutation = (
 );
 
 export type UserUpdatePasswordMutationVariables = Exact<{
-  userID: Scalars['Int'];
+  id: Scalars['Int'];
   password: Scalars['String'];
 }>;
 
@@ -875,7 +862,7 @@ export type UserUpdatePasswordMutation = (
     { __typename?: 'UserUpdatePasswordResponse' }
     & { data: (
       { __typename?: 'User' }
-      & Pick<User, 'userID' | 'firstName' | 'lastName' | 'email'>
+      & Pick<User, 'id' | 'firstName' | 'lastName' | 'email'>
     ), message: (
       { __typename?: 'MessageField' }
       & Pick<MessageField, 'type' | 'message'>
@@ -898,7 +885,7 @@ export type UserRolesUpdateMutation = (
 );
 
 export type UserQueryVariables = Exact<{
-  userID: Scalars['Int'];
+  id: Scalars['Int'];
 }>;
 
 
@@ -906,10 +893,10 @@ export type UserQuery = (
   { __typename?: 'Query' }
   & { user: (
     { __typename?: 'User' }
-    & Pick<User, 'userID' | 'email' | 'firstName' | 'lastName' | 'fullName' | 'createdAt' | 'updatedAt' | 'emailVerified'>
+    & Pick<User, 'id' | 'email' | 'firstName' | 'lastName' | 'fullName' | 'createdAt' | 'updatedAt' | 'emailVerified'>
     & { roles: Array<(
       { __typename?: 'Role' }
-      & Pick<Role, 'roleID'>
+      & Pick<Role, 'id'>
     )> }
   ) }
 );
@@ -932,17 +919,17 @@ export type UsersQuery = (
       & Pick<Pagination, 'from' | 'to' | 'total' | 'limit' | 'page' | 'length'>
     ), data: Array<(
       { __typename?: 'User' }
-      & Pick<User, 'userID' | 'firstName' | 'lastName' | 'email' | 'createdAt' | 'updatedAt' | 'emailVerified' | 'fullName'>
+      & Pick<User, 'id' | 'firstName' | 'lastName' | 'email' | 'createdAt' | 'updatedAt' | 'emailVerified' | 'fullName'>
     )> }
   ) }
 );
 
 
 export const LangsDocument = gql`
-    query Langs {
+    query langs {
   langs {
     data {
-      langID
+      id
       localname
       name
     }
@@ -952,20 +939,6 @@ export const LangsDocument = gql`
 
 export function useLangsQuery(options: Omit<Urql.UseQueryArgs<LangsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<LangsQuery>({ query: LangsDocument, ...options });
-};
-export const LangsQueryPartialDocument = gql`
-    query langsQueryPartial {
-  langs {
-    data {
-      langID
-      name
-    }
-  }
-}
-    `;
-
-export function useLangsQueryPartialQuery(options: Omit<Urql.UseQueryArgs<LangsQueryPartialQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<LangsQueryPartialQuery>({ query: LangsQueryPartialDocument, ...options });
 };
 export const RolesDocument = gql`
     query roles {
@@ -979,12 +952,14 @@ export const RolesDocument = gql`
       length
     }
     data {
-      roleID
+      id
       nameID
       name {
+        id
         text
       }
       description {
+        id
         text
       }
       descriptionID
@@ -997,12 +972,13 @@ export function useRolesQuery(options: Omit<Urql.UseQueryArgs<RolesQueryVariable
   return Urql.useQuery<RolesQuery>({ query: RolesDocument, ...options });
 };
 export const TranslationDocument = gql`
-    query translation($translationID: Int!) {
-  translation(translationID: $translationID) {
-    translationID
+    query translation($id: Int!) {
+  translation(id: $id) {
+    id
     code
     isBlocked
     texts {
+      id
       text
       langID
       originalLangID
@@ -1018,9 +994,10 @@ export const TranslationCreateDocument = gql`
     mutation translationCreate($texts: [TextInputCreate!]!) {
   translationCreate(texts: $texts) {
     data {
-      translationID
+      id
       code
       texts {
+        id
         text
         langID
       }
@@ -1037,8 +1014,8 @@ export function useTranslationCreateMutation() {
   return Urql.useMutation<TranslationCreateMutation, TranslationCreateMutationVariables>(TranslationCreateDocument);
 };
 export const TranslationDeleteDocument = gql`
-    mutation translationDelete($translationID: Int!) {
-  translationDelete(translationID: $translationID) {
+    mutation translationDelete($id: Int!) {
+  translationDelete(id: $id) {
     message
     type
   }
@@ -1049,17 +1026,13 @@ export function useTranslationDeleteMutation() {
   return Urql.useMutation<TranslationDeleteMutation, TranslationDeleteMutationVariables>(TranslationDeleteDocument);
 };
 export const TranslationUpdateDocument = gql`
-    mutation translationUpdate($translationID: Int!, $texts: [TextInputCreate!]!, $code: String, $isBlocked: Boolean) {
-  translationUpdate(
-    translationID: $translationID
-    texts: $texts
-    code: $code
-    isBlocked: $isBlocked
-  ) {
+    mutation translationUpdate($id: Int!, $texts: [TextInputCreate!]!, $code: String, $isBlocked: Boolean) {
+  translationUpdate(id: $id, texts: $texts, code: $code, isBlocked: $isBlocked) {
     data {
-      translationID
+      id
       code
       texts {
+        id
         text
         langID
       }
@@ -1094,13 +1067,15 @@ export const TranslationsDocument = gql`
       length
     }
     data {
-      translationID
+      id
       code
       texts {
+        id
         langID
         originalLangID
       }
       text(langID: $langID) {
+        id
         text
         langID
         originalLangID
@@ -1116,7 +1091,7 @@ export function useTranslationsQuery(options: Omit<Urql.UseQueryArgs<Translation
 export const LoggedUserDocument = gql`
     mutation loggedUser {
   loggedUser {
-    userID
+    id
     email
     firstName
     lastName
@@ -1133,7 +1108,7 @@ export const LoginDocument = gql`
     mutation login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
     user {
-      userID
+      id
       firstName
       lastName
       fullName
@@ -1163,7 +1138,7 @@ export const ProfileBasicUpdateDocument = gql`
     mutation profileBasicUpdate($firstName: String!, $lastName: String!) {
   profileBasicUpdate(firstName: $firstName, lastName: $lastName) {
     data {
-      userID
+      id
       firstName
       lastName
       email
@@ -1183,7 +1158,7 @@ export const ProfileUpdateEmailDocument = gql`
     mutation profileUpdateEmail($email: String!, $password: String!) {
   profileUpdateEmail(email: $email, password: $password) {
     data {
-      userID
+      id
       firstName
       lastName
       email
@@ -1203,7 +1178,7 @@ export const ProfileUpdatePasswordDocument = gql`
     mutation profileUpdatePassword($password: String!, $newPassword: String!) {
   profileUpdatePassword(newPassword: $newPassword, password: $password) {
     data {
-      userID
+      id
       firstName
       lastName
       email
@@ -1220,10 +1195,10 @@ export function useProfileUpdatePasswordMutation() {
   return Urql.useMutation<ProfileUpdatePasswordMutation, ProfileUpdatePasswordMutationVariables>(ProfileUpdatePasswordDocument);
 };
 export const UserBasicUpdateDocument = gql`
-    mutation userBasicUpdate($userID: Int!, $firstName: String!, $lastName: String!) {
-  userBasicUpdate(userID: $userID, lastName: $lastName, firstName: $firstName) {
+    mutation userBasicUpdate($id: Int!, $firstName: String!, $lastName: String!) {
+  userBasicUpdate(id: $id, lastName: $lastName, firstName: $firstName) {
     data {
-      userID
+      id
       firstName
       lastName
       email
@@ -1240,10 +1215,10 @@ export function useUserBasicUpdateMutation() {
   return Urql.useMutation<UserBasicUpdateMutation, UserBasicUpdateMutationVariables>(UserBasicUpdateDocument);
 };
 export const UserUpdateEmailDocument = gql`
-    mutation userUpdateEmail($userID: Int!, $email: String!) {
-  userUpdateEmail(userID: $userID, email: $email) {
+    mutation userUpdateEmail($id: Int!, $email: String!) {
+  userUpdateEmail(id: $id, email: $email) {
     data {
-      userID
+      id
       firstName
       lastName
       email
@@ -1260,10 +1235,10 @@ export function useUserUpdateEmailMutation() {
   return Urql.useMutation<UserUpdateEmailMutation, UserUpdateEmailMutationVariables>(UserUpdateEmailDocument);
 };
 export const UserUpdatePasswordDocument = gql`
-    mutation userUpdatePassword($userID: Int!, $password: String!) {
-  userUpdatePassword(userID: $userID, password: $password) {
+    mutation userUpdatePassword($id: Int!, $password: String!) {
+  userUpdatePassword(id: $id, password: $password) {
     data {
-      userID
+      id
       firstName
       lastName
       email
@@ -1292,9 +1267,9 @@ export function useUserRolesUpdateMutation() {
   return Urql.useMutation<UserRolesUpdateMutation, UserRolesUpdateMutationVariables>(UserRolesUpdateDocument);
 };
 export const UserDocument = gql`
-    query user($userID: Int!) {
-  user(userID: $userID) {
-    userID
+    query user($id: Int!) {
+  user(id: $id) {
+    id
     email
     firstName
     lastName
@@ -1303,7 +1278,7 @@ export const UserDocument = gql`
     updatedAt
     emailVerified
     roles {
-      roleID
+      id
     }
   }
 }
@@ -1330,7 +1305,7 @@ export const UsersDocument = gql`
       length
     }
     data {
-      userID
+      id
       firstName
       lastName
       email

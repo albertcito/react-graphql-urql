@@ -8,7 +8,7 @@ import NoDataUrql from 'ui/NoDataUrql';
 import { TranslationCreateProperties } from './TranslationFormInterfaces';
 
 interface LangProperties {
-  langID: string;
+  id: string;
 }
 
 interface VText {
@@ -97,18 +97,18 @@ const TranslationForm: React.FC<TranslationFormProperties> = ({
         {
           langs.map((lang) => {
             let required = {};
-            if (lang.langID === 'EN') {
+            if (lang.id === 'EN') {
               required = {
                 required: true,
-                message: `This ${lang.langID} translations is required`,
+                message: `This ${lang.id} translations is required`,
               };
             }
             return (
               <Form.Item
                 className='form-item'
-                name={lang.langID}
-                label={lang.langID}
-                key={lang.langID}
+                name={lang.id}
+                label={lang.id}
+                key={lang.id}
                 rules={[required]}
               >
                 <Input.TextArea

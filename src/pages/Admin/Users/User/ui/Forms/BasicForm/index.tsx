@@ -15,7 +15,7 @@ const BasicForm: React.FC<UserProfileFormProperties> = ({ firstName, lastName, u
   const [{ fetching, error }, updateName] = useUserBasicUpdateMutation();
 
   const onFinish = async (values: FormArguments) => {
-    const response = await updateName({ ...values, userID });
+    const response = await updateName({ ...values, id: userID });
     if (response.data) {
       const { message, type } = response.data.userBasicUpdate.message;
       notification[type]({ message });

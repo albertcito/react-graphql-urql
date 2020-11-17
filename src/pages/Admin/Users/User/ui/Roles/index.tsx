@@ -15,7 +15,7 @@ const Roles: React.FC<RolesProperties> = ({ user }) => {
   const [{ fetching }, updateRoles] = useUserRolesUpdateMutation();
   const onSave = async (values: StructFormat<boolean>) => {
     const response = await updateRoles({
-      userID: user.userID,
+      userID: user.id,
       rolesID: Object.keys(values),
     });
     if (response.data) {

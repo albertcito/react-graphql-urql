@@ -1,9 +1,9 @@
 import gql from 'graphql-tag';
 
-const userBasicUpdate = gql`mutation userBasicUpdate($userID: Int!, $firstName: String!, $lastName: String!) {
-  userBasicUpdate(userID: $userID, lastName: $lastName, firstName: $firstName) {
+const userBasicUpdate = gql`mutation userBasicUpdate($id: Int!, $firstName: String!, $lastName: String!) {
+  userBasicUpdate(id: $id, lastName: $lastName, firstName: $firstName) {
     data {
-      userID
+      id
       firstName
       lastName
       email

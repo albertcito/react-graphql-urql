@@ -157,6 +157,22 @@
             "deprecationReason": null
           },
           {
+            "name": "id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "text",
             "description": null,
             "args": [],
@@ -378,7 +394,7 @@
             "deprecationReason": null
           },
           {
-            "name": "roleID",
+            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -606,7 +622,7 @@
             "deprecationReason": null
           },
           {
-            "name": "userID",
+            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -809,7 +825,7 @@
             "deprecationReason": null
           },
           {
-            "name": "oauthAccessTokenID",
+            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -956,7 +972,7 @@
             "deprecationReason": null
           },
           {
-            "name": "langID",
+            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -1218,7 +1234,7 @@
             "deprecationReason": null
           },
           {
-            "name": "translationID",
+            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -1384,7 +1400,7 @@
             "deprecationReason": null
           },
           {
-            "name": "userRoleID",
+            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -1467,7 +1483,7 @@
             "deprecationReason": null
           },
           {
-            "name": "userStatusID",
+            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -1826,7 +1842,7 @@
             "deprecationReason": null
           },
           {
-            "name": "userTokenID",
+            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -2849,7 +2865,7 @@
             "description": null,
             "args": [
               {
-                "name": "langID",
+                "name": "id",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
@@ -2917,7 +2933,7 @@
             "description": null,
             "args": [
               {
-                "name": "roleID",
+                "name": "id",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
@@ -2985,7 +3001,7 @@
             "description": null,
             "args": [
               {
-                "name": "translationID",
+                "name": "id",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
@@ -3053,7 +3069,7 @@
                   "name": "String",
                   "ofType": null
                 },
-                "defaultValue": "\"translation.translation_id\""
+                "defaultValue": "\"translation.id\""
               },
               {
                 "name": "limit",
@@ -3093,7 +3109,7 @@
             "description": null,
             "args": [
               {
-                "name": "userID",
+                "name": "id",
                 "description": null,
                 "type": {
                   "kind": "SCALAR",
@@ -3246,7 +3262,7 @@
                 "defaultValue": null
               },
               {
-                "name": "langID",
+                "name": "id",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
@@ -3277,7 +3293,7 @@
             "description": null,
             "args": [
               {
-                "name": "langID",
+                "name": "id",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
@@ -3356,7 +3372,7 @@
                 "defaultValue": null
               },
               {
-                "name": "langID",
+                "name": "id",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
@@ -3387,7 +3403,7 @@
             "description": null,
             "args": [
               {
-                "name": "roleID",
+                "name": "id",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
@@ -3446,7 +3462,7 @@
                 "defaultValue": null
               },
               {
-                "name": "roleID",
+                "name": "id",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
@@ -3536,7 +3552,7 @@
             "description": null,
             "args": [
               {
-                "name": "translationID",
+                "name": "id",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
@@ -3609,7 +3625,7 @@
                 "defaultValue": null
               },
               {
-                "name": "translationID",
+                "name": "id",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
@@ -4141,7 +4157,7 @@
                 "defaultValue": null
               },
               {
-                "name": "userID",
+                "name": "id",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
@@ -4186,7 +4202,7 @@
                 "defaultValue": null
               },
               {
-                "name": "userID",
+                "name": "id",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
@@ -4231,7 +4247,7 @@
                 "defaultValue": null
               },
               {
-                "name": "userID",
+                "name": "id",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",

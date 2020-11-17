@@ -14,7 +14,7 @@ const EmailForm: React.FC<EmailFormProperties> = ({ email, userID, onSuccess }) 
   const [{ fetching, error }, updateEmail] = useUserUpdateEmailMutation();
 
   const onFinish = async (email_: string) => {
-    const response = await updateEmail({ email: email_, userID });
+    const response = await updateEmail({ email: email_, id: userID });
     if (response.data) {
       const { message, type } = response.data.userUpdateEmail.message;
       notification[type]({ message });

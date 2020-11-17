@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
-const userQuery = gql`query user($userID: Int!) {
-  user(userID: $userID) {
-    userID
+const userQuery = gql`query user($id: Int!) {
+  user(id: $id) {
+    id
     email
     firstName
     lastName
@@ -11,7 +11,7 @@ const userQuery = gql`query user($userID: Int!) {
     updatedAt
     emailVerified
     roles {
-      roleID
+      id
     }
   }
 }`;
