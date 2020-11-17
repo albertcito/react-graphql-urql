@@ -1,11 +1,12 @@
 import React, { useContext } from 'react';
 import { RouteComponentProps, Redirect } from 'react-router-dom';
 import { Spin } from 'antd';
+import Validator from 'validatorjs';
 
 import { RoutePropertiesParameters } from 'routes/interfaces';
 import { isPrivate, RouteTypeEnum, isSession } from 'routes/routeTypes';
 import { GlobalLayout } from 'templates/';
-import { Error403 } from 'templates/errors';
+import { Error403, Error404 } from 'templates/errors';
 import LayoutPageProperties from 'templates/interfaces/LayoutPageProperties';
 import { GlobalContext } from 'use/global';
 import UserContext from 'use/user/UserContext';
@@ -33,6 +34,10 @@ const Auth: React.FC<AuthProperties> = ({ route, Template, reactRouter, type }) 
   }
   if (isSession(type) && user) {
     return <Redirect to='/' />;
+  }
+
+  if (route.params && (new Validator(reactRouter.match.params, route.params)).fails()) {
+    return <GlobalLayout Component={Error404} route={reactRouter} />;
   }
 
   const Layout = route.template ?? Template;

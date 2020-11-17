@@ -6,6 +6,8 @@ import Translations from '../../pages/Admin/Translations';
 import Translation from '../../pages/Admin/Translations/Translation';
 import TranslationAdd from '../../pages/Admin/Translations/Translation/Add';
 
+const id = 'required|integer|min:1';
+
 const routes: RoutePropertiesParameters[] = [
   {
     component: Users,
@@ -14,15 +16,13 @@ const routes: RoutePropertiesParameters[] = [
   },
   {
     component: User,
-    exact: true,
     path: '/admin/users/:id',
-    params: { id: 'asd' },
+    params: { id },
   },
   {
     component: User,
-    exact: true,
     path: '/admin/users/:id/roles',
-    params: { id: 'asd' },
+    params: { id },
   },
   {
     component: Profile,
@@ -43,6 +43,7 @@ const routes: RoutePropertiesParameters[] = [
     component: Translation,
     exact: true,
     path: '/admin/translations/:id',
+    params: { id },
   },
 ];
 

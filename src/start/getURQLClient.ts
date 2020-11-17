@@ -2,14 +2,14 @@ import {
   createClient,
   dedupExchange,
   fetchExchange,
-  // cacheExchange,
 } from 'urql';
 import { retryExchange } from '@urql/exchange-retry';
+// import { cacheExchange } from '@urql/exchange-graphcache';
 
 import constants from 'config/constants';
 import { StorageItems } from 'util/Storage';
-import { removeByColumn } from 'util/stateHandler/items';
-import { TranslationsDocument } from 'graphql/generated';
+// import { removeByColumn } from 'util/stateHandler/items';
+// import { TranslationsDocument } from 'graphql/generated';
 
 /*
 const cache = cacheExchange({
