@@ -19,7 +19,7 @@ export default function Error403() {
   return (
     <div className='content-width page-error'>
       <Exception
-        type='403'
+        type={403}
         title='Private'
         desc='This is a private area, you are not authorize to see it'
         actions={actions}

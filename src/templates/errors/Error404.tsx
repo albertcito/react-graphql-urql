@@ -19,7 +19,7 @@ export default function Error403() {
   return (
     <div className='content-width page-error'>
       <Exception
-        type='404'
+        type={404}
         title="We're Sorry!"
         desc='We can’t find the page you were trying to reach'
         actions={actions}

@@ -17,4 +17,5 @@ const UserContent: React.FC<UserContentProperties> = ({ view, user }) => {
     default: throw new Error(`The view "${view}" for the user ${user.id} cannot be found`);
   }
 };
+
 export default UserContent;
