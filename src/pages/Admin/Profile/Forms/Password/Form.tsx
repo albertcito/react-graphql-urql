@@ -13,13 +13,13 @@ export interface OnFinishArguments {
   confirmNewPassword: string;
 }
 
-interface PasswordProfileForm {
+interface PasswordProfileFormProperties {
   email: string;
   fetching: boolean;
   error?: CombinedError;
   onFinish: (values: OnFinishArguments) => void;
 }
-export const PasswordProfileForm: React.FC<PasswordProfileForm> = ({
+export const PasswordProfileForm: React.FC<PasswordProfileFormProperties> = ({
   email,
   fetching,
   error,

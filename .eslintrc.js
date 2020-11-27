@@ -90,5 +90,8 @@ module.exports = {
         "project": "src"
       }
     }
-  }
+  },
+  "parserOptions": {
+    "project":["tsconfig.json"]
+  },
 }
