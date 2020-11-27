@@ -10,9 +10,9 @@ class Storage {
 
   private readonly langID = StorageItems.langID;
 
-  public getUserID(): number | null {
+  public getUserID(): number | undefined {
     const userID = localStorage.getItem(this.userID);
-    return userID ? parseInt(userID, 10) : null;
+    return userID ? Number.parseInt(userID, 10) : undefined;
   }
 
   public setUserID(userID: number) {

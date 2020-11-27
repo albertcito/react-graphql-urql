@@ -51,7 +51,7 @@ const useSession = (): UseSessionProperties => {
    */
   const delSession = useCallback((): void => {
     storage.logout();
-    setUser(undefined);
+    setUser();
   }, [setUser]);
 
   return {

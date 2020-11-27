@@ -14,7 +14,7 @@ export interface TranslationRoute {
 }
 
 const Translation: React.FC<PageProperties<TranslationRoute>> = ({ route }) => {
-  const id = parseInt(route.match.params.id, 10);
+  const id = Number.parseInt(route.match.params.id, 10);
   const [{ data, fetching, error }] = useTranslationQuery({ variables: { id } });
   const [{ data: langs, fetching: langsFetching, error: langsError }] = useLangsQuery();
   const [{ fetching: creating, error: creatingError }, create] = useTranslationUpdateMutation();

@@ -16,8 +16,8 @@ interface LangColumnProperties<T> extends ColumnTableProperties {
 }
 const isAvaliable = (texts: VText[], langID: string) => {
   // eslint-disable-next-line unicorn/no-for-loop
-  for (let i = 0; i < texts.length; i += 1) {
-    const text = texts[i];
+  for (let index = 0; index < texts.length; index += 1) {
+    const text = texts[index];
     if (text.originalLangID === langID) { return true; }
   }
   return false;

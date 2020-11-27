@@ -34,6 +34,7 @@ const UserRolesForm: React.FC<RolesFormProperties> = ({
   onSave,
   loading,
 }) => {
+  // eslint-disable-next-line unicorn/no-reduce
   const defaultState = userRoles.reduce((ac, a) => ({ ...ac, [a.id]: true }), {}) ?? {};
   const [rolesStatus, setRolesStatus] = useState<StructFormat<boolean>>(defaultState);
   return (

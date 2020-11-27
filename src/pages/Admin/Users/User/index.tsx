@@ -14,7 +14,7 @@ export interface UserRoute {
 }
 
 const User: React.FC<PageProperties<UserRoute>> = ({ route }) => {
-  const id = parseInt(route.match.params.id, 10);
+  const id = Number.parseInt(route.match.params.id, 10);
   const [{ data, fetching, error }] = useUserQuery({ variables: { id } });
 
   if (!data) {
