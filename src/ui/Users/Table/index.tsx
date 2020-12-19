@@ -66,7 +66,7 @@ const UsersTable: React.FC<UsersTableProperties> = ({
 
   const onChangeTable = (
     _pagination: TablePaginationConfig,
-    _filters: Record<string, Key[] | null>,
+    _filters: Record<string, (Key | boolean)[] | null>,
     sorter: SorterResult<User> | SorterResult<User>[],
   ) => {
     if (Array.isArray(sorter)) { return; }

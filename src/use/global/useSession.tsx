@@ -36,13 +36,9 @@ const useSession = (): UseSessionProperties => {
    * @param userID: number
    */
   const getSession = useCallback(async () => {
-    try {
-      const response = await getLoggedUser();
-      if (response.data) {
-        saveSession(response.data.loggedUser);
-      }
-    } catch (error) {
-      console.log(error);
+    const response = await getLoggedUser();
+    if (response.data) {
+      saveSession(response.data.loggedUser);
     }
   }, [getLoggedUser, saveSession]);
 

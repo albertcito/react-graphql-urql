@@ -86,7 +86,7 @@ const TranslationsTable: React.FC<TranslationsTableProperties> = ({
 
   const onChangeTable = (
     _pagination: TablePaginationConfig,
-    _filters: Record<string, Key[] | null>,
+    _filters: Record<string, (Key | boolean)[] | null>,
     sorter: SorterResult<Translation> | SorterResult<Translation>[],
   ) => {
     if (Array.isArray(sorter)) { return; }

@@ -1,11 +1,11 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { IntlProvider } from 'react-intl';
 import { Provider as URQLProvider } from 'urql';
 
 import { GlobalContext, useGlobal } from 'use/global';
 import Routes from './Routes';
 import UserContext, { useUser } from 'use/user/UserContext';
-import getURQLClient from './getURQLClient';
+import getURQLClient from './urql/getURQLClient';
 
 const GlobalStatus: React.FC = () => {
   const global = useGlobal();
@@ -22,9 +22,9 @@ const GlobalStatus: React.FC = () => {
   );
 };
 
+const urql = getURQLClient();
 const StartApp: React.FC = () => {
   const { setUser, ...props } = useUser();
-  const urql = useRef(getURQLClient(setUser)).current;
   return (
     <UserContext.Provider value={{ ...props, setUser }}>
       <URQLProvider value={urql}>

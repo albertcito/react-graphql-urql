@@ -39,6 +39,7 @@ class Storage {
 
   public logout() {
     localStorage.removeItem(this.userID);
+    localStorage.removeItem(this.langID);
     localStorage.removeItem(this.accessToken);
   }
 }
