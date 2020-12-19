@@ -3,12 +3,25 @@ import {
   dedupExchange,
   cacheExchange,
   fetchExchange,
+  errorExchange,
+  CombinedError,
 } from 'urql';
-// import { retryExchange } from '@urql/exchange-retry';
 
 import constants from 'config/constants';
 import storage from 'util/Storage';
-// import cacheExchange from './cacheExchange';
+
+const onError = (error: CombinedError) => {
+  if (error.response?.status === 401) {
+    storage.logout();
+    /**
+    * TO DO:
+    * - Reset all the cache and global status.
+    * - Remove user from global session -> It will display private area.
+    * - Remove redirect.
+    */
+    window.location.href = '/';
+  }
+};
 
 const client = () => createClient({
   url: `${constants.urlServer}/graphql`,
@@ -22,15 +35,7 @@ const client = () => createClient({
   exchanges: [
     dedupExchange,
     cacheExchange,
-    /* retryExchange({
-      retryIf: (error) => {
-        if (error && error.response && error.response.status === 401) {
-          setUser();
-          storage.logout();
-        }
-        return false;
-      },
-    }), */
+    errorExchange({ onError }),
     fetchExchange,
   ],
 });
