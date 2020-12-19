@@ -25,6 +25,8 @@ const LoginForm: React.FC<LoginFormProperties> = ({ doLogin, fetching, error }) 
     doLogin(email, password);
   };
 
+  const initialValues = { email: 'admin@albertcito.com', password: 'Hola12345' };
+
   return (
     <Spin spinning={fetching}>
       <div className='modal session-form'>
@@ -32,7 +34,7 @@ const LoginForm: React.FC<LoginFormProperties> = ({ doLogin, fetching, error }) 
           Login
         </h2>
         {error && <AlertError error={error} />}
-        <Form onFinish={onSubmit} initialValues={{ email: 'me@albertcito.com', password: 'Hola12345' }}>
+        <Form onFinish={onSubmit} initialValues={initialValues}>
           <Form.Item
             name='email'
             rules={[
