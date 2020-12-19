@@ -6,6 +6,7 @@ import {
   errorExchange,
   CombinedError,
 } from 'urql';
+import { devtoolsExchange } from '@urql/devtools';
 
 import constants from 'config/constants';
 import storage from 'util/Storage';
@@ -33,6 +34,7 @@ const client = () => createClient({
     };
   },
   exchanges: [
+    devtoolsExchange,
     dedupExchange,
     cacheExchange,
     errorExchange({ onError }),
