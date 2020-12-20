@@ -11,10 +11,10 @@ import AlertError from 'ui/Alert/AlertError';
 
 const Translation: React.FC<PageProperties> = ({ route }) => {
   const [{ data: langs, fetching: langsFetching, error: langsError }] = useLangsQuery();
-  const [{ fetching: updating, error: updateError }, update] = useTranslationCreateMutation();
+  const [{ fetching: creating, error: updateError }, create] = useTranslationCreateMutation();
 
-  const onUpdate = useCallback(async (values) => {
-    const response = await update(values);
+  const onCreate = useCallback(async (values) => {
+    const response = await create(values);
     if (response.data) {
       const { message, type } = response.data.translationCreate.message;
       notification[type]({ message });
@@ -22,7 +22,7 @@ const Translation: React.FC<PageProperties> = ({ route }) => {
       const newUrl = `${URL}${response.data.translationCreate.data.id}`;
       route.history.replace(newUrl);
     }
-  }, [route.history, route.location.pathname, update]);
+  }, [route.history, route.location.pathname, create]);
 
   if (!langs) {
     return <NoDataUrql fetching={langsFetching} error={langsError} />;
@@ -35,9 +35,9 @@ const Translation: React.FC<PageProperties> = ({ route }) => {
       </Title>
       {langsError && <AlertError error={langsError} />}
       <TranslationForm
-        fetching={updating}
+        fetching={creating}
         error={updateError}
-        onFinish={onUpdate}
+        onFinish={onCreate}
         langs={langs.langs.data}
       />
     </div>

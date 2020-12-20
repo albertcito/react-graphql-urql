@@ -23,7 +23,7 @@ const ProfileView: React.FC<ProfileViewPorperties> = ({
       Profile
     </Title>
     <UserTitle {...{
-      name: user.fullName,
+      name: user.firstName,
       emailVerified: user.emailVerified,
       userStatusID: 'active',
     }}

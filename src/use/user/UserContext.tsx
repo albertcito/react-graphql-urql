@@ -15,7 +15,12 @@ export const useUser = (): UseUserReturn => {
     setUser((data) => ({ ...data, email }) as LoggedUserMutation['loggedUser']);
   }, []);
   const setName = useCallback((firstName: string, lastName: string) => {
-    setUser((data) => ({ ...data, firstName, lastName }) as LoggedUserMutation['loggedUser']);
+    setUser((data) => ({
+      ...data,
+      firstName,
+      lastName,
+      fullName: `${firstName} ${lastName}`,
+    }) as LoggedUserMutation['loggedUser']);
   }, []);
   return {
     user,

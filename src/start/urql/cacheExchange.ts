@@ -1,30 +1,34 @@
 /* eslint-disable unicorn/no-null */
-/* eslint-disable max-len */
 import { cacheExchange as cacheExchangeURQL } from '@urql/exchange-graphcache';
-
-// import { TranslationsDocument } from 'graphql/generated';
 
 const cacheExchange = cacheExchangeURQL({
   keys: {
+    LangPaginationResponse: () => null,
     Pagination: () => null,
     TranslationPaginationResponse: () => null,
     UserPaginationResponse: () => null,
   },
   updates: {
     Mutation: {
-      translationDelete: (_result, { id }, cache) => {
-        // cache.invalidate evicts the entity from the cache, do note that
-        // I'm not sure about the typename I'm making an example
-        // https://formidable.com/open-source/urql/docs/graphcache/custom-updates/#cacheinvalidate
-        // console.log(cache.readQuery({ query: TranslationsDocument }));
+      translationDelete: (_result, _arguments, cache) => {
+        const allFields = cache.inspectFields('Query');
+        const translationsQueries = allFields.filter((x) => x.fieldName === 'translations');
+        translationsQueries.forEach(({ fieldName, arguments: variables }) => {
+          cache.invalidate('Query', fieldName, variables ?? undefined);
+        });
+      },
+      translationUpdate: (_result, { id }, cache) => {
         if (typeof id === 'number') {
           cache.invalidate({ __typename: 'Translation', id });
         }
-        // To use cache.readQuery you'll probably have to use the variables
-        // passed into this document.
-        // cache.inspectFields might be worth looking at:
+      },
+      translationCreate: (_result, _arguments, cache) => {
         // https://formidable.com/open-source/urql/docs/graphcache/custom-updates/#cacheinspectfields
-        // console.log(cache.readQuery({ query: TranslationsDocument }));
+        const allFields = cache.inspectFields('Query');
+        const translationsQueries = allFields.filter((x) => x.fieldName === 'translations');
+        translationsQueries.forEach(({ fieldName, arguments: variables }) => {
+          cache.invalidate('Query', fieldName, variables ?? undefined);
+        });
       },
     },
   },

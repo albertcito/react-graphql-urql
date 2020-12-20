@@ -17,15 +17,15 @@ const Translation: React.FC<PageProperties<TranslationRoute>> = ({ route }) => {
   const id = Number.parseInt(route.match.params.id, 10);
   const [{ data, fetching, error }] = useTranslationQuery({ variables: { id } });
   const [{ data: langs, fetching: langsFetching, error: langsError }] = useLangsQuery();
-  const [{ fetching: creating, error: creatingError }, create] = useTranslationUpdateMutation();
+  const [{ fetching: updating, error: creatingError }, update] = useTranslationUpdateMutation();
 
   const onUpdate = useCallback(async (values) => {
-    const response = await create(values);
+    const response = await update(values);
     if (response.data) {
       const { message, type } = response.data.translationUpdate.message;
       notification[type]({ message });
     }
-  }, [create]);
+  }, [update]);
 
   if (!data) {
     return <NoDataUrql fetching={fetching} error={error} />;
@@ -44,7 +44,7 @@ const Translation: React.FC<PageProperties<TranslationRoute>> = ({ route }) => {
       {langsError && <AlertError error={langsError} />}
       <TranslationForm
         translation={data.translation}
-        fetching={creating}
+        fetching={updating}
         error={creatingError}
         onFinish={(values) => onUpdate({ ...values, id })}
         langs={langs.langs.data}
