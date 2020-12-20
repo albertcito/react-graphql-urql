@@ -9,6 +9,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@urql/core": "^1.14.1",
     "@urql/devtools": "^2.0.2",
+    "@urql/exchange-graphcache": "^3.3.3",
     "antd": "^4.7.3",
     "axios": "0.21.0",
     "classnames": "^2.2.6",

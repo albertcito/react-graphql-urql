@@ -1,7 +1,6 @@
 import {
   createClient,
   dedupExchange,
-  cacheExchange,
   fetchExchange,
   errorExchange,
   CombinedError,
@@ -10,6 +9,7 @@ import { devtoolsExchange } from '@urql/devtools';
 
 import constants from 'config/constants';
 import storage from 'util/Storage';
+import cacheExchange from './cacheExchange';
 
 const onError = (error: CombinedError) => {
   if (error.response?.status === 401) {
