@@ -8,3 +8,4 @@ dist
 src/serviceWorker.ts
 react-app-env.d.ts
 src/graphql/generated.ts
+.eslintrc.js

@@ -18,7 +18,7 @@ const cacheExchange = cacheExchangeURQL({
         // https://formidable.com/open-source/urql/docs/graphcache/custom-updates/#cacheinvalidate
         // console.log(cache.readQuery({ query: TranslationsDocument }));
         if (typeof id === 'number') {
-          cache.invalidate({ __typename: 'TranslationsDocument', id });
+          cache.invalidate({ __typename: 'Translation', id });
         }
         // To use cache.readQuery you'll probably have to use the variables
         // passed into this document.
