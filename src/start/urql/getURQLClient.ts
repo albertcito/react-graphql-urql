@@ -9,7 +9,7 @@ import { devtoolsExchange } from '@urql/devtools';
 
 import constants from 'config/constants';
 import storage from 'util/Storage';
-import cacheExchange from './cacheExchange';
+import cacheExchange from './cacheExchange/cacheExchange';
 
 const onError = (error: CombinedError) => {
   if (error.response?.status === 401) {

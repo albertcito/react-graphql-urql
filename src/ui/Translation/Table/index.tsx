@@ -72,7 +72,7 @@ const TranslationsTable: React.FC<TranslationsTableProperties> = ({
   const [search, setSearch] = useState('');
 
   const tableColumns = new TableColumns([
-    new IDColumn<Translation>({ indexID: 'id', orderBy: 'translation.translation_id' }),
+    new IDColumn<Translation>({ indexID: 'id', orderBy: 'id' }),
     new TextColumn<Translation>({ indexID: 'text', title: 'Text', getLink, onSelectLink }),
     ...getLangColumns('texts', langs, langID),
   ]);
