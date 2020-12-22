@@ -30,7 +30,7 @@ const UserMenu = ({ userID, view }: UserMenuProperties) => (
       </Link>
     </Menu.Item>
     <Menu.Item key='status-log' icon={<IssuesCloseOutlined />}>
-      <Link to={`/admin/users/${userID}/roles`}>
+      <Link to={`/admin/users/${userID}/status-log`}>
         Status Log
       </Link>
     </Menu.Item>

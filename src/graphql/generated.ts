@@ -2,6 +2,8 @@ import gql from 'graphql-tag';
 import * as Urql from 'urql';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -22,10 +24,6 @@ export type BaseDataEntity = {
 
 export type VText = {
   __typename?: 'VText';
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-  createdBy?: Maybe<Scalars['Int']>;
-  updatedBy?: Maybe<Scalars['Int']>;
   id: Scalars['String'];
   text: Scalars['String'];
   langID: Scalars['String'];
@@ -193,6 +191,7 @@ export type UserStatusReason = {
   updatedAt: Scalars['String'];
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
+  id: Scalars['Int'];
   userID: Scalars['Int'];
   userStatusID: UserStatusEnum;
   reason: Scalars['String'];
@@ -324,6 +323,12 @@ export type UserUpdatePasswordResponse = {
   message: MessageField;
 };
 
+export type UserStatusReasonPaginationResponse = {
+  __typename?: 'UserStatusReasonPaginationResponse';
+  data: Array<UserStatusReason>;
+  pagination: Pagination;
+};
+
 export type UserPaginationResponse = {
   __typename?: 'UserPaginationResponse';
   data: Array<User>;
@@ -343,6 +348,7 @@ export type Query = {
   roles: RolePaginationResponse;
   translation: Translation;
   translations: TranslationPaginationResponse;
+  userStatusReasons: UserStatusReasonPaginationResponse;
   user: User;
   users: UserPaginationResponse;
 };
@@ -382,6 +388,15 @@ export type QueryTranslationsArgs = {
   orderBy?: Maybe<Scalars['String']>;
   limit?: Maybe<Scalars['Int']>;
   page?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryUserStatusReasonsArgs = {
+  order?: Maybe<Scalars['String']>;
+  orderBy?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+  userID: Scalars['Int'];
 };
 
 
@@ -712,6 +727,20 @@ export type TranslationsQuery = (
   ) }
 );
 
+export type UserRolesUpdateMutationVariables = Exact<{
+  userID: Scalars['Int'];
+  rolesID: Array<Scalars['String']>;
+}>;
+
+
+export type UserRolesUpdateMutation = (
+  { __typename?: 'Mutation' }
+  & { userRolesUpdate: (
+    { __typename?: 'MessageField' }
+    & Pick<MessageField, 'message' | 'type'>
+  ) }
+);
+
 export type LoggedUserMutationVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -870,17 +899,26 @@ export type UserUpdatePasswordMutation = (
   ) }
 );
 
-export type UserRolesUpdateMutationVariables = Exact<{
+export type UserStatusReasonsQueryVariables = Exact<{
   userID: Scalars['Int'];
-  rolesID: Array<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Scalars['String']>;
+  order?: Maybe<Scalars['String']>;
 }>;
 
 
-export type UserRolesUpdateMutation = (
-  { __typename?: 'Mutation' }
-  & { userRolesUpdate: (
-    { __typename?: 'MessageField' }
-    & Pick<MessageField, 'message' | 'type'>
+export type UserStatusReasonsQuery = (
+  { __typename?: 'Query' }
+  & { userStatusReasons: (
+    { __typename?: 'UserStatusReasonPaginationResponse' }
+    & { pagination: (
+      { __typename?: 'Pagination' }
+      & Pick<Pagination, 'from' | 'to' | 'total' | 'limit' | 'page' | 'length'>
+    ), data: Array<(
+      { __typename?: 'UserStatusReason' }
+      & Pick<UserStatusReason, 'id' | 'userID' | 'userStatusID' | 'reason'>
+    )> }
   ) }
 );
 
@@ -1088,6 +1126,18 @@ export const TranslationsDocument = gql`
 export function useTranslationsQuery(options: Omit<Urql.UseQueryArgs<TranslationsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<TranslationsQuery>({ query: TranslationsDocument, ...options });
 };
+export const UserRolesUpdateDocument = gql`
+    mutation userRolesUpdate($userID: Int!, $rolesID: [String!]!) {
+  userRolesUpdate(userID: $userID, rolesID: $rolesID) {
+    message
+    type
+  }
+}
+    `;
+
+export function useUserRolesUpdateMutation() {
+  return Urql.useMutation<UserRolesUpdateMutation, UserRolesUpdateMutationVariables>(UserRolesUpdateDocument);
+};
 export const LoggedUserDocument = gql`
     mutation loggedUser {
   loggedUser {
@@ -1254,17 +1304,35 @@ export const UserUpdatePasswordDocument = gql`
 export function useUserUpdatePasswordMutation() {
   return Urql.useMutation<UserUpdatePasswordMutation, UserUpdatePasswordMutationVariables>(UserUpdatePasswordDocument);
 };
-export const UserRolesUpdateDocument = gql`
-    mutation userRolesUpdate($userID: Int!, $rolesID: [String!]!) {
-  userRolesUpdate(userID: $userID, rolesID: $rolesID) {
-    message
-    type
+export const UserStatusReasonsDocument = gql`
+    query userStatusReasons($userID: Int!, $limit: Int, $page: Int, $orderBy: String, $order: String) {
+  userStatusReasons(
+    userID: $userID
+    limit: $limit
+    page: $page
+    orderBy: $orderBy
+    order: $order
+  ) {
+    pagination {
+      from
+      to
+      total
+      limit
+      page
+      length
+    }
+    data {
+      id
+      userID
+      userStatusID
+      reason
+    }
   }
 }
     `;
 
-export function useUserRolesUpdateMutation() {
-  return Urql.useMutation<UserRolesUpdateMutation, UserRolesUpdateMutationVariables>(UserRolesUpdateDocument);
+export function useUserStatusReasonsQuery(options: Omit<Urql.UseQueryArgs<UserStatusReasonsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<UserStatusReasonsQuery>({ query: UserStatusReasonsDocument, ...options });
 };
 export const UserDocument = gql`
     query user($id: Int!) {

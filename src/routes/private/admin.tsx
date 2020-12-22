@@ -25,6 +25,11 @@ const routes: RoutePropertiesParameters[] = [
     params: { id },
   },
   {
+    component: User,
+    path: '/admin/users/:id/status-log',
+    params: { id },
+  },
+  {
     component: Profile,
     exact: true,
     path: '/admin/profile',
