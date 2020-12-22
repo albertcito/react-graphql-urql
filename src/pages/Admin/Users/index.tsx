@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Title from 'antd/lib/typography/Title';
 import { FormattedMessage } from 'react-intl';
 
+import useWindowTitle from 'util/windowTitle/useWindowTitle';
 import { useUsersQuery } from 'graphql/generated';
 import UsersTable, { User } from 'ui/Users/Table';
 import AlertError from 'ui/Alert/AlertError';
@@ -17,7 +18,7 @@ const Users: React.FC<PageProperties> = ({ route }) => {
   const [{ data, fetching, error }] = useUsersQuery(
     { variables: { limit, page, search, order, orderBy } },
   );
-
+  useWindowTitle('Users');
   if (!data) {
     return <NoDataUrql fetching={fetching} error={error} />;
   }

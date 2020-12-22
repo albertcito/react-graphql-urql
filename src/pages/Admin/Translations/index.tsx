@@ -3,6 +3,7 @@ import Title from 'antd/lib/typography/Title';
 import { FormattedMessage } from 'react-intl';
 import { notification } from 'antd';
 
+import useWindowTitle from 'util/windowTitle/useWindowTitle';
 import { useTranslationsQuery, useTranslationDeleteMutation } from 'graphql/generated';
 import AlertError, { getErrors } from 'ui/Alert/AlertError';
 import NoDataUrql from 'ui/NoDataUrql';
@@ -23,7 +24,7 @@ const Translations: React.FC<PageProperties> = ({ route }) => {
   );
 
   const [{ fetching: deletingFetching }, onDeleteTranslation] = useTranslationDeleteMutation();
-
+  useWindowTitle('Translations');
   const onDelete = useCallback(async (id: number) => {
     const response = await onDeleteTranslation({ id });
     if (response.data) {

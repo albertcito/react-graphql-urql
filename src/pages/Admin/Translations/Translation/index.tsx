@@ -3,6 +3,7 @@ import Title from 'antd/lib/typography/Title';
 import { FormattedMessage } from 'react-intl';
 import { notification } from 'antd';
 
+import useWindowTitle from 'util/windowTitle/useWindowTitle';
 import PageProperties from 'routes/PageProperties';
 import { useTranslationQuery, useLangsQuery, useTranslationUpdateMutation } from 'graphql/generated';
 import NoDataUrql from 'ui/NoDataUrql';
@@ -18,7 +19,7 @@ const Translation: React.FC<PageProperties<TranslationRoute>> = ({ route }) => {
   const [{ data, fetching, error }] = useTranslationQuery({ variables: { id } });
   const [{ data: langs, fetching: langsFetching, error: langsError }] = useLangsQuery();
   const [{ fetching: updating, error: creatingError }, update] = useTranslationUpdateMutation();
-
+  useWindowTitle(`Update translation "${data?.translation.code}"`);
   const onUpdate = useCallback(async (values) => {
     const response = await update(values);
     if (response.data) {

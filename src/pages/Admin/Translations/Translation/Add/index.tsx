@@ -3,6 +3,7 @@ import Title from 'antd/lib/typography/Title';
 import { FormattedMessage } from 'react-intl';
 import { notification } from 'antd';
 
+import useWindowTitle from 'util/windowTitle/useWindowTitle';
 import PageProperties from 'routes/PageProperties';
 import { useLangsQuery, useTranslationCreateMutation } from 'graphql/generated';
 import NoDataUrql from 'ui/NoDataUrql';
@@ -12,7 +13,7 @@ import AlertError from 'ui/Alert/AlertError';
 const Translation: React.FC<PageProperties> = ({ route }) => {
   const [{ data: langs, fetching: langsFetching, error: langsError }] = useLangsQuery();
   const [{ fetching: creating, error: updateError }, create] = useTranslationCreateMutation();
-
+  useWindowTitle('Create translation');
   const onCreate = useCallback(async (values) => {
     const response = await create(values);
     if (response.data) {

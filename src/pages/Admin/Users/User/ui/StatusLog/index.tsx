@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import Title from 'antd/lib/typography/Title';
 
+import useWindowTitle from 'util/windowTitle/useWindowTitle';
 import { UserQuery, useUserStatusReasonsQuery } from 'graphql/generated';
 import NoDataUrql from 'ui/NoDataUrql';
 import UserStatusReasonsTable from './Table';
 
-interface RolesProperties {
+interface StatusLogProperties {
   user: UserQuery['user'];
 }
-const Roles: React.FC<RolesProperties> = ({ user }) => {
+const StatusLog: React.FC<StatusLogProperties> = ({ user }) => {
   const [limit, setLimit] = useState<number>(10);
   const [page, setPage] = useState<number>(1);
   const [order, setOrder] = useState<string>();
@@ -16,6 +17,7 @@ const Roles: React.FC<RolesProperties> = ({ user }) => {
   const [{ error, fetching, data }] = useUserStatusReasonsQuery(
     { variables: { userID: user.id, limit, page, order, orderBy } },
   );
+  useWindowTitle(`Status Log - ${user.fullName}`);
   if (!data) {
     return <NoDataUrql fetching={fetching} error={error} />;
   }
@@ -42,4 +44,4 @@ const Roles: React.FC<RolesProperties> = ({ user }) => {
   );
 };
 
-export default Roles;
+export default StatusLog;
