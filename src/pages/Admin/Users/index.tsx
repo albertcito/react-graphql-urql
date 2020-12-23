@@ -22,17 +22,16 @@ function getURLParameters(query: string) {
 }
 
 const Users: React.FC<PageProperties> = ({ route }) => {
-  const routeLocationSearch = route.location.search;
-  const [urlQuery] = useState(getURLParameters(routeLocationSearch));
-  const [page, setPage] = useState<number>(urlQuery.page);
-  const [limit, setLimit] = useState<number>(urlQuery.limit);
-  const [search, setSearch] = useState<string>(urlQuery.search);
-  const [order, setOrder] = useState(urlQuery.order);
-  const [orderBy, setOrderBy] = useState<string>(urlQuery.orderBy);
+  const [page, setPage] = useState<number>(1);
+  const [limit, setLimit] = useState<number>(10);
+  const [search, setSearch] = useState<string>();
+  const [order, setOrder] = useState<'ASC'|'DESC'>();
+  const [orderBy, setOrderBy] = useState<string>();
   const [{ data, fetching, error }] = useUsersQuery(
     { variables: { limit, page, search, order, orderBy } },
   );
   useWindowTitle('Users');
+  const routeLocationSearch = route.location.search;
   useEffect(() => {
     const parameters = getURLParameters(routeLocationSearch);
     setPage(parameters.page);
@@ -40,7 +39,8 @@ const Users: React.FC<PageProperties> = ({ route }) => {
     setSearch(parameters.search);
     setOrder(parameters.order);
     setOrderBy(parameters.orderBy);
-  }, [routeLocationSearch, urlQuery]);
+  }, [routeLocationSearch]);
+
   if (!data) {
     return <NoDataUrql fetching={fetching} error={error} />;
   }
