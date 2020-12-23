@@ -29,9 +29,9 @@ const Users: React.FC<PageProperties> = ({ route }) => {
         dataSource={data.users.data}
         loading={fetching}
         initialValues={urlQuery}
-        getLink={(user: User) => `${route.location.pathname}/${user.id}`}
         pagination={data.users.pagination}
         fetchMore={setUrlQuery}
+        getLink={(user: User) => `${route.location.pathname}/${user.id}`}
       />
     </div>
   );

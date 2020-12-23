@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext } from 'react';
 import Title from 'antd/lib/typography/Title';
 import { FormattedMessage } from 'react-intl';
 import { notification } from 'antd';
@@ -11,20 +11,14 @@ import PageProperties from 'routes/PageProperties';
 import TranslationTable from 'ui/Translation/Table';
 import { GlobalContext } from 'use/global';
 import ButtonLink from 'ui/Buttons/ButtonLink';
+import { useTableSearch } from 'ui/Tables/SearchTable/useTableSearch';
 
 const Translations: React.FC<PageProperties> = ({ route }) => {
   const { langs, langID } = useContext(GlobalContext);
-  const [limit, setLimit] = useState<number>(10);
-  const [page, setPage] = useState<number>(1);
-  const [search, setSearch] = useState<string>();
-  const [order, setOrder] = useState<string>();
-  const [orderBy, setOrderBy] = useState<string>();
-  const [{ data, fetching, error }] = useTranslationsQuery(
-    { variables: { limit, page, search, order, orderBy, langID } },
-  );
-
-  const [{ fetching: deletingFetching }, onDeleteTranslation] = useTranslationDeleteMutation();
   useWindowTitle('Translations');
+  const { urlQuery, setUrlQuery } = useTableSearch();
+  const [{ data, fetching, error }] = useTranslationsQuery({ variables: { ...urlQuery, langID } });
+  const [{ fetching: deletingFetching }, onDeleteTranslation] = useTranslationDeleteMutation();
   const onDelete = useCallback(async (id: number) => {
     const response = await onDeleteTranslation({ id });
     if (response.data) {
@@ -51,21 +45,14 @@ const Translations: React.FC<PageProperties> = ({ route }) => {
       {error && <AlertError error={error} />}
       <TranslationTable
         dataSource={data.translations.data}
+        loading={fetching || deletingFetching}
+        initialValues={urlQuery}
+        pagination={data.translations.pagination}
+        fetchMore={setUrlQuery}
+        getLink={(translation) => `${route.location.pathname}/${translation.id}`}
         langID={langID}
         langs={langs}
-        loading={fetching || deletingFetching}
         onDelete={(item) => onDelete(item.id)}
-        getLink={(translation) => `${route.location.pathname}/${translation.id}`}
-        pagination={data.translations.pagination}
-        fetchMore={({ page: page_, limit: limit_, search: search_, order: order_ }) => {
-          setLimit(limit_);
-          setPage(page_);
-          setSearch(search_);
-          if (order_) {
-            setOrder(order_.order);
-            setOrderBy(order_.orderBy);
-          }
-        }}
       />
     </div>
   );

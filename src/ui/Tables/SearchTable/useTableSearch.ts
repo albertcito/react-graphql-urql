@@ -22,9 +22,9 @@ function getURLParameters(query: string): TableSearchURLParameters {
   return {
     page: Number.isInteger(page) ? page as number : 1,
     limit: Number.isInteger(limit) ? limit as number : 10,
-    search: search as string ?? undefined,
-    order: order as 'ASC'|'DESC' ?? undefined,
-    orderBy: orderBy as string ?? undefined,
+    search: search ? search.toString() : undefined,
+    order: order ? order.toString() as 'ASC'|'DESC' : undefined,
+    orderBy: orderBy ? orderBy.toString() : undefined,
   };
 }
 
