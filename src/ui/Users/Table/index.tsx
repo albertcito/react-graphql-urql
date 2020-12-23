@@ -33,6 +33,7 @@ interface UsersTableProperties {
   users: User[];
   loading?: boolean;
   pagination: Pagination;
+  initialSearch?: string;
   fetchMore: (parameters: UserFetchMore) => void;
   getLink?: (user: User) => string;
   onSelectLink?: (data: User, index: number) => void;
@@ -42,6 +43,7 @@ interface UsersTableProperties {
 const UsersTable: React.FC<UsersTableProperties> = ({
   users,
   loading = false,
+  initialSearch,
   pagination,
   fetchMore,
   getLink,
@@ -49,7 +51,7 @@ const UsersTable: React.FC<UsersTableProperties> = ({
   onSelect,
   onDelete,
 }) => {
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(initialSearch);
 
   const tableColumns = new TableColumns([
     new IDColumn<User>({ indexID: 'id', orderBy: 'user_id' }),
@@ -113,7 +115,7 @@ const UsersTable: React.FC<UsersTableProperties> = ({
         />
         <PaginationUI
           pagination={pagination}
-          onChange={(page, limit) => fetchMore({ page, limit })}
+          onChange={(page, limit) => fetchMore({ page, limit, search })}
           small
         />
         <Table
