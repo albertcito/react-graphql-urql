@@ -16,7 +16,7 @@ function getURLParameters(query: string) {
     page: Number.isInteger(page) ? page as number : 1,
     limit: Number.isInteger(limit) ? limit as number : 10,
     search: search as string ?? undefined,
-    order: order as string ?? undefined,
+    order: order as 'ASC'|'DESC' ?? undefined,
     orderBy: orderBy as string ?? undefined,
   };
 }
@@ -27,7 +27,7 @@ const Users: React.FC<PageProperties> = ({ route }) => {
   const [page, setPage] = useState<number>(urlQuery.page);
   const [limit, setLimit] = useState<number>(urlQuery.limit);
   const [search, setSearch] = useState<string>(urlQuery.search);
-  const [order, setOrder] = useState<string>(urlQuery.order);
+  const [order, setOrder] = useState(urlQuery.order);
   const [orderBy, setOrderBy] = useState<string>(urlQuery.orderBy);
   const [{ data, fetching, error }] = useUsersQuery(
     { variables: { limit, page, search, order, orderBy } },
@@ -54,7 +54,9 @@ const Users: React.FC<PageProperties> = ({ route }) => {
       <UsersTable
         loading={fetching}
         initialSearch={search}
-        users={data.users.data}
+        initialOrder={order}
+        initialOrderBy={orderBy}
+        dataSource={data.users.data}
         getLink={(user: User) => `${route.location.pathname}/${user.id}`}
         pagination={data.users.pagination}
         fetchMore={({ order: order_, ...other }) => {

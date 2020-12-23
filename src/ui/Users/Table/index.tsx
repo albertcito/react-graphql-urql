@@ -30,20 +30,38 @@ interface UserFetchMore extends PaginationArguments {
 }
 
 interface UsersTableProperties {
-  users: User[];
+  dataSource: User[];
   loading?: boolean;
   pagination: Pagination;
   initialSearch?: string;
+  initialOrder?: OrderByArguments['order'];
+  initialOrderBy?: string;
   fetchMore: (parameters: UserFetchMore) => void;
   getLink?: (user: User) => string;
   onSelectLink?: (data: User, index: number) => void;
   onSelect?: (data: User, index: number) => void;
   onDelete?: (item: User, index: number) => void;
 }
+
+const orderToAnt = (
+  orderBy: string, initialOrderBy?: string, initialOrder?: string,
+) => {
+  if (orderBy === initialOrderBy && initialOrder) {
+    switch (initialOrder) {
+      case 'ASC': return 'ascend';
+      default: return 'descend';
+    }
+  }
+  // eslint-disable-next-line unicorn/no-useless-undefined
+  return undefined;
+};
+
 const UsersTable: React.FC<UsersTableProperties> = ({
-  users,
+  dataSource,
   loading = false,
   initialSearch,
+  initialOrder,
+  initialOrderBy,
   pagination,
   fetchMore,
   getLink,
@@ -52,11 +70,32 @@ const UsersTable: React.FC<UsersTableProperties> = ({
   onDelete,
 }) => {
   const [search, setSearch] = useState(initialSearch);
+  const [order, setOrder] = useState(initialOrder);
+  const [orderBy, setOrderBy] = useState(initialOrderBy);
 
+  const searchPlaceholder = 'Search by name, email or ID';
   const tableColumns = new TableColumns([
-    new IDColumn<User>({ indexID: 'id', orderBy: 'user_id' }),
-    new StringColumn<User>({ indexID: 'fullName', title: 'Name', orderBy: 'first_name', getLink, onSelectLink }),
-    new StringColumn<User>({ indexID: 'email', title: 'Email', orderBy: 'email', getLink, onSelectLink }),
+    new IDColumn<User>({
+      indexID: 'id',
+      orderBy: 'user_id',
+      defaultSortOrder: orderToAnt('user_id', initialOrderBy, initialOrder),
+    }),
+    new StringColumn<User>({
+      indexID: 'fullName',
+      title: 'Name',
+      orderBy: 'first_name',
+      defaultSortOrder: orderToAnt('first_name', initialOrderBy, initialOrder),
+      getLink,
+      onSelectLink,
+    }),
+    new StringColumn<User>({
+      indexID: 'email',
+      title: 'Email',
+      orderBy: 'email',
+      defaultSortOrder: orderToAnt('email', initialOrderBy, initialOrder),
+      getLink,
+      onSelectLink,
+    }),
   ]);
   if (onSelect) {
     tableColumns.append(new OnSelectColumn<User>({ indexID: 'id', onSelect }));
@@ -69,7 +108,7 @@ const UsersTable: React.FC<UsersTableProperties> = ({
   const onChangeTable = (
     _pagination: TablePaginationConfig,
     _filters: Record<string, (Key | boolean)[] | null>,
-    sorter: SorterResult<User> | SorterResult<User>[],
+    sorter: SorterResult<unknown> | SorterResult<unknown>[],
   ) => {
     if (Array.isArray(sorter)) { return; }
     if (!sorter.column) {
@@ -80,12 +119,14 @@ const UsersTable: React.FC<UsersTableProperties> = ({
       });
     } else {
       const column = sorter.column as ColumnTableProperties;
-      const order = (sorter.order === 'ascend') ? 'ASC' : 'DESC';
+      const newOrder = (sorter.order === 'ascend') ? 'ASC' : 'DESC';
       const columnOrder = column.orderBy
         ? {
           orderBy: column.orderBy,
-          order,
+          order: newOrder,
         } as OrderByArguments : undefined;
+      setOrder(newOrder);
+      setOrderBy(column.orderBy);
       fetchMore({
         page: 1,
         limit: pagination.limit,
@@ -103,11 +144,16 @@ const UsersTable: React.FC<UsersTableProperties> = ({
     });
   };
 
+  const onPagination = (page: number, limit: number) => {
+    const newOrder = (order && orderBy) ? { order, orderBy } : undefined;
+    fetchMore({ page, limit, search, order: newOrder });
+  };
+
   return (
     <div className='table-view'>
       <Spin spinning={loading}>
         <Input.Search
-          placeholder='Search by name, email or ID'
+          placeholder={searchPlaceholder}
           onSearch={onSearch}
           enterButton
           value={search}
@@ -115,19 +161,19 @@ const UsersTable: React.FC<UsersTableProperties> = ({
         />
         <PaginationUI
           pagination={pagination}
-          onChange={(page, limit) => fetchMore({ page, limit, search })}
+          onChange={onPagination}
           small
         />
         <Table
           columns={columns}
-          dataSource={users}
+          dataSource={dataSource}
           pagination={false}
           onChange={onChangeTable}
           rowKey={(user) => user.id}
         />
         <PaginationUI
           pagination={pagination}
-          onChange={(page, limit) => fetchMore({ page, limit, search })}
+          onChange={onPagination}
         />
       </Spin>
     </div>
