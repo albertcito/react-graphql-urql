@@ -11,7 +11,7 @@ export interface User {
   fullName: string;
 }
 
-interface UsersTableProperties extends Omit<SearchTableProperties, 'tableColumns'> {
+interface UsersTableProperties extends Omit<SearchTableProperties, 'tableColumns' | 'placeholder'> {
   getLink?: (user: User) => string;
   onSelectLink?: (data: User, index: number) => void;
   onSelect?: (data: User, index: number) => void;
@@ -21,9 +21,7 @@ interface UsersTableProperties extends Omit<SearchTableProperties, 'tableColumns
 const UsersTable: React.FC<UsersTableProperties> = ({
   dataSource,
   loading = false,
-  initialSearch,
-  initialOrder,
-  initialOrderBy,
+  initialValues = {},
   pagination,
   fetchMore,
   getLink,
@@ -31,18 +29,18 @@ const UsersTable: React.FC<UsersTableProperties> = ({
   onSelect,
   onDelete,
 }) => {
-  const searchPlaceholder = 'Search by name, email or ID';
+  const placeholder = 'Search by name, email or ID';
   const tableColumns = new TableColumns([
     new IDColumn<User>({
       indexID: 'id',
       orderBy: 'user_id',
-      defaultSortOrder: getDefaultSortOrder('user_id', initialOrderBy, initialOrder),
+      defaultSortOrder: getDefaultSortOrder('user_id', initialValues.orderBy, initialValues.order),
     }),
     new StringColumn<User>({
       indexID: 'fullName',
       title: 'Name',
       orderBy: 'first_name',
-      defaultSortOrder: getDefaultSortOrder('first_name', initialOrderBy, initialOrder),
+      defaultSortOrder: getDefaultSortOrder('first_name', initialValues.orderBy, initialValues.order),
       getLink,
       onSelectLink,
     }),
@@ -50,7 +48,7 @@ const UsersTable: React.FC<UsersTableProperties> = ({
       indexID: 'email',
       title: 'Email',
       orderBy: 'email',
-      defaultSortOrder: getDefaultSortOrder('email', initialOrderBy, initialOrder),
+      defaultSortOrder: getDefaultSortOrder('email', initialValues.orderBy, initialValues.order),
       getLink,
       onSelectLink,
     }),
@@ -69,10 +67,8 @@ const UsersTable: React.FC<UsersTableProperties> = ({
         tableColumns={tableColumns}
         loading={loading}
         pagination={pagination}
-        initialSearch={initialSearch}
-        initialOrder={initialOrder}
-        initialOrderBy={initialOrderBy}
-        searchPlaceholder={searchPlaceholder}
+        initialValues={initialValues}
+        placeholder={placeholder}
         fetchMore={fetchMore}
       />
     </div>

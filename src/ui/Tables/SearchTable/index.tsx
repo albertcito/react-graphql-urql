@@ -7,34 +7,36 @@ import { Pagination } from 'graphql/generated';
 import TableColumns from 'util/columns/base/TableColumns';
 import PaginationUI from 'ui/Pagination';
 import { ColumnTableProperties } from 'util/columns/base/ColumnTableProperties';
-import { OrderByArguments, SearchFetchMore } from './interfaces';
+import { OrderByArguments, SearchFetchMore } from '../interfaces';
 
+export interface initialValues {
+  search?: string;
+  order?: OrderByArguments['order'];
+  orderBy?: string;
+}
 export interface SearchTableProperties {
-  dataSource: TableProps<unknown>['dataSource'];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  dataSource: TableProps<any>['dataSource'];
   tableColumns: TableColumns,
   loading?: boolean;
   pagination: Pagination;
-  initialSearch?: string;
-  initialOrder?: OrderByArguments['order'];
-  initialOrderBy?: string;
-  searchPlaceholder?: string;
+  initialValues?: initialValues;
+  placeholder?: string;
   fetchMore: (parameters: SearchFetchMore) => void;
 }
 
 const SearchTable: React.FC<SearchTableProperties> = ({
   dataSource,
   loading = false,
-  initialSearch,
-  initialOrder,
-  initialOrderBy,
-  searchPlaceholder,
+  initialValues = {},
+  placeholder,
   pagination,
   tableColumns,
   fetchMore,
 }) => {
-  const [search, setSearch] = useState(initialSearch);
-  const [order, setOrder] = useState(initialOrder);
-  const [orderBy, setOrderBy] = useState(initialOrderBy);
+  const [search, setSearch] = useState(initialValues.search);
+  const [order, setOrder] = useState(initialValues.order);
+  const [orderBy, setOrderBy] = useState(initialValues.orderBy);
 
   const onChangeTable = (
     _pagination: TablePaginationConfig,
@@ -83,7 +85,7 @@ const SearchTable: React.FC<SearchTableProperties> = ({
   return (
     <Spin spinning={loading}>
       <Input.Search
-        placeholder={searchPlaceholder}
+        placeholder={placeholder}
         onSearch={onSearch}
         enterButton
         value={search}

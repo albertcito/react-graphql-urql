@@ -20,7 +20,7 @@ const Translations: React.FC<PageProperties> = ({ route }) => {
   const [order, setOrder] = useState<string>();
   const [orderBy, setOrderBy] = useState<string>();
   const [{ data, fetching, error }] = useTranslationsQuery(
-    { variables: { limit, page, search, order, orderBy } },
+    { variables: { limit, page, search, order, orderBy, langID } },
   );
 
   const [{ fetching: deletingFetching }, onDeleteTranslation] = useTranslationDeleteMutation();
@@ -50,10 +50,10 @@ const Translations: React.FC<PageProperties> = ({ route }) => {
       </div>
       {error && <AlertError error={error} />}
       <TranslationTable
+        dataSource={data.translations.data}
         langID={langID}
         langs={langs}
         loading={fetching || deletingFetching}
-        translations={data.translations.data}
         onDelete={(item) => onDelete(item.id)}
         getLink={(translation) => `${route.location.pathname}/${translation.id}`}
         pagination={data.translations.pagination}
