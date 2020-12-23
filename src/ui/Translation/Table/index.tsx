@@ -4,6 +4,7 @@ import TableColumns from 'util/columns/base/TableColumns';
 import { IDColumn, DeleteColumn, TextColumn, OnSelectColumn } from 'util/columns';
 import getLangColumns from 'util/columns/Langs/LangsColumn';
 import SearchTable, { SearchTableProperties } from '../../Tables/SearchTable';
+import getDefaultSortOrder from 'ui/Users/Table/getDefaultSortOrder';
 
 interface Translation {
   id: number;
@@ -39,6 +40,7 @@ const TranslationsTable: React.FC<TranslationsTableProperties> = ({
   langID,
   loading = false,
   pagination,
+  values = {},
   placeholder,
   fetchMore,
   getLink,
@@ -47,7 +49,11 @@ const TranslationsTable: React.FC<TranslationsTableProperties> = ({
   onDelete,
 }) => {
   const tableColumns = new TableColumns([
-    new IDColumn<Translation>({ indexID: 'id', orderBy: 'id' }),
+    new IDColumn<Translation>({
+      indexID: 'id',
+      orderBy: 'id',
+      sortOrder: getDefaultSortOrder('id', values.orderBy, values.order),
+    }),
     new TextColumn<Translation>({ indexID: 'text', title: 'Text', getLink, onSelectLink }),
     ...getLangColumns('texts', langs, langID),
   ]);
@@ -63,6 +69,7 @@ const TranslationsTable: React.FC<TranslationsTableProperties> = ({
       <SearchTable
         dataSource={dataSource}
         tableColumns={tableColumns}
+        values={values}
         loading={loading}
         pagination={pagination}
         placeholder={placeholder}

@@ -32,8 +32,8 @@ const UsersTable: React.FC<UsersTableProperties> = ({
   const tableColumns = new TableColumns([
     new IDColumn<User>({
       indexID: 'id',
-      orderBy: 'user_id',
-      sortOrder: getDefaultSortOrder('user_id', values.orderBy, values.order),
+      orderBy: 'id',
+      sortOrder: getDefaultSortOrder('id', values.orderBy, values.order),
     }),
     new StringColumn<User>({
       indexID: 'fullName',
