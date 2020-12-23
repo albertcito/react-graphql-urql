@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/no-useless-undefined */
 import React, { useState } from 'react';
 import { Spin, Table, Input } from 'antd';
 import { TablePaginationConfig, TableProps } from 'antd/lib/table';
@@ -9,18 +10,21 @@ import PaginationUI from 'ui/Pagination';
 import { ColumnTableProperties } from 'util/columns/base/ColumnTableProperties';
 import { OrderByArguments, SearchFetchMore } from '../interfaces';
 
-export interface initialValues {
+export interface values {
   search?: string;
   order?: OrderByArguments['order'];
   orderBy?: string;
 }
+
 export interface SearchTableProperties {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dataSource: TableProps<any>['dataSource'];
   tableColumns: TableColumns,
   loading?: boolean;
   pagination: Pagination;
-  initialValues?: initialValues;
+  values?: values;
+  order?: OrderByArguments['order'];
+  orderBy?: string;
   placeholder?: string;
   fetchMore: (parameters: SearchFetchMore) => void;
 }
@@ -28,15 +32,13 @@ export interface SearchTableProperties {
 const SearchTable: React.FC<SearchTableProperties> = ({
   dataSource,
   loading = false,
-  initialValues = {},
+  values = {},
   placeholder,
   pagination,
   tableColumns,
   fetchMore,
 }) => {
-  const [search, setSearch] = useState(initialValues.search);
-  const [order, setOrder] = useState(initialValues.order);
-  const [orderBy, setOrderBy] = useState(initialValues.orderBy);
+  const [search, setSearch] = useState(values.search);
 
   const onChangeTable = (
     _pagination: TablePaginationConfig,
@@ -58,8 +60,6 @@ const SearchTable: React.FC<SearchTableProperties> = ({
           orderBy: column.orderBy,
           order: newOrder,
         } as OrderByArguments : undefined;
-      setOrder(newOrder);
-      setOrderBy(column.orderBy);
       fetchMore({
         page: 1,
         limit: pagination.limit,
@@ -78,7 +78,9 @@ const SearchTable: React.FC<SearchTableProperties> = ({
   };
 
   const onPagination = (page: number, limit: number) => {
-    const newOrder = (order && orderBy) ? { order, orderBy } : undefined;
+    const newOrder = (values.order && values.orderBy)
+      ? { order: values.order, orderBy: values.orderBy }
+      : undefined;
     fetchMore({ page, limit, search, order: newOrder });
   };
 

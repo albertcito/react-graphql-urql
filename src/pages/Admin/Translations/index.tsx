@@ -46,7 +46,7 @@ const Translations: React.FC<PageProperties> = ({ route }) => {
       <TranslationTable
         dataSource={data.translations.data}
         loading={fetching || deletingFetching}
-        initialValues={urlQuery}
+        values={urlQuery}
         pagination={data.translations.pagination}
         fetchMore={setUrlQuery}
         getLink={(translation) => `${route.location.pathname}/${translation.id}`}

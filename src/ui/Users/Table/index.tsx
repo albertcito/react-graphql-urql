@@ -21,7 +21,7 @@ interface UsersTableProperties extends Omit<SearchTableProperties, 'tableColumns
 const UsersTable: React.FC<UsersTableProperties> = ({
   dataSource,
   loading = false,
-  initialValues = {},
+  values = {},
   pagination,
   fetchMore,
   getLink,
@@ -29,18 +29,17 @@ const UsersTable: React.FC<UsersTableProperties> = ({
   onSelect,
   onDelete,
 }) => {
-  const placeholder = 'Search by name, email or ID';
   const tableColumns = new TableColumns([
     new IDColumn<User>({
       indexID: 'id',
       orderBy: 'user_id',
-      defaultSortOrder: getDefaultSortOrder('user_id', initialValues.orderBy, initialValues.order),
+      sortOrder: getDefaultSortOrder('user_id', values.orderBy, values.order),
     }),
     new StringColumn<User>({
       indexID: 'fullName',
       title: 'Name',
       orderBy: 'first_name',
-      defaultSortOrder: getDefaultSortOrder('first_name', initialValues.orderBy, initialValues.order),
+      sortOrder: getDefaultSortOrder('first_name', values.orderBy, values.order),
       getLink,
       onSelectLink,
     }),
@@ -48,11 +47,12 @@ const UsersTable: React.FC<UsersTableProperties> = ({
       indexID: 'email',
       title: 'Email',
       orderBy: 'email',
-      defaultSortOrder: getDefaultSortOrder('email', initialValues.orderBy, initialValues.order),
+      sortOrder: getDefaultSortOrder('email', values.orderBy, values.order),
       getLink,
       onSelectLink,
     }),
   ]);
+
   if (onSelect) {
     tableColumns.append(new OnSelectColumn<User>({ indexID: 'id', onSelect }));
   }
@@ -67,8 +67,8 @@ const UsersTable: React.FC<UsersTableProperties> = ({
         tableColumns={tableColumns}
         loading={loading}
         pagination={pagination}
-        initialValues={initialValues}
-        placeholder={placeholder}
+        values={values}
+        placeholder='Search by name, email or ID'
         fetchMore={fetchMore}
       />
     </div>
