@@ -12,11 +12,6 @@ export interface TableSearchURLParameters {
   orderBy?: string;
 }
 
-export const defaultSearch = {
-  page: 1,
-  limit: 10,
-};
-
 function getURLParameters(query: string): TableSearchURLParameters {
   const { page, limit, search, order, orderBy } = queryString.parse(query, { parseNumbers: true });
   return {
@@ -32,8 +27,11 @@ export const useTableSearch = () => {
   const location = useLocation();
   const history = useHistory();
 
-  const [urlQuery, setInternalQuery] = useState<TableSearchURLParameters>(defaultSearch);
   const { search } = location;
+  const [urlQuery, setInternalQuery] = useState<TableSearchURLParameters>(
+    getURLParameters(search),
+  );
+
   useEffect(() => {
     setInternalQuery(getURLParameters(search));
   }, [search]);

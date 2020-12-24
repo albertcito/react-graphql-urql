@@ -26,6 +26,7 @@ export interface SearchTableProperties {
   order?: OrderByArguments['order'];
   orderBy?: string;
   placeholder?: string;
+  hideSearch?: boolean;
   fetchMore: (parameters: SearchFetchMore) => void;
 }
 
@@ -37,6 +38,7 @@ const SearchTable: React.FC<SearchTableProperties> = ({
   pagination,
   tableColumns,
   fetchMore,
+  hideSearch,
 }) => {
   const [search, setSearch] = useState(values.search);
 
@@ -86,13 +88,15 @@ const SearchTable: React.FC<SearchTableProperties> = ({
 
   return (
     <Spin spinning={loading}>
-      <Input.Search
-        placeholder={placeholder}
-        onSearch={onSearch}
-        enterButton
-        value={search}
-        onChange={(event) => setSearch(event.target.value)}
-      />
+      {!hideSearch && (
+        <Input.Search
+          placeholder={placeholder}
+          onSearch={onSearch}
+          enterButton
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+        />
+      )}
       <PaginationUI
         pagination={pagination}
         onChange={onPagination}

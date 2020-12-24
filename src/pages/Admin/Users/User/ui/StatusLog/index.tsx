@@ -7,24 +7,21 @@ import { UserQuery, useUserStatusReasonsQuery } from 'graphql/generated';
 import NoDataUrql from 'ui/NoDataUrql';
 import UserStatusReasonsTable from './Table';
 import StatusLogModal from './Modal';
+import useTable from 'ui/Tables/Table/useTable';
 
 interface StatusLogProperties {
   user: UserQuery['user'];
 }
 const StatusLog: React.FC<StatusLogProperties> = ({ user }) => {
-  const [limit, setLimit] = useState<number>(10);
-  const [page, setPage] = useState<number>(1);
-  const [order, setOrder] = useState<string>();
-  const [orderBy, setOrderBy] = useState<string>();
+  const { urlQuery, setUrlQuery } = useTable();
   const [{ error, fetching, data }] = useUserStatusReasonsQuery(
-    { variables: { userID: user.id, limit, page, order, orderBy } },
+    { variables: { userID: user.id, ...urlQuery } },
   );
   useWindowTitle(`Status Log - ${user.fullName}`);
   const [modal, setModal] = useState(false);
   if (!data) {
     return <NoDataUrql fetching={fetching} error={error} />;
   }
-
   return (
     <div>
       <div className='title'>
@@ -41,17 +38,11 @@ const StatusLog: React.FC<StatusLogProperties> = ({ user }) => {
         />
       </div>
       <UserStatusReasonsTable
-        reasons={data.userStatusReasons.data}
+        dataSource={data.userStatusReasons.data}
         pagination={data.userStatusReasons.pagination}
         loading={fetching}
-        fetchMore={({ page: page_, limit: limit_, order: order_ }) => {
-          setLimit(limit_);
-          setPage(page_);
-          if (order_) {
-            setOrder(order_.order);
-            setOrderBy(order_.orderBy);
-          }
-        }}
+        values={urlQuery}
+        fetchMore={setUrlQuery}
       />
     </div>
   );
