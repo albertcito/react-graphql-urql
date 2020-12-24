@@ -27,6 +27,8 @@ const userStatusReasonsQuery = gql`query userStatusReasons(
       userID
       userStatusID
       reason
+      createdAt
+      createdBy
     }
   }
 }`;

@@ -8,7 +8,7 @@ import TableColumnAbstract from './base/TableColumnAbstract';
 type onSelectType<T> = (data: T, index: number) => void;
 type getLinkType<T> = (data: T) => string;
 
-interface StringColumnProperties<T> extends ColumnTableProperties {
+interface StringColumnProperties<T> extends Omit<ColumnTableProperties, 'render' | 'sorter'> {
   indexID: keyof T;
   onSelectLink?: onSelectType<T>;
   getLink?: getLinkType<T>;

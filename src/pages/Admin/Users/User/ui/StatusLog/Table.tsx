@@ -2,7 +2,7 @@ import React from 'react';
 
 import { UserStatusReason } from 'graphql/generated';
 import TableColumns from 'util/columns/base/TableColumns';
-import { IDColumn, StringColumn, DeleteColumn, OnSelectColumn } from 'util/columns';
+import { IDColumn, StringColumn, DeleteColumn, OnSelectColumn, DateTimeColumn } from 'util/columns';
 import Table from 'ui/Tables/Table';
 import { SearchFetchMore } from 'ui/Tables/interfaces';
 import { SearchTableProperties } from 'ui/Tables/SearchTable';
@@ -36,6 +36,18 @@ const UserStatusReasonsTable: React.FC<UserStatusReasonsTableProperties> = ({
     new StringColumn<UserStatusReason>({
       indexID: 'reason',
       title: 'Reason',
+      getLink,
+      onSelectLink,
+    }),
+    new StringColumn<UserStatusReason>({
+      indexID: 'createdBy',
+      title: 'createdBy',
+      getLink,
+      onSelectLink,
+    }),
+    new DateTimeColumn<UserStatusReason>({
+      indexID: 'createdAt',
+      title: 'createdAt',
       getLink,
       onSelectLink,
     }),

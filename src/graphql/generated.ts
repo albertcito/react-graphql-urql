@@ -919,7 +919,7 @@ export type UserStatusReasonsQuery = (
       & Pick<Pagination, 'from' | 'to' | 'total' | 'limit' | 'page' | 'length'>
     ), data: Array<(
       { __typename?: 'UserStatusReason' }
-      & Pick<UserStatusReason, 'id' | 'userID' | 'userStatusID' | 'reason'>
+      & Pick<UserStatusReason, 'id' | 'userID' | 'userStatusID' | 'reason' | 'createdAt' | 'createdBy'>
     )> }
   ) }
 );
@@ -1358,6 +1358,8 @@ export const UserStatusReasonsDocument = gql`
       userID
       userStatusID
       reason
+      createdAt
+      createdBy
     }
   }
 }
