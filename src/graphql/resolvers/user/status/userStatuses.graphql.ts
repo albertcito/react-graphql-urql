@@ -3,7 +3,10 @@ import gql from 'graphql-tag';
 const userStatuses = gql`query userStatuses {
   userStatuses {
     id
-    name { text }
+    name {
+      id
+      text
+    }
     createdAt
     createdBy
   }

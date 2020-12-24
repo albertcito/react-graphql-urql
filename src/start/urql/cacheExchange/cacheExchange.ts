@@ -11,6 +11,7 @@ const cacheExchange = cacheExchangeURQL({
     RolePaginationResponse: () => null,
     TranslationPaginationResponse: () => null,
     UserPaginationResponse: () => null,
+    UserStatusReasonPaginationResponse: () => null,
   },
   updates: {
     Mutation: {

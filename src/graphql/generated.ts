@@ -949,7 +949,7 @@ export type UserStatusesQuery = (
     & Pick<UserStatus, 'id' | 'createdAt' | 'createdBy'>
     & { name: (
       { __typename?: 'VText' }
-      & Pick<VText, 'text'>
+      & Pick<VText, 'id' | 'text'>
     ) }
   )> }
 );
@@ -1383,6 +1383,7 @@ export const UserStatusesDocument = gql`
   userStatuses {
     id
     name {
+      id
       text
     }
     createdAt

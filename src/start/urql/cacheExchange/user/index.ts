@@ -2,6 +2,7 @@ import { Data, Variables, Cache } from '@urql/exchange-graphcache';
 
 import { UserQuery, UserDocument, RolesEnum } from 'graphql/generated';
 import invalidateID from '../util/invalidateID';
+import invalidateQuery from '../util/invalidateQuery';
 
 const userExchange = {
   userUpdateEmail: (_result: Data, { id }: Variables, cache: Cache) => invalidateID('User', id, cache),
@@ -28,6 +29,9 @@ const userExchange = {
       }
     });
   },
+  userStatusUpdate: (
+    _result: Data, _variables: Variables, cache: Cache,
+  ) => invalidateQuery('userStatusReasons', cache),
 };
 
 export default userExchange;
