@@ -28,7 +28,7 @@ const User: React.FC<PageProperties<UserRoute>> = ({ route }) => {
       <UserTitle {...{
         name: data.user.fullName,
         emailVerified: data.user.emailVerified,
-        userStatusID: 'active',
+        userStatusID: data.user.userStatusID,
       }}
       />
       <Divider />

@@ -9,6 +9,7 @@ export interface User {
   id: number;
   email: string;
   fullName: string;
+  userStatusID: string;
 }
 
 interface UsersTableProperties extends Omit<SearchTableProperties, 'tableColumns' | 'placeholder'> {
@@ -51,6 +52,14 @@ const UsersTable: React.FC<UsersTableProperties> = ({
       getLink,
       onSelectLink,
     }),
+    new StringColumn<User>({
+      indexID: 'userStatusID',
+      title: 'status',
+      orderBy: 'user_status_id',
+      sortOrder: getDefaultSortOrder('user_status_id', values.orderBy, values.order),
+      getLink,
+      onSelectLink,
+    }),
   ]);
 
   if (onSelect) {
@@ -61,17 +70,15 @@ const UsersTable: React.FC<UsersTableProperties> = ({
   }
 
   return (
-    <div className='table-view'>
-      <SearchTable
-        dataSource={dataSource}
-        tableColumns={tableColumns}
-        loading={loading}
-        pagination={pagination}
-        values={values}
-        placeholder='Search by name, email or ID'
-        fetchMore={fetchMore}
-      />
-    </div>
+    <SearchTable
+      dataSource={dataSource}
+      tableColumns={tableColumns}
+      loading={loading}
+      pagination={pagination}
+      values={values}
+      placeholder='Search by name, email or ID'
+      fetchMore={fetchMore}
+    />
   );
 };
 

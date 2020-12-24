@@ -19,6 +19,7 @@ const usersQuery = gql`query users($limit: Int, $page: Int, $orderBy: String, $o
       updatedAt
       emailVerified
       fullName
+      userStatusID
     }
   }
 }`;

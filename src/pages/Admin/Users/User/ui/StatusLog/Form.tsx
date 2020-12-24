@@ -28,7 +28,7 @@ const StatusLogForm: React.FC<StatusLogFormProperties> = ({ form, fetching, erro
   return (
     <Spin spinning={fetching}>
       {error && <NoDataUrql fetching={false} error={error} />}
-      <Form form={form}>
+      <Form form={form} layout='vertical'>
         <Form.Item
           label='Status'
           name='userStatusID'

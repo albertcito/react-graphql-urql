@@ -65,17 +65,15 @@ const TranslationsTable: React.FC<TranslationsTableProperties> = ({
   }
 
   return (
-    <div className='table-view'>
-      <SearchTable
-        dataSource={dataSource}
-        tableColumns={tableColumns}
-        values={values}
-        loading={loading}
-        pagination={pagination}
-        placeholder={placeholder}
-        fetchMore={fetchMore}
-      />
-    </div>
+    <SearchTable
+      dataSource={dataSource}
+      tableColumns={tableColumns}
+      values={values}
+      loading={loading}
+      pagination={pagination}
+      placeholder={placeholder}
+      fetchMore={fetchMore}
+    />
   );
 };
 

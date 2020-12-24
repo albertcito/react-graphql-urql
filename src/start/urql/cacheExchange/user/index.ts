@@ -5,7 +5,10 @@ import invalidateID from '../util/invalidateID';
 import invalidateQuery from '../util/invalidateQuery';
 
 const userExchange = {
-  userUpdateEmail: (_result: Data, { id }: Variables, cache: Cache) => invalidateID('User', id, cache),
+  userUpdateEmail: (
+    _result: Data, { id }: Variables, cache: Cache,
+  ) => invalidateID('User', id, cache),
+
   userRolesUpdate: (_result: Data, variables: Variables, cache: Cache) => {
     const allFields = cache.inspectFields('Query');
     const queries = allFields.filter((x) => x.fieldName === 'user');
@@ -30,8 +33,11 @@ const userExchange = {
     });
   },
   userStatusUpdate: (
-    _result: Data, _variables: Variables, cache: Cache,
-  ) => invalidateQuery('userStatusReasons', cache),
+    _result: Data, variables: Variables, cache: Cache,
+  ) => {
+    invalidateQuery('userStatusReasons', cache);
+    invalidateID('User', variables.userID, cache);
+  },
 };
 
 export default userExchange;

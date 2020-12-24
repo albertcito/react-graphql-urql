@@ -87,33 +87,35 @@ const SearchTable: React.FC<SearchTableProperties> = ({
   };
 
   return (
-    <Spin spinning={loading}>
-      {!hideSearch && (
-        <Input.Search
-          placeholder={placeholder}
-          onSearch={onSearch}
-          enterButton
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
+    <div className='table-view'>
+      <Spin spinning={loading}>
+        {!hideSearch && (
+          <Input.Search
+            placeholder={placeholder}
+            onSearch={onSearch}
+            enterButton
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+          />
+        )}
+        <PaginationUI
+          pagination={pagination}
+          onChange={onPagination}
+          small
         />
-      )}
-      <PaginationUI
-        pagination={pagination}
-        onChange={onPagination}
-        small
-      />
-      <Table
-        columns={tableColumns.getColumns()}
-        dataSource={dataSource}
-        pagination={false}
-        onChange={onChangeTable}
-        rowKey={(user) => user.id}
-      />
-      <PaginationUI
-        pagination={pagination}
-        onChange={onPagination}
-      />
-    </Spin>
+        <Table
+          columns={tableColumns.getColumns()}
+          dataSource={dataSource}
+          pagination={false}
+          onChange={onChangeTable}
+          rowKey={(user) => user.id}
+        />
+        <PaginationUI
+          pagination={pagination}
+          onChange={onPagination}
+        />
+      </Spin>
+    </div>
   );
 };
 

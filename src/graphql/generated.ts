@@ -963,7 +963,7 @@ export type UserQuery = (
   { __typename?: 'Query' }
   & { user: (
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'email' | 'firstName' | 'lastName' | 'fullName' | 'createdAt' | 'updatedAt' | 'emailVerified'>
+    & Pick<User, 'id' | 'email' | 'firstName' | 'lastName' | 'fullName' | 'createdAt' | 'updatedAt' | 'emailVerified' | 'userStatusID'>
     & { roles: Array<(
       { __typename?: 'Role' }
       & Pick<Role, 'id'>
@@ -989,7 +989,7 @@ export type UsersQuery = (
       & Pick<Pagination, 'from' | 'to' | 'total' | 'limit' | 'page' | 'length'>
     ), data: Array<(
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'firstName' | 'lastName' | 'email' | 'createdAt' | 'updatedAt' | 'emailVerified' | 'fullName'>
+      & Pick<User, 'id' | 'firstName' | 'lastName' | 'email' | 'createdAt' | 'updatedAt' | 'emailVerified' | 'fullName' | 'userStatusID'>
     )> }
   ) }
 );
@@ -1406,6 +1406,7 @@ export const UserDocument = gql`
     createdAt
     updatedAt
     emailVerified
+    userStatusID
     roles {
       id
     }
@@ -1442,6 +1443,7 @@ export const UsersDocument = gql`
       updatedAt
       emailVerified
       fullName
+      userStatusID
     }
   }
 }

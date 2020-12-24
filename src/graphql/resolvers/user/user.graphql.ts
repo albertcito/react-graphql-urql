@@ -10,6 +10,7 @@ const userQuery = gql`query user($id: Int!) {
     createdAt
     updatedAt
     emailVerified
+    userStatusID
     roles {
       id
     }
