@@ -39,14 +39,16 @@ interface TranslationFormProperties {
 
 const onFinishInternal = (values: FormArguments) => {
   const { code, isBlocked, ...langs } = values;
-  const createValues: TranslationCreateProperties = { code, isBlocked, texts: [] };
+  const texts: TranslationCreateProperties['texts'] = [];
   Object.keys(langs).forEach((langID) => {
-    createValues.texts.push({
-      langID,
-      text: langs[langID],
-    });
+    if (langs[langID]) {
+      texts.push({
+        langID,
+        text: langs[langID],
+      });
+    }
   });
-  return createValues;
+  return { code, isBlocked, texts };
 };
 
 export const getTexts = (texts: VText[]) => {
