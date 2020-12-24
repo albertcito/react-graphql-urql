@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import Title from 'antd/lib/typography/Title';
+import { Button } from 'antd';
 
 import useWindowTitle from 'util/windowTitle/useWindowTitle';
 import { UserQuery, useUserStatusReasonsQuery } from 'graphql/generated';
 import NoDataUrql from 'ui/NoDataUrql';
 import UserStatusReasonsTable from './Table';
+import StatusLogModal from './Modal';
 
 interface StatusLogProperties {
   user: UserQuery['user'];
@@ -18,15 +20,26 @@ const StatusLog: React.FC<StatusLogProperties> = ({ user }) => {
     { variables: { userID: user.id, limit, page, order, orderBy } },
   );
   useWindowTitle(`Status Log - ${user.fullName}`);
+  const [modal, setModal] = useState(false);
   if (!data) {
     return <NoDataUrql fetching={fetching} error={error} />;
   }
 
   return (
     <div>
-      <Title level={3}>
-        Users Status Log
-      </Title>
+      <div className='title'>
+        <Title level={3}>
+          Users Status Log
+        </Title>
+        <Button type='primary' size='small' onClick={() => setModal(true)}>
+          Update
+        </Button>
+        <StatusLogModal
+          userID={user.id}
+          visible={modal}
+          setVisible={setModal}
+        />
+      </div>
       <UserStatusReasonsTable
         reasons={data.userStatusReasons.data}
         pagination={data.userStatusReasons.pagination}

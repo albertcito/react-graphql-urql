@@ -1601,7 +1601,13 @@
             "deprecationReason": null
           },
           {
-            "name": "inactive",
+            "name": "disabled",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "locked",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -3050,7 +3056,7 @@
                   "name": "String",
                   "ofType": null
                 },
-                "defaultValue": null
+                "defaultValue": "\"EN\""
               },
               {
                 "name": "search",
@@ -3110,6 +3116,30 @@
                 "kind": "OBJECT",
                 "name": "TranslationPaginationResponse",
                 "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "userStatuses",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserStatus",
+                    "ofType": null
+                  }
+                }
               }
             },
             "isDeprecated": false,

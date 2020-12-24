@@ -182,7 +182,8 @@ export type UserStatusDescriptionArgs = {
 /** All possible user status */
 export enum UserStatusEnum {
   Active = 'active',
-  Inactive = 'inactive'
+  Disabled = 'disabled',
+  Locked = 'locked'
 }
 
 export type UserStatusReason = {
@@ -348,6 +349,7 @@ export type Query = {
   roles: RolePaginationResponse;
   translation: Translation;
   translations: TranslationPaginationResponse;
+  userStatuses: Array<UserStatus>;
   userStatusReasons: UserStatusReasonPaginationResponse;
   user: User;
   users: UserPaginationResponse;
@@ -922,6 +924,36 @@ export type UserStatusReasonsQuery = (
   ) }
 );
 
+export type UserStatusUpdateMutationVariables = Exact<{
+  userID: Scalars['Int'];
+  userStatusID: Scalars['String'];
+  reason: Scalars['String'];
+}>;
+
+
+export type UserStatusUpdateMutation = (
+  { __typename?: 'Mutation' }
+  & { userStatusUpdate: (
+    { __typename?: 'MessageField' }
+    & Pick<MessageField, 'message' | 'type'>
+  ) }
+);
+
+export type UserStatusesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UserStatusesQuery = (
+  { __typename?: 'Query' }
+  & { userStatuses: Array<(
+    { __typename?: 'UserStatus' }
+    & Pick<UserStatus, 'id' | 'createdAt' | 'createdBy'>
+    & { name: (
+      { __typename?: 'VText' }
+      & Pick<VText, 'text'>
+    ) }
+  )> }
+);
+
 export type UserQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -1333,6 +1365,34 @@ export const UserStatusReasonsDocument = gql`
 
 export function useUserStatusReasonsQuery(options: Omit<Urql.UseQueryArgs<UserStatusReasonsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<UserStatusReasonsQuery>({ query: UserStatusReasonsDocument, ...options });
+};
+export const UserStatusUpdateDocument = gql`
+    mutation userStatusUpdate($userID: Int!, $userStatusID: String!, $reason: String!) {
+  userStatusUpdate(userID: $userID, userStatusID: $userStatusID, reason: $reason) {
+    message
+    type
+  }
+}
+    `;
+
+export function useUserStatusUpdateMutation() {
+  return Urql.useMutation<UserStatusUpdateMutation, UserStatusUpdateMutationVariables>(UserStatusUpdateDocument);
+};
+export const UserStatusesDocument = gql`
+    query userStatuses {
+  userStatuses {
+    id
+    name {
+      text
+    }
+    createdAt
+    createdBy
+  }
+}
+    `;
+
+export function useUserStatusesQuery(options: Omit<Urql.UseQueryArgs<UserStatusesQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<UserStatusesQuery>({ query: UserStatusesDocument, ...options });
 };
 export const UserDocument = gql`
     query user($id: Int!) {

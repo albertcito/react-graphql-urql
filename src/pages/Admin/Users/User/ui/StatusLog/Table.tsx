@@ -50,11 +50,11 @@ const UserStatusReasonsTable: React.FC<UserStatusReasonsTableProperties> = ({
   onDelete,
 }) => {
   const tableColumns = new TableColumns([
-    new IDColumn<UserStatusReason>({ indexID: 'id', orderBy: 'user_id' }),
+    new IDColumn<UserStatusReason>({ indexID: 'id', orderBy: 'id' }),
     new StringColumn<UserStatusReason>({
       indexID: 'userStatusID',
-      title: 'userStatusID',
-      orderBy: 'userStatusID',
+      title: 'Status',
+      orderBy: 'user_status_id',
       getLink,
       onSelectLink,
     }),
