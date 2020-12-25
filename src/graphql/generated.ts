@@ -16,8 +16,8 @@ export type Scalars = {
 
 export type BaseDataEntity = {
   __typename?: 'BaseDataEntity';
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['Float'];
+  updatedAt: Scalars['Float'];
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
 };
@@ -44,8 +44,8 @@ export type VText = {
 
 export type Role = {
   __typename?: 'Role';
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['Float'];
+  updatedAt: Scalars['Float'];
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
   id: RolesEnum;
@@ -75,8 +75,8 @@ export enum RolesEnum {
 
 export type User = {
   __typename?: 'User';
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['Float'];
+  updatedAt: Scalars['Float'];
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
   id: Scalars['Int'];
@@ -91,8 +91,8 @@ export type User = {
 
 export type OauthAccessToken = {
   __typename?: 'OauthAccessToken';
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['Float'];
+  updatedAt: Scalars['Float'];
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
   id: Scalars['Int'];
@@ -102,10 +102,22 @@ export type OauthAccessToken = {
   revoked: Scalars['Boolean'];
 };
 
+export type EmailUpdate = {
+  __typename?: 'EmailUpdate';
+  createdAt: Scalars['Float'];
+  updatedAt: Scalars['Float'];
+  createdBy?: Maybe<Scalars['Int']>;
+  updatedBy?: Maybe<Scalars['Int']>;
+  id: Scalars['Int'];
+  userID: Scalars['Int'];
+  emailOld: Scalars['Int'];
+  emailNew: Scalars['String'];
+};
+
 export type Lang = {
   __typename?: 'Lang';
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['Float'];
+  updatedAt: Scalars['Float'];
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
   id: Scalars['String'];
@@ -117,8 +129,8 @@ export type Lang = {
 
 export type Text = {
   __typename?: 'Text';
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['Float'];
+  updatedAt: Scalars['Float'];
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
   text: Scalars['String'];
@@ -128,8 +140,8 @@ export type Text = {
 
 export type Translation = {
   __typename?: 'Translation';
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['Float'];
+  updatedAt: Scalars['Float'];
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
   id: Scalars['Int'];
@@ -146,8 +158,8 @@ export type TranslationTextArgs = {
 
 export type UserRole = {
   __typename?: 'UserRole';
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['Float'];
+  updatedAt: Scalars['Float'];
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
   id: Scalars['Int'];
@@ -155,8 +167,8 @@ export type UserRole = {
 
 export type UserStatus = {
   __typename?: 'UserStatus';
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['Float'];
+  updatedAt: Scalars['Float'];
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
   id: UserStatusEnum;
@@ -188,8 +200,8 @@ export enum UserStatusEnum {
 
 export type UserStatusReason = {
   __typename?: 'UserStatusReason';
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['Float'];
+  updatedAt: Scalars['Float'];
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
   id: Scalars['Int'];
@@ -200,8 +212,8 @@ export type UserStatusReason = {
 
 export type UserToken = {
   __typename?: 'UserToken';
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['Float'];
+  updatedAt: Scalars['Float'];
   createdBy?: Maybe<Scalars['Int']>;
   updatedBy?: Maybe<Scalars['Int']>;
   id: Scalars['Int'];
@@ -250,6 +262,12 @@ export type LangUpdateResponse = {
   __typename?: 'LangUpdateResponse';
   data: Lang;
   message: MessageField;
+};
+
+export type EmailUpdatePaginationResponse = {
+  __typename?: 'EmailUpdatePaginationResponse';
+  data: Array<EmailUpdate>;
+  pagination: Pagination;
 };
 
 export type RolePaginationResponse = {
@@ -345,6 +363,7 @@ export type Query = {
   __typename?: 'Query';
   lang: Lang;
   langs: LangPaginationResponse;
+  emailUpdates: EmailUpdatePaginationResponse;
   role: Role;
   roles: RolePaginationResponse;
   translation: Translation;
@@ -364,6 +383,15 @@ export type QueryLangArgs = {
 export type QueryLangsArgs = {
   limit?: Maybe<Scalars['Int']>;
   page?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryEmailUpdatesArgs = {
+  order?: Maybe<Scalars['String']>;
+  orderBy?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+  userID: Scalars['Int'];
 };
 
 
@@ -591,6 +619,29 @@ export type LangsQuery = (
     & { data: Array<(
       { __typename?: 'Lang' }
       & Pick<Lang, 'id' | 'localname' | 'name'>
+    )> }
+  ) }
+);
+
+export type EmailUpdatesQueryVariables = Exact<{
+  userID: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Scalars['String']>;
+  order?: Maybe<Scalars['String']>;
+}>;
+
+
+export type EmailUpdatesQuery = (
+  { __typename?: 'Query' }
+  & { emailUpdates: (
+    { __typename?: 'EmailUpdatePaginationResponse' }
+    & { pagination: (
+      { __typename?: 'Pagination' }
+      & Pick<Pagination, 'from' | 'to' | 'total' | 'limit' | 'page' | 'length'>
+    ), data: Array<(
+      { __typename?: 'EmailUpdate' }
+      & Pick<EmailUpdate, 'id' | 'userID' | 'emailNew' | 'emailOld' | 'createdAt' | 'createdBy'>
     )> }
   ) }
 );
@@ -1009,6 +1060,38 @@ export const LangsDocument = gql`
 
 export function useLangsQuery(options: Omit<Urql.UseQueryArgs<LangsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<LangsQuery>({ query: LangsDocument, ...options });
+};
+export const EmailUpdatesDocument = gql`
+    query emailUpdates($userID: Int!, $limit: Int, $page: Int, $orderBy: String, $order: String) {
+  emailUpdates(
+    userID: $userID
+    limit: $limit
+    page: $page
+    orderBy: $orderBy
+    order: $order
+  ) {
+    pagination {
+      from
+      to
+      total
+      limit
+      page
+      length
+    }
+    data {
+      id
+      userID
+      emailNew
+      emailOld
+      createdAt
+      createdBy
+    }
+  }
+}
+    `;
+
+export function useEmailUpdatesQuery(options: Omit<Urql.UseQueryArgs<EmailUpdatesQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<EmailUpdatesQuery>({ query: EmailUpdatesDocument, ...options });
 };
 export const RolesDocument = gql`
     query roles {

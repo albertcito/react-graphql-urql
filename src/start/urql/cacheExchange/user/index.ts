@@ -7,7 +7,10 @@ import invalidateQuery from '../util/invalidateQuery';
 const userExchange = {
   userUpdateEmail: (
     _result: Data, { id }: Variables, cache: Cache,
-  ) => invalidateID('User', id, cache),
+  ) => {
+    invalidateID('User', id, cache);
+    invalidateQuery('emailUpdates', cache);
+  },
 
   userRolesUpdate: (_result: Data, variables: Variables, cache: Cache) => {
     const allFields = cache.inspectFields('Query');

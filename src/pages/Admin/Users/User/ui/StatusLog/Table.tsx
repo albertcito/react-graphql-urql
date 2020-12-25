@@ -41,13 +41,13 @@ const UserStatusReasonsTable: React.FC<UserStatusReasonsTableProperties> = ({
     }),
     new StringColumn<UserStatusReason>({
       indexID: 'createdBy',
-      title: 'createdBy',
+      title: 'Created by',
       getLink,
       onSelectLink,
     }),
     new DateTimeColumn<UserStatusReason>({
       indexID: 'createdAt',
-      title: 'createdAt',
+      title: 'Created at',
       getLink,
       onSelectLink,
     }),

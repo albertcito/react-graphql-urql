@@ -41,7 +41,7 @@ const UserMenu = ({ userID, view }: UserMenuProperties) => (
       </Link>
     </Menu.Item>
     <Menu.Item key='emails-log' icon={<MailOutlined />}>
-      <Link to={`/admin/users/${userID}/roles`}>
+      <Link to={`/admin/users/${userID}/emails-log`}>
         Emails Log
       </Link>
     </Menu.Item>

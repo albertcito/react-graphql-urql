@@ -12,6 +12,7 @@ const cacheExchange = cacheExchangeURQL({
     TranslationPaginationResponse: () => null,
     UserPaginationResponse: () => null,
     UserStatusReasonPaginationResponse: () => null,
+    EmailUpdatePaginationResponse: () => null,
   },
   updates: {
     Mutation: {

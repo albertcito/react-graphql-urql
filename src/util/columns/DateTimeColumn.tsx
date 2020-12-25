@@ -12,7 +12,7 @@ interface DateTimeColumnProperties<T> extends Omit<ColumnTableProperties, 'rende
 
 const dateShortFormat = (date: number) => {
   const langID = 'en-US';
-  return new Date(date * 1000).toLocaleDateString(
+  return new Date(date).toLocaleDateString(
     langID,
     { year: 'numeric', month: 'short', day: 'numeric' },
   );
@@ -33,9 +33,6 @@ export default class DateTimeColumn<T> implements TableColumnAbstract {
 
   private getDate() {
     const { indexID } = this.properties;
-    return (_: string, data: T) => {
-      const date = data[indexID];
-      return dateShortFormat(date as unknown as number);
-    };
+    return (_: string, data: T) => dateShortFormat(data[indexID] as unknown as number);
   }
 }
