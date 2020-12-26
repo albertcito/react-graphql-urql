@@ -2,17 +2,17 @@ import React from 'react';
 import Title from 'antd/lib/typography/Title';
 
 import useWindowTitle from 'util/windowTitle/useWindowTitle';
-import { UserQuery, useEmailUpdatesQuery } from 'graphql/generated';
+import { UserQuery, usePasswordUpdatesQuery } from 'graphql/generated';
 import NoDataUrql from 'ui/NoDataUrql';
-import EmailUpdatesTable from './Table';
+import PasswordUpdatesTable from './Table';
 import useTable from 'ui/Tables/Table/useTable';
 
 interface StatusLogProperties {
   user: UserQuery['user'];
 }
-const EmailUpdates: React.FC<StatusLogProperties> = ({ user }) => {
+const PasswordUpdates: React.FC<StatusLogProperties> = ({ user }) => {
   const { urlQuery, setUrlQuery } = useTable();
-  const [{ error, fetching, data }] = useEmailUpdatesQuery(
+  const [{ error, fetching, data }] = usePasswordUpdatesQuery(
     { variables: { userID: user.id, ...urlQuery } },
   );
   useWindowTitle(`Email updated - ${user.fullName}`);
@@ -22,11 +22,11 @@ const EmailUpdates: React.FC<StatusLogProperties> = ({ user }) => {
   return (
     <div>
       <Title level={3}>
-        Email Updates
+        Password Updates
       </Title>
-      <EmailUpdatesTable
-        dataSource={data.emailUpdates.data}
-        pagination={data.emailUpdates.pagination}
+      <PasswordUpdatesTable
+        dataSource={data.passwordUpdates.data}
+        pagination={data.passwordUpdates.pagination}
         loading={fetching}
         values={urlQuery}
         fetchMore={setUrlQuery}
@@ -35,4 +35,4 @@ const EmailUpdates: React.FC<StatusLogProperties> = ({ user }) => {
   );
 };
 
-export default EmailUpdates;
+export default PasswordUpdates;

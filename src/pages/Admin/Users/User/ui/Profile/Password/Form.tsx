@@ -54,12 +54,12 @@ export const PasswordUserForm: React.FC<PasswordUserFormProperties> = ({
 
           <Form.Item
             name='confirmPassword'
-            dependencies={['newPassword']}
+            dependencies={['password']}
             hasFeedback
             rules={[
               required('Please confirm new password'),
               passMinRule,
-              ({ getFieldValue }) => rulePass(getFieldValue, 'newPassword'),
+              ({ getFieldValue }) => rulePass(getFieldValue, 'password'),
             ]}
           >
             <Input.Password

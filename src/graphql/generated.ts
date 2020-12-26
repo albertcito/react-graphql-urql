@@ -110,7 +110,7 @@ export type EmailUpdate = {
   updatedBy?: Maybe<Scalars['Int']>;
   id: Scalars['Int'];
   userID: Scalars['Int'];
-  emailOld: Scalars['Int'];
+  emailOld: Scalars['String'];
   emailNew: Scalars['String'];
 };
 
@@ -125,6 +125,16 @@ export type Lang = {
   localname: Scalars['String'];
   active: Scalars['Boolean'];
   isBlocked: Scalars['Boolean'];
+};
+
+export type PasswordUpdate = {
+  __typename?: 'PasswordUpdate';
+  createdAt: Scalars['Float'];
+  updatedAt: Scalars['Float'];
+  createdBy?: Maybe<Scalars['Int']>;
+  updatedBy?: Maybe<Scalars['Int']>;
+  id: Scalars['Int'];
+  userID: Scalars['Int'];
 };
 
 export type Text = {
@@ -264,9 +274,15 @@ export type LangUpdateResponse = {
   message: MessageField;
 };
 
+export type PasswordUpdatePaginationResponse = {
+  __typename?: 'PasswordUpdatePaginationResponse';
+  data: Array<EmailUpdate>;
+  pagination: Pagination;
+};
+
 export type EmailUpdatePaginationResponse = {
   __typename?: 'EmailUpdatePaginationResponse';
-  data: Array<EmailUpdate>;
+  data: Array<PasswordUpdate>;
   pagination: Pagination;
 };
 
@@ -363,7 +379,8 @@ export type Query = {
   __typename?: 'Query';
   lang: Lang;
   langs: LangPaginationResponse;
-  emailUpdates: EmailUpdatePaginationResponse;
+  emailUpdates: PasswordUpdatePaginationResponse;
+  passwordUpdates: EmailUpdatePaginationResponse;
   role: Role;
   roles: RolePaginationResponse;
   translation: Translation;
@@ -387,6 +404,15 @@ export type QueryLangsArgs = {
 
 
 export type QueryEmailUpdatesArgs = {
+  order?: Maybe<Scalars['String']>;
+  orderBy?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+  userID: Scalars['Int'];
+};
+
+
+export type QueryPasswordUpdatesArgs = {
   order?: Maybe<Scalars['String']>;
   orderBy?: Maybe<Scalars['String']>;
   limit?: Maybe<Scalars['Int']>;
@@ -635,13 +661,36 @@ export type EmailUpdatesQueryVariables = Exact<{
 export type EmailUpdatesQuery = (
   { __typename?: 'Query' }
   & { emailUpdates: (
-    { __typename?: 'EmailUpdatePaginationResponse' }
+    { __typename?: 'PasswordUpdatePaginationResponse' }
     & { pagination: (
       { __typename?: 'Pagination' }
       & Pick<Pagination, 'from' | 'to' | 'total' | 'limit' | 'page' | 'length'>
     ), data: Array<(
       { __typename?: 'EmailUpdate' }
       & Pick<EmailUpdate, 'id' | 'userID' | 'emailNew' | 'emailOld' | 'createdAt' | 'createdBy'>
+    )> }
+  ) }
+);
+
+export type PasswordUpdatesQueryVariables = Exact<{
+  userID: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Scalars['String']>;
+  order?: Maybe<Scalars['String']>;
+}>;
+
+
+export type PasswordUpdatesQuery = (
+  { __typename?: 'Query' }
+  & { passwordUpdates: (
+    { __typename?: 'EmailUpdatePaginationResponse' }
+    & { pagination: (
+      { __typename?: 'Pagination' }
+      & Pick<Pagination, 'from' | 'to' | 'total' | 'limit' | 'page' | 'length'>
+    ), data: Array<(
+      { __typename?: 'PasswordUpdate' }
+      & Pick<PasswordUpdate, 'id' | 'userID' | 'createdAt' | 'createdBy'>
     )> }
   ) }
 );
@@ -1092,6 +1141,36 @@ export const EmailUpdatesDocument = gql`
 
 export function useEmailUpdatesQuery(options: Omit<Urql.UseQueryArgs<EmailUpdatesQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<EmailUpdatesQuery>({ query: EmailUpdatesDocument, ...options });
+};
+export const PasswordUpdatesDocument = gql`
+    query passwordUpdates($userID: Int!, $limit: Int, $page: Int, $orderBy: String, $order: String) {
+  passwordUpdates(
+    userID: $userID
+    limit: $limit
+    page: $page
+    orderBy: $orderBy
+    order: $order
+  ) {
+    pagination {
+      from
+      to
+      total
+      limit
+      page
+      length
+    }
+    data {
+      id
+      userID
+      createdAt
+      createdBy
+    }
+  }
+}
+    `;
+
+export function usePasswordUpdatesQuery(options: Omit<Urql.UseQueryArgs<PasswordUpdatesQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<PasswordUpdatesQuery>({ query: PasswordUpdatesDocument, ...options });
 };
 export const RolesDocument = gql`
     query roles {

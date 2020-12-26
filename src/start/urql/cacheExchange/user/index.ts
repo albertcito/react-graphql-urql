@@ -11,6 +11,9 @@ const userExchange = {
     invalidateID('User', id, cache);
     invalidateQuery('emailUpdates', cache);
   },
+  userUpdatePassword: (
+    _result: Data, _variables: Variables, cache: Cache,
+  ) => invalidateQuery('passwordUpdates', cache),
 
   userRolesUpdate: (_result: Data, variables: Variables, cache: Cache) => {
     const allFields = cache.inspectFields('Query');

@@ -46,7 +46,7 @@ const UserMenu = ({ userID, view }: UserMenuProperties) => (
       </Link>
     </Menu.Item>
     <Menu.Item key='passwords-log' icon={<LockOutlined />}>
-      <Link to={`/admin/users/${userID}/roles`}>
+      <Link to={`/admin/users/${userID}/passwords-log`}>
         Passwords Log
       </Link>
     </Menu.Item>
