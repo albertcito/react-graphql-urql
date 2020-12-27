@@ -7,6 +7,7 @@ import {
   KeyOutlined,
   LockOutlined,
   SendOutlined,
+  PullRequestOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { Link } from 'react-router-dom';
@@ -36,7 +37,7 @@ const UserMenu = ({ userID, view }: UserMenuProperties) => (
       </Link>
     </Menu.Item>
     <Menu.Item key='emails-sent' icon={<SendOutlined />}>
-      <Link to={`/admin/users/${userID}/roles`}>
+      <Link to={`/admin/users/${userID}/emails-sent`}>
         Emails Sent
       </Link>
     </Menu.Item>
@@ -51,8 +52,13 @@ const UserMenu = ({ userID, view }: UserMenuProperties) => (
       </Link>
     </Menu.Item>
     <Menu.Item key='tokens' icon={<KeyOutlined />}>
-      <Link to={`/admin/users/${userID}/roles`}>
+      <Link to={`/admin/users/${userID}/tokens`}>
         Tokens
+      </Link>
+    </Menu.Item>
+    <Menu.Item key='auth-access' icon={<PullRequestOutlined />}>
+      <Link to={`/admin/users/${userID}/auth-access`}>
+        Auth Access
       </Link>
     </Menu.Item>
   </Menu>

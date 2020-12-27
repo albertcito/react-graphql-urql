@@ -97,9 +97,46 @@ export type OauthAccessToken = {
   updatedBy?: Maybe<Scalars['Int']>;
   id: Scalars['Int'];
   userID: Scalars['Int'];
-  signature: Scalars['String'];
-  token: Scalars['String'];
   revoked: Scalars['Boolean'];
+  expiredAt: Scalars['Float'];
+};
+
+export type EmailRecipient = {
+  __typename?: 'EmailRecipient';
+  createdAt: Scalars['Float'];
+  updatedAt: Scalars['Float'];
+  createdBy?: Maybe<Scalars['Int']>;
+  updatedBy?: Maybe<Scalars['Int']>;
+  id: Scalars['Int'];
+  emailID: Scalars['Int'];
+  email: Scalars['String'];
+  name: Scalars['String'];
+  type: EmailRecipientTypeEnum;
+};
+
+/** Email recipients */
+export enum EmailRecipientTypeEnum {
+  To = 'to',
+  Cc = 'cc',
+  Bcc = 'bcc'
+}
+
+export type EmailLog = {
+  __typename?: 'EmailLog';
+  createdAt: Scalars['Float'];
+  updatedAt: Scalars['Float'];
+  createdBy?: Maybe<Scalars['Int']>;
+  updatedBy?: Maybe<Scalars['Int']>;
+  id: Scalars['Int'];
+  userID?: Maybe<Scalars['Int']>;
+  from: Scalars['String'];
+  fromName?: Maybe<Scalars['String']>;
+  subject: Scalars['String'];
+  content: Scalars['String'];
+  replyTo?: Maybe<Scalars['String']>;
+  replyToName?: Maybe<Scalars['String']>;
+  sentAt: Scalars['Float'];
+  recipients: Array<EmailRecipient>;
 };
 
 export type EmailUpdate = {
@@ -230,6 +267,8 @@ export type UserToken = {
   userID: Scalars['Int'];
   token: Scalars['String'];
   type: Scalars['String'];
+  usedAt?: Maybe<Scalars['Float']>;
+  expiredAt: Scalars['Float'];
 };
 
 export type MessageField = {
@@ -274,6 +313,12 @@ export type LangUpdateResponse = {
   message: MessageField;
 };
 
+export type EmailLogPaginationResponse = {
+  __typename?: 'EmailLogPaginationResponse';
+  data: Array<EmailLog>;
+  pagination: Pagination;
+};
+
 export type PasswordUpdatePaginationResponse = {
   __typename?: 'PasswordUpdatePaginationResponse';
   data: Array<EmailUpdate>;
@@ -314,6 +359,12 @@ export type TranslationUpdateResponse = {
   __typename?: 'TranslationUpdateResponse';
   data: Translation;
   message: MessageField;
+};
+
+export type OauthAccessTokenPaginationResponse = {
+  __typename?: 'OauthAccessTokenPaginationResponse';
+  data: Array<OauthAccessToken>;
+  pagination: Pagination;
 };
 
 export type LoginResponse = {
@@ -364,6 +415,12 @@ export type UserStatusReasonPaginationResponse = {
   pagination: Pagination;
 };
 
+export type UserTokenPaginationResponse = {
+  __typename?: 'UserTokenPaginationResponse';
+  data: Array<UserToken>;
+  pagination: Pagination;
+};
+
 export type UserPaginationResponse = {
   __typename?: 'UserPaginationResponse';
   data: Array<User>;
@@ -379,14 +436,17 @@ export type Query = {
   __typename?: 'Query';
   lang: Lang;
   langs: LangPaginationResponse;
+  emailLogs: EmailLogPaginationResponse;
   emailUpdates: PasswordUpdatePaginationResponse;
   passwordUpdates: EmailUpdatePaginationResponse;
   role: Role;
   roles: RolePaginationResponse;
   translation: Translation;
   translations: TranslationPaginationResponse;
+  userAuthAccess: OauthAccessTokenPaginationResponse;
   userStatuses: Array<UserStatus>;
   userStatusReasons: UserStatusReasonPaginationResponse;
+  userTokens: UserTokenPaginationResponse;
   user: User;
   users: UserPaginationResponse;
 };
@@ -400,6 +460,15 @@ export type QueryLangArgs = {
 export type QueryLangsArgs = {
   limit?: Maybe<Scalars['Int']>;
   page?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryEmailLogsArgs = {
+  order?: Maybe<Scalars['String']>;
+  orderBy?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+  userID: Scalars['Int'];
 };
 
 
@@ -447,7 +516,25 @@ export type QueryTranslationsArgs = {
 };
 
 
+export type QueryUserAuthAccessArgs = {
+  order?: Maybe<Scalars['String']>;
+  orderBy?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+  userID: Scalars['Int'];
+};
+
+
 export type QueryUserStatusReasonsArgs = {
+  order?: Maybe<Scalars['String']>;
+  orderBy?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+  userID: Scalars['Int'];
+};
+
+
+export type QueryUserTokensArgs = {
   order?: Maybe<Scalars['String']>;
   orderBy?: Maybe<Scalars['String']>;
   limit?: Maybe<Scalars['Int']>;
@@ -649,6 +736,29 @@ export type LangsQuery = (
   ) }
 );
 
+export type EmailLogsQueryVariables = Exact<{
+  userID: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Scalars['String']>;
+  order?: Maybe<Scalars['String']>;
+}>;
+
+
+export type EmailLogsQuery = (
+  { __typename?: 'Query' }
+  & { emailLogs: (
+    { __typename?: 'EmailLogPaginationResponse' }
+    & { pagination: (
+      { __typename?: 'Pagination' }
+      & Pick<Pagination, 'from' | 'to' | 'total' | 'limit' | 'page' | 'length'>
+    ), data: Array<(
+      { __typename?: 'EmailLog' }
+      & Pick<EmailLog, 'id' | 'userID' | 'sentAt' | 'subject' | 'fromName' | 'from' | 'createdAt' | 'createdBy'>
+    )> }
+  ) }
+);
+
 export type EmailUpdatesQueryVariables = Exact<{
   userID: Scalars['Int'];
   limit?: Maybe<Scalars['Int']>;
@@ -825,6 +935,29 @@ export type TranslationsQuery = (
         { __typename?: 'VText' }
         & Pick<VText, 'id' | 'text' | 'langID' | 'originalLangID'>
       ) }
+    )> }
+  ) }
+);
+
+export type UserAuthAccessQueryVariables = Exact<{
+  userID: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Scalars['String']>;
+  order?: Maybe<Scalars['String']>;
+}>;
+
+
+export type UserAuthAccessQuery = (
+  { __typename?: 'Query' }
+  & { userAuthAccess: (
+    { __typename?: 'OauthAccessTokenPaginationResponse' }
+    & { pagination: (
+      { __typename?: 'Pagination' }
+      & Pick<Pagination, 'from' | 'to' | 'total' | 'limit' | 'page' | 'length'>
+    ), data: Array<(
+      { __typename?: 'OauthAccessToken' }
+      & Pick<OauthAccessToken, 'id' | 'revoked' | 'expiredAt' | 'createdAt' | 'createdBy'>
     )> }
   ) }
 );
@@ -1054,6 +1187,29 @@ export type UserStatusesQuery = (
   )> }
 );
 
+export type UserTokensQueryVariables = Exact<{
+  userID: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Scalars['String']>;
+  order?: Maybe<Scalars['String']>;
+}>;
+
+
+export type UserTokensQuery = (
+  { __typename?: 'Query' }
+  & { userTokens: (
+    { __typename?: 'UserTokenPaginationResponse' }
+    & { pagination: (
+      { __typename?: 'Pagination' }
+      & Pick<Pagination, 'from' | 'to' | 'total' | 'limit' | 'page' | 'length'>
+    ), data: Array<(
+      { __typename?: 'UserToken' }
+      & Pick<UserToken, 'id' | 'type' | 'expiredAt' | 'usedAt' | 'createdAt'>
+    )> }
+  ) }
+);
+
 export type UserQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -1109,6 +1265,40 @@ export const LangsDocument = gql`
 
 export function useLangsQuery(options: Omit<Urql.UseQueryArgs<LangsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<LangsQuery>({ query: LangsDocument, ...options });
+};
+export const EmailLogsDocument = gql`
+    query emailLogs($userID: Int!, $limit: Int, $page: Int, $orderBy: String, $order: String) {
+  emailLogs(
+    userID: $userID
+    limit: $limit
+    page: $page
+    orderBy: $orderBy
+    order: $order
+  ) {
+    pagination {
+      from
+      to
+      total
+      limit
+      page
+      length
+    }
+    data {
+      id
+      userID
+      sentAt
+      subject
+      fromName
+      from
+      createdAt
+      createdBy
+    }
+  }
+}
+    `;
+
+export function useEmailLogsQuery(options: Omit<Urql.UseQueryArgs<EmailLogsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<EmailLogsQuery>({ query: EmailLogsDocument, ...options });
 };
 export const EmailUpdatesDocument = gql`
     query emailUpdates($userID: Int!, $limit: Int, $page: Int, $orderBy: String, $order: String) {
@@ -1319,6 +1509,37 @@ export const TranslationsDocument = gql`
 
 export function useTranslationsQuery(options: Omit<Urql.UseQueryArgs<TranslationsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<TranslationsQuery>({ query: TranslationsDocument, ...options });
+};
+export const UserAuthAccessDocument = gql`
+    query userAuthAccess($userID: Int!, $limit: Int, $page: Int, $orderBy: String, $order: String) {
+  userAuthAccess(
+    userID: $userID
+    limit: $limit
+    page: $page
+    orderBy: $orderBy
+    order: $order
+  ) {
+    pagination {
+      from
+      to
+      total
+      limit
+      page
+      length
+    }
+    data {
+      id
+      revoked
+      expiredAt
+      createdAt
+      createdBy
+    }
+  }
+}
+    `;
+
+export function useUserAuthAccessQuery(options: Omit<Urql.UseQueryArgs<UserAuthAccessQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<UserAuthAccessQuery>({ query: UserAuthAccessDocument, ...options });
 };
 export const UserRolesUpdateDocument = gql`
     mutation userRolesUpdate($userID: Int!, $rolesID: [String!]!) {
@@ -1558,6 +1779,37 @@ export const UserStatusesDocument = gql`
 
 export function useUserStatusesQuery(options: Omit<Urql.UseQueryArgs<UserStatusesQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<UserStatusesQuery>({ query: UserStatusesDocument, ...options });
+};
+export const UserTokensDocument = gql`
+    query userTokens($userID: Int!, $limit: Int, $page: Int, $orderBy: String, $order: String) {
+  userTokens(
+    userID: $userID
+    limit: $limit
+    page: $page
+    orderBy: $orderBy
+    order: $order
+  ) {
+    pagination {
+      from
+      to
+      total
+      limit
+      page
+      length
+    }
+    data {
+      id
+      type
+      expiredAt
+      usedAt
+      createdAt
+    }
+  }
+}
+    `;
+
+export function useUserTokensQuery(options: Omit<Urql.UseQueryArgs<UserTokensQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<UserTokensQuery>({ query: UserTokensDocument, ...options });
 };
 export const UserDocument = gql`
     query user($id: Int!) {

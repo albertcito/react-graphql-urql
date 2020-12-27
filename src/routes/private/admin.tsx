@@ -40,6 +40,21 @@ const routes: RoutePropertiesParameters[] = [
     params: { id },
   },
   {
+    component: User,
+    path: '/admin/users/:id/emails-sent',
+    params: { id },
+  },
+  {
+    component: User,
+    path: '/admin/users/:id/tokens',
+    params: { id },
+  },
+  {
+    component: User,
+    path: '/admin/users/:id/auth-access',
+    params: { id },
+  },
+  {
     component: Profile,
     exact: true,
     path: '/admin/profile',
