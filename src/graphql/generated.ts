@@ -976,6 +976,28 @@ export type UserRolesUpdateMutation = (
   ) }
 );
 
+export type ForgotPasswordMutationVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type ForgotPasswordMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'forgotPassword'>
+);
+
+export type ResetPasswordMutationVariables = Exact<{
+  password_confirmation: Scalars['String'];
+  password: Scalars['String'];
+  token: Scalars['String'];
+}>;
+
+
+export type ResetPasswordMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'resetPassword'>
+);
+
 export type LoggedUserMutationVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1552,6 +1574,28 @@ export const UserRolesUpdateDocument = gql`
 
 export function useUserRolesUpdateMutation() {
   return Urql.useMutation<UserRolesUpdateMutation, UserRolesUpdateMutationVariables>(UserRolesUpdateDocument);
+};
+export const ForgotPasswordDocument = gql`
+    mutation forgotPassword($email: String!) {
+  forgotPassword(email: $email)
+}
+    `;
+
+export function useForgotPasswordMutation() {
+  return Urql.useMutation<ForgotPasswordMutation, ForgotPasswordMutationVariables>(ForgotPasswordDocument);
+};
+export const ResetPasswordDocument = gql`
+    mutation resetPassword($password_confirmation: String!, $password: String!, $token: String!) {
+  resetPassword(
+    password_confirmation: $password_confirmation
+    password: $password
+    token: $token
+  )
+}
+    `;
+
+export function useResetPasswordMutation() {
+  return Urql.useMutation<ResetPasswordMutation, ResetPasswordMutationVariables>(ResetPasswordDocument);
 };
 export const LoggedUserDocument = gql`
     mutation loggedUser {

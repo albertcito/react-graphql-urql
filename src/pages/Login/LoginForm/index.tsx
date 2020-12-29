@@ -1,23 +1,22 @@
 import React from 'react';
 import { InboxOutlined, LockOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Spin, notification } from 'antd';
+import { Button, Form, Input, Spin } from 'antd';
 import { CombinedError } from '@urql/core';
 
 import AlertError from 'ui/Alert/AlertError';
-
-const onClick = () => notification.info({
-  message: 'To be implemented',
-  description: 'This feature will be implemented ASAP.',
-});
 
 type onLoginType = (email: string, password: string) => void;
 interface LoginFormProperties {
   doLogin: onLoginType;
   fetching: boolean;
   error?: CombinedError;
+  onForgotPassword: () => void;
+  onSingUp: () => void;
 }
 
-const LoginForm: React.FC<LoginFormProperties> = ({ doLogin, fetching, error }) => {
+const LoginForm: React.FC<LoginFormProperties> = (
+  { doLogin, fetching, error, onForgotPassword, onSingUp },
+) => {
   const onSubmit = ({ email, password }: {
     email: string;
     password: string;
@@ -81,7 +80,7 @@ const LoginForm: React.FC<LoginFormProperties> = ({ doLogin, fetching, error }) 
             >
               Submit
             </Button>
-            <Button type='link' className='login-form-forgot' onClick={onClick}>
+            <Button type='link' className='login-form-forgot' onClick={onForgotPassword}>
               Forgot Password
             </Button>
           </Form.Item>
@@ -89,7 +88,7 @@ const LoginForm: React.FC<LoginFormProperties> = ({ doLogin, fetching, error }) 
         <p className='session-form-already'>
           Don&#39;t have an account?
           {' '}
-          <Button type='link' className='link-button' onClick={onClick}>
+          <Button type='link' className='link-button' onClick={onSingUp}>
             <b>Singup</b>
           </Button>
         </p>

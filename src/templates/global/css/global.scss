@@ -189,3 +189,7 @@ button.link:focus { outline: 0; }
 .ant-breadcrumb > span:last-child .custom-breadcrumb .ant-breadcrumb-separator {
   display: inline-block;
 }
+
+.ant-btn-link {
+  padding: 0;
+}
