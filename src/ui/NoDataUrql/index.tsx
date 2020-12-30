@@ -2,6 +2,7 @@ import React from 'react';
 import { CombinedError } from 'urql';
 
 import AlertError from 'ui/Alert/AlertError';
+import { Error404 } from 'templates/errors';
 
 interface NoDataUrqlProperties {
   fetching: boolean;
@@ -14,6 +15,10 @@ const NoDataUrql: React.FC<NoDataUrqlProperties> = ({
   if (fetching) {
     return <div> Loading... </div>;
   }
+  if (error && error.graphQLErrors[0] && error.graphQLErrors[0].extensions?.code === 'EntityNotFoundError') {
+    return <Error404 />;
+  }
+
   if (error) {
     return <AlertError error={error} />;
   }
