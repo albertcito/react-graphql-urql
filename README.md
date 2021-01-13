@@ -1,3 +1,6 @@
+[![dependencies Status](https://status.david-dm.org/gh/albertcito/react-graphql-urql.svg)](https://david-dm.org/albertcito/react-graphql-urql)
+
+
 ## Preview
 
 You can see it workin [here](https://albertcito.github.io/react-graphql-urql/#/login)
